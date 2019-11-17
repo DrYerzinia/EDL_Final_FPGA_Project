@@ -1,22 +1,26 @@
 # # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
 # 
-preplace inst EDL_Final.sdram -pg 1 -lvl 3 -y 180
+preplace inst EDL_Final.sdram -pg 1 -lvl 3 -y 200
 preplace inst EDL_Final.clk.reset_from_locked -pg 1
 preplace inst EDL_Final.cpu.reset_bridge -pg 1
 preplace inst EDL_Final -pg 1 -lvl 1 -y 40 -regy -20
-preplace inst EDL_Final.jtag_uart -pg 1 -lvl 3 -y 80
+preplace inst EDL_Final.jtag_uart -pg 1 -lvl 3 -y 60
 preplace inst EDL_Final.cpu.cpu -pg 1
 preplace inst EDL_Final.clk.sys_pll -pg 1
 preplace inst EDL_Final.cpu -pg 1 -lvl 2 -y 50
 preplace inst EDL_Final.clk -pg 1 -lvl 1 -y 150
+preplace inst EDL_Final.led -pg 1 -lvl 3 -y 300
+preplace inst EDL_Final.button -pg 1 -lvl 3 -y 400
 preplace inst EDL_Final.cpu.clock_bridge -pg 1
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(MASTER)clk.sdram_clk,(MASTER)EDL_Final.sdram_clk) 1 1 3 NJ 290 NJ 290 NJ
 preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)clk.ref_reset,(SLAVE)EDL_Final.reset) 1 0 1 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.clk,(SLAVE)clk.ref_clk) 1 0 1 NJ
-preplace netloc FAN_OUT<net_container>EDL_Final</net_container>(SLAVE)jtag_uart.clk,(SLAVE)sdram.clk,(MASTER)clk.sys_clk,(SLAVE)cpu.clk) 1 1 2 350 190 770
-preplace netloc FAN_OUT<net_container>EDL_Final</net_container>(SLAVE)cpu.reset,(MASTER)clk.reset_source,(SLAVE)jtag_uart.reset,(SLAVE)sdram.reset) 1 1 2 370 210 810
-preplace netloc POINT_TO_POINT<net_container>EDL_Final</net_container>(SLAVE)jtag_uart.irq,(MASTER)cpu.irq) 1 2 1 790
-preplace netloc INTERCONNECT<net_container>EDL_Final</net_container>(MASTER)cpu.instruction_master,(MASTER)cpu.data_master,(SLAVE)sdram.s1,(SLAVE)cpu.debug_mem_slave,(SLAVE)jtag_uart.avalon_jtag_slave) 1 1 2 390 230 750
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.sdram_wire,(SLAVE)sdram.wire) 1 0 3 NJ 250 NJ 250 NJ
-levelinfo -pg 1 0 80 1070
-levelinfo -hier EDL_Final 90 170 510 840 980
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)clk.ref_clk,(SLAVE)EDL_Final.clk) 1 0 1 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(MASTER)EDL_Final.sdram_clk,(MASTER)clk.sdram_clk) 1 1 3 NJ 230 NJ 190 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.button_external_connection,(SLAVE)button.external_connection) 1 0 3 NJ 430 NJ 430 NJ
+preplace netloc FAN_OUT<net_container>EDL_Final</net_container>(SLAVE)led.clk,(SLAVE)cpu.clk,(SLAVE)button.clk,(SLAVE)jtag_uart.clk,(MASTER)clk.sys_clk,(SLAVE)sdram.clk) 1 1 2 440 250 900
+preplace netloc INTERCONNECT<net_container>EDL_Final</net_container>(SLAVE)cpu.debug_mem_slave,(MASTER)cpu.data_master,(SLAVE)jtag_uart.avalon_jtag_slave,(MASTER)cpu.instruction_master,(SLAVE)button.s1,(SLAVE)sdram.s1,(SLAVE)led.s1) 1 1 2 480 190 840
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)led.external_connection,(SLAVE)EDL_Final.led_external_connection) 1 0 3 NJ 330 NJ 330 NJ
+preplace netloc POINT_TO_POINT<net_container>EDL_Final</net_container>(SLAVE)jtag_uart.irq,(MASTER)cpu.irq) 1 2 1 860
+preplace netloc FAN_OUT<net_container>EDL_Final</net_container>(SLAVE)sdram.reset,(SLAVE)led.reset,(SLAVE)cpu.reset,(SLAVE)button.reset,(SLAVE)jtag_uart.reset,(MASTER)clk.reset_source) 1 1 2 460 210 880
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.sdram_wire,(SLAVE)sdram.wire) 1 0 3 NJ 270 NJ 270 NJ
+levelinfo -pg 1 0 170 1170
+levelinfo -hier EDL_Final 180 260 600 930 1080

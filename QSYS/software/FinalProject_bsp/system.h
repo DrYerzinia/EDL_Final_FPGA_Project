@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Sat Nov 16 17:56:15 PST 2019
+ * Generated: Sun Nov 17 10:47:52 PST 2019
  */
 
 /*
@@ -137,6 +137,7 @@
 #define __ALTERA_AVALON_NEW_SDRAM_CONTROLLER
 #define __ALTERA_AVALON_PIO
 #define __ALTERA_NIOS2_GEN2
+#define __ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER
 
 
 /*
@@ -155,19 +156,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/jtag_uart"
-#define ALT_STDERR_BASE 0x8001010
+#define ALT_STDERR_BASE 0x8001030
 #define ALT_STDERR_DEV jtag_uart
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/jtag_uart"
-#define ALT_STDIN_BASE 0x8001010
+#define ALT_STDIN_BASE 0x8001030
 #define ALT_STDIN_DEV jtag_uart
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/jtag_uart"
-#define ALT_STDOUT_BASE 0x8001010
+#define ALT_STDOUT_BASE 0x8001030
 #define ALT_STDOUT_DEV jtag_uart
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -181,7 +182,7 @@
  */
 
 #define ALT_MODULE_CLASS_button altera_avalon_pio
-#define BUTTON_BASE 0x8001000
+#define BUTTON_BASE 0x8001020
 #define BUTTON_BIT_CLEARING_EDGE_REGISTER 0
 #define BUTTON_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define BUTTON_CAPTURE 0
@@ -219,7 +220,7 @@
  */
 
 #define ALT_MODULE_CLASS_jtag_uart altera_avalon_jtag_uart
-#define JTAG_UART_BASE 0x8001010
+#define JTAG_UART_BASE 0x8001030
 #define JTAG_UART_IRQ 0
 #define JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_UART_NAME "/dev/jtag_uart"
@@ -237,7 +238,7 @@
  */
 
 #define ALT_MODULE_CLASS_led altera_avalon_pio
-#define LED_BASE 0x0
+#define LED_BASE 0x8001010
 #define LED_BIT_CLEARING_EDGE_REGISTER 0
 #define LED_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define LED_CAPTURE 0
@@ -295,5 +296,19 @@
 #define SDRAM_T_RFC 70.0
 #define SDRAM_T_RP 20.0
 #define SDRAM_T_WR 14.0
+
+
+/*
+ * video_dma_controller configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_video_dma_controller altera_up_avalon_video_dma_controller
+#define VIDEO_DMA_CONTROLLER_BASE 0x8001000
+#define VIDEO_DMA_CONTROLLER_IRQ -1
+#define VIDEO_DMA_CONTROLLER_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define VIDEO_DMA_CONTROLLER_NAME "/dev/video_dma_controller"
+#define VIDEO_DMA_CONTROLLER_SPAN 16
+#define VIDEO_DMA_CONTROLLER_TYPE "altera_up_avalon_video_dma_controller"
 
 #endif /* __SYSTEM_H_ */

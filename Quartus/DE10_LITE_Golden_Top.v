@@ -121,11 +121,22 @@ module DE10_LITE_Golden_Top(
 `endif
 );
 
+
+wire PIXEL_CLK;
+
+CameraClockGenerator cam_clk (
+	.areset			(1'b1),
+	.inclk0			(MAX10_CLK1_50),
+	.c0				(PIXEL_CLK),
+	.locked			());
+
 EDL_Final cpu (
 		.button_external_connection_export  (KEY),
 		.clk_clk							  		   (MAX10_CLK1_50),          //        clk.clk
 		.reset_reset								(1'b1), 					     //      reset.reset_n
 		.led_external_connection_export		(LEDR),
+		.pixel_clk_clk								(PIXEL_CLK),                     //                  pixel_clk.clk
+		.pixel_reset_reset						(1'b1),                 //                pixel_reset.reset
 		.sdram_clk_clk								(DRAM_CLK), 			     //  sdram_clk.clk
 		.sdram_wire_addr							(DRAM_ADDR),				  // sdram_wire.addr
 		.sdram_wire_ba								(DRAM_BA),				     //           .ba

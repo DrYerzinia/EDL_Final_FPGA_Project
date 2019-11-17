@@ -1,6 +1,8 @@
 
 module EDL_Final (
+	button_external_connection_export,
 	clk_clk,
+	led_external_connection_export,
 	reset_reset,
 	sdram_clk_clk,
 	sdram_wire_addr,
@@ -12,10 +14,12 @@ module EDL_Final (
 	sdram_wire_dqm,
 	sdram_wire_ras_n,
 	sdram_wire_we_n,
-	button_external_connection_export,
-	led_external_connection_export);	
+	pixel_clk_clk,
+	pixel_reset_reset);	
 
+	input	[1:0]	button_external_connection_export;
 	input		clk_clk;
+	output	[9:0]	led_external_connection_export;
 	input		reset_reset;
 	output		sdram_clk_clk;
 	output	[12:0]	sdram_wire_addr;
@@ -27,6 +31,6 @@ module EDL_Final (
 	output	[1:0]	sdram_wire_dqm;
 	output		sdram_wire_ras_n;
 	output		sdram_wire_we_n;
-	input	[1:0]	button_external_connection_export;
-	output	[9:0]	led_external_connection_export;
+	input		pixel_clk_clk;
+	input		pixel_reset_reset;
 endmodule

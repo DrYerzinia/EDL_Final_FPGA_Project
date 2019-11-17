@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Sat Nov 16 17:31:08 PST 2019
+ * Generated: Sun Nov 17 10:47:52 PST 2019
  */
 
 /*
@@ -60,6 +60,7 @@
 
 #include "altera_nios2_gen2_irq.h"
 #include "altera_avalon_jtag_uart.h"
+#include "altera_up_avalon_video_dma_controller.h"
 
 /*
  * Allocate the device storage
@@ -67,6 +68,7 @@
 
 ALTERA_NIOS2_GEN2_IRQ_INSTANCE ( CPU, cpu);
 ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART, jtag_uart);
+ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER_INSTANCE ( VIDEO_DMA_CONTROLLER, video_dma_controller);
 
 /*
  * Initialize the interrupt controller devices
@@ -90,4 +92,5 @@ void alt_irq_init ( const void* base )
 void alt_sys_init( void )
 {
     ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART, jtag_uart);
+    ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER_INIT ( VIDEO_DMA_CONTROLLER, video_dma_controller);
 }

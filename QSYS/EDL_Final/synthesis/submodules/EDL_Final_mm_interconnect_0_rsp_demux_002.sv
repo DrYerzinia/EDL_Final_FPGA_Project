@@ -27,9 +27,9 @@
 
 // ------------------------------------------
 // Generation parameters:
-//   output_name:         EDL_Final_mm_interconnect_0_cmd_demux
+//   output_name:         EDL_Final_mm_interconnect_0_rsp_demux_002
 //   ST_DATA_W:           108
-//   ST_CHANNEL_W:        6
+//   ST_CHANNEL_W:        5
 //   NUM_OUTPUTS:         1
 //   VALID_WIDTH:         1
 // ------------------------------------------
@@ -40,14 +40,14 @@
 // 15610 - Warning: Design contains x input pin(s) that do not drive logic
 //------------------------------------------
 
-module EDL_Final_mm_interconnect_0_cmd_demux
+module EDL_Final_mm_interconnect_0_rsp_demux_002
 (
     // -------------------
     // Sink
     // -------------------
     input  [1-1      : 0]   sink_valid,
     input  [108-1    : 0]   sink_data, // ST_DATA_W=108
-    input  [6-1 : 0]   sink_channel, // ST_CHANNEL_W=6
+    input  [5-1 : 0]   sink_channel, // ST_CHANNEL_W=5
     input                         sink_startofpacket,
     input                         sink_endofpacket,
     output                        sink_ready,
@@ -57,7 +57,7 @@ module EDL_Final_mm_interconnect_0_cmd_demux
     // -------------------
     output reg                      src0_valid,
     output reg [108-1    : 0] src0_data, // ST_DATA_W=108
-    output reg [6-1 : 0] src0_channel, // ST_CHANNEL_W=6
+    output reg [5-1 : 0] src0_channel, // ST_CHANNEL_W=5
     output reg                      src0_startofpacket,
     output reg                      src0_endofpacket,
     input                           src0_ready,
@@ -94,7 +94,7 @@ module EDL_Final_mm_interconnect_0_cmd_demux
     // -------------------
     assign ready_vector[0] = src0_ready;
 
-    assign sink_ready = |(sink_channel & {{5{1'b0}},{ready_vector[NUM_OUTPUTS - 1 : 0]}});
+    assign sink_ready = |(sink_channel & {{4{1'b0}},{ready_vector[NUM_OUTPUTS - 1 : 0]}});
 
 endmodule
 

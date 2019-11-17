@@ -27,7 +27,7 @@
 
 // ------------------------------------------
 // Generation parameters:
-//   output_name:         EDL_Final_mm_interconnect_0_cmd_demux
+//   output_name:         EDL_Final_mm_interconnect_0_rsp_demux_003
 //   ST_DATA_W:           108
 //   ST_CHANNEL_W:        6
 //   NUM_OUTPUTS:         1
@@ -40,7 +40,7 @@
 // 15610 - Warning: Design contains x input pin(s) that do not drive logic
 //------------------------------------------
 
-module EDL_Final_mm_interconnect_0_cmd_demux
+module EDL_Final_mm_interconnect_0_rsp_demux_003
 (
     // -------------------
     // Sink

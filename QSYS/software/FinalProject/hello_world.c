@@ -15,21 +15,30 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "altera_avalon_pio_regs.h"
 #include "system.h"
 
+#define IMAGE_WIDTH  640
+#define IMAGE_HEIGHT 480
+#define IMAGE_SIZE   ( IMAGE_HEIGHT * IMAGE_WIDTH )
+
+volatile uint32_t * image_data = 0x06000000;
+
 int main()
 {
 
-	int switch_datain;
 	printf("Hello from Nios II!\n");
 
-	while (1){
+	uint32_t i;
+	for (i = 0; i < IMAGE_SIZE; i++) {
 
-		switch_datain = ~IORD_ALTERA_AVALON_PIO_DATA(BUTTON_BASE);
-		switch_datain &= (0b0000000011);
-		IOWR_ALTERA_AVALON_PIO_DATA(LED_BASE, switch_datain);
+		printf("%06X ", image_data[i]);
+
+		if(i % 20 == 19){
+			printf("\n");
+		}
 
 	}
 
