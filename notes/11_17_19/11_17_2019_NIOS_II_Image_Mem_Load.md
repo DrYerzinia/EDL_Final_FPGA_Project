@@ -8,7 +8,13 @@ camera as the counter is going up by ~16 each time.  [0x00, 0x10, 0x23 0x3E, 0x5
 323626 4D5239 C2E048 D5F558 D4F568 95C87C 4C6F8C 88CA9C 8CCBB0 71BFC0 212DCD 2330DD 242EF1 262F01 292D11 2C2E25 303638 373D47 4D4F5B 34386A
 678481 CFF491 D8F5A1 ADD6B5 4884C5 4B75D5 97CEE5 81C5F9 272B12 233025 282935 2A2B45 2C2D55 283269 2D3575 45478E 2D2DA5 545ABC D3F5CF 95C7FB
 
+Perhapse we need to use optimization to get the processor to run fast enough, though it appears we are a few orders of magnitude away from that working and this is not the right approach.
+
 Changing tactics using University Program video core IP.  Trying Video DMA Controller.  First pass feeding with Test Generator.
 
 To get BSP to build had to comment out line 87 of altera_up_avalon_video_dma_controller.tcl as it referenced a *_rgb.h which does not exist.
+
+NIOS-II would not initalize with the DMA Controller slave attached.  This was determined to be due to the pixel clock driving the clock input.  The system complains if I export the streaming interface without using an exported clock, so I am not sure how to connect this to my camera module.  Do I need to make a custom IP block to interface with my camera?  Attemped using the test pattern generator in combination with the block and got the correct result shown in the image below.
+
+![Test Pattern](img/test_pattern.png )
 
