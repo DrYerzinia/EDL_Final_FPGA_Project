@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Nov 16, 2019 6:00:01 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1573956001727</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Nov 16, 2019 9:27:41 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1573968461323</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\DrYerzinia\Documents\EDL_Final_FPGA_Project\QSYS\software\FinalProject_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\EDL_Final.sopcinfo</SopcDesignFile>
@@ -899,26 +899,32 @@
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
         <MemoryMap>
-                <slaveDescriptor>led</slaveDescriptor>
-                <addressRange>0x00000000 - 0x0000000F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
                 <slaveDescriptor>sdram</slaveDescriptor>
                 <addressRange>0x04000000 - 0x07FFFFFF</addressRange>
                 <addressSpan>67108864</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>button</slaveDescriptor>
+                <slaveDescriptor>camera_1</slaveDescriptor>
                 <addressRange>0x08001000 - 0x0800100F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>led</slaveDescriptor>
+                <addressRange>0x08001010 - 0x0800101F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>button</slaveDescriptor>
+                <addressRange>0x08001020 - 0x0800102F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>jtag_uart</slaveDescriptor>
-                <addressRange>0x08001010 - 0x08001017</addressRange>
+                <addressRange>0x08001030 - 0x08001037</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>

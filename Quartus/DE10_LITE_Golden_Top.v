@@ -121,11 +121,44 @@ module DE10_LITE_Golden_Top(
 `endif
 );
 
+assign GPIO[0] = camclk;
+
+//assign cam_data = {GPIO[7:3], GPIO[11], GPIO[1], GPIO[10]};
+assign vsync = GPIO[8];
+assign href = GPIO[9];
+assign pclk = GPIO[2];
+
+wire data_valid;
+wire image_start;
+
+camera_clock_pll camera_clock (
+		.areset		(1'b0),
+		.inclk0		(MAX10_CLK1_50),
+		.c0			(camclk),
+		.locked		()
+	);
+
+CameraRGBScan camera (
+		.pclk			    (pclk),
+		.href			    (href),
+		.vsync		    (vsync),
+		.cam_data	    ({GPIO[7:3], GPIO[11], GPIO[1], GPIO[10]}),
+		.data_valid     (data_valid),
+		.image_start    (image_start),
+		.r1			    (HEX0),
+		.r2			    (HEX1),
+		.g1			    (HEX2),
+		.g2			    (HEX3),
+		.b1			    (HEX4),
+		.b2			    (HEX5)
+	);
+
 EDL_Final cpu (
-		.button_external_connection_export  (KEY),
+		.button_export 							(KEY),
+		.camera_1_export							({image_start, data_valid, HEX0, HEX2, HEX4}),
 		.clk_clk							  		   (MAX10_CLK1_50),          //        clk.clk
+		.led_export									(LEDR),
 		.reset_reset								(1'b1), 					     //      reset.reset_n
-		.led_external_connection_export		(LEDR),
 		.sdram_clk_clk								(DRAM_CLK), 			     //  sdram_clk.clk
 		.sdram_wire_addr							(DRAM_ADDR),				  // sdram_wire.addr
 		.sdram_wire_ba								(DRAM_BA),				     //           .ba

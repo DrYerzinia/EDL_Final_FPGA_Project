@@ -1,7 +1,17 @@
 
 module CameraRGBScan(
-	pclk, href, vsync, cam_data,
-	data
+		pclk,
+		href,
+		vsync,
+		cam_data,
+		data_valid,
+		image_start,
+		r1,
+		r2,
+		g1,
+		g2,
+		b1,
+		b2
 	);
 
 	input 					pclk;
@@ -9,28 +19,28 @@ module CameraRGBScan(
 	input 					vsync;
 	input			[7:0] 	cam_data;
 
-	output reg	[7:0]		data;
+	output reg	[7:0]		r1, r2,
+								g1, g2,
+								b1, b2;
 
+	output reg           data_valid;
+
+	output reg				image_start;
+	
 	reg 						last_href;
 	reg 			[10:0] 	line_counter;
 
 	reg			[7:0]		y1, y2,
 								u, v;
 
-	reg		 	[7:0]		rgb332_1,
-								rgb332_2;
-	
-	reg		 	[7:0]		r1, r2, r3,
-								g1, g2, g3,
-								b1, b2, b3;
+//	reg		 	[7:0]		rgb332_1,
+//								rgb332_2;
 
-	reg signed 	[15:0]	r1_s, r2_s, r3_s,
-								g1_s, g2_s, g3_s,
-								b1_s, b2_s, b3_s;
+	reg signed 	[15:0]	r1_s, r2_s,
+								g1_s, g2_s,
+								b1_s, b2_s;
 								
 	reg 			[2:0] 	state;
-	
-	reg						image_start;
 
 	localparam Y1 = 0, U = 1, Y2 = 2, V = 3, SKIP = 4;
 
@@ -48,8 +58,7 @@ module CameraRGBScan(
 	end
 
 	//assign wren = 1'b0; // DONT WRITE, TODO change later
-
-	assign wrclock = pclk;
+	//assign wrclock = pclk;
 
 	always @(posedge pclk)
 	begin
@@ -79,14 +88,17 @@ module CameraRGBScan(
 				Y1: begin
 					y1 <= cam_data;
 					state <= U;
+					data_valid <= 1'b0;
 				end
 				U: begin
 					u  <= cam_data;
 					state <= Y2;
+					data_valid <= 1'b0;
 				end
 				Y2: begin
 					y2 <= cam_data;
 					state <= V;
+					data_valid <= 1'b0;
 				end
 				V: begin
 
@@ -154,10 +166,13 @@ module CameraRGBScan(
 						b2 <= 0;
 					end
 
-					rgb332_1 <= {r1[7:5], g1[7:5], b1[7:6]};
-					rgb332_2 <= {r2[7:5], g2[7:5], b2[7:6]};
+					//rgb332_1 <= {r1[7:5], g1[7:5], b1[7:6]};
+					//rgb332_2 <= {r2[7:5], g2[7:5], b2[7:6]};
 
-					data <= rgb332_1;
+					//data <= rgb332_1;
+
+					data_valid <= 1'b1;
+					
 					image_start <= 1'b0;
 
 					state <= Y1;

@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Sat Nov 16 17:56:15 PST 2019
+ * Generated: Sat Nov 16 21:27:42 PST 2019
  */
 
 /*
@@ -155,19 +155,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/jtag_uart"
-#define ALT_STDERR_BASE 0x8001010
+#define ALT_STDERR_BASE 0x8001030
 #define ALT_STDERR_DEV jtag_uart
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/jtag_uart"
-#define ALT_STDIN_BASE 0x8001010
+#define ALT_STDIN_BASE 0x8001030
 #define ALT_STDIN_DEV jtag_uart
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/jtag_uart"
-#define ALT_STDOUT_BASE 0x8001010
+#define ALT_STDOUT_BASE 0x8001030
 #define ALT_STDOUT_DEV jtag_uart
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -181,7 +181,7 @@
  */
 
 #define ALT_MODULE_CLASS_button altera_avalon_pio
-#define BUTTON_BASE 0x8001000
+#define BUTTON_BASE 0x8001020
 #define BUTTON_BIT_CLEARING_EDGE_REGISTER 0
 #define BUTTON_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define BUTTON_CAPTURE 0
@@ -203,6 +203,33 @@
 
 
 /*
+ * camera_1 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_camera_1 altera_avalon_pio
+#define CAMERA_1_BASE 0x8001000
+#define CAMERA_1_BIT_CLEARING_EDGE_REGISTER 0
+#define CAMERA_1_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define CAMERA_1_CAPTURE 0
+#define CAMERA_1_DATA_WIDTH 26
+#define CAMERA_1_DO_TEST_BENCH_WIRING 0
+#define CAMERA_1_DRIVEN_SIM_VALUE 0
+#define CAMERA_1_EDGE_TYPE "NONE"
+#define CAMERA_1_FREQ 100000000
+#define CAMERA_1_HAS_IN 1
+#define CAMERA_1_HAS_OUT 0
+#define CAMERA_1_HAS_TRI 0
+#define CAMERA_1_IRQ -1
+#define CAMERA_1_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define CAMERA_1_IRQ_TYPE "NONE"
+#define CAMERA_1_NAME "/dev/camera_1"
+#define CAMERA_1_RESET_VALUE 0
+#define CAMERA_1_SPAN 16
+#define CAMERA_1_TYPE "altera_avalon_pio"
+
+
+/*
  * hal configuration
  *
  */
@@ -219,7 +246,7 @@
  */
 
 #define ALT_MODULE_CLASS_jtag_uart altera_avalon_jtag_uart
-#define JTAG_UART_BASE 0x8001010
+#define JTAG_UART_BASE 0x8001030
 #define JTAG_UART_IRQ 0
 #define JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_UART_NAME "/dev/jtag_uart"
@@ -237,7 +264,7 @@
  */
 
 #define ALT_MODULE_CLASS_led altera_avalon_pio
-#define LED_BASE 0x0
+#define LED_BASE 0x8001010
 #define LED_BIT_CLEARING_EDGE_REGISTER 0
 #define LED_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define LED_CAPTURE 0
