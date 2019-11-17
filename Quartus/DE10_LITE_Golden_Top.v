@@ -124,17 +124,42 @@ module DE10_LITE_Golden_Top(
 
 wire PIXEL_CLK;
 
+wire RST_BRIDGE;
+wire SYSCLK;
+
+wire [23:0] RGB_DATA;
+wire 			SOP;
+wire 			EOP;
+wire 			VALID;
+wire 			READY;
+
+ColorBarTest color_bar_generator (
+
+	.clk					(SYSCLK),
+	.reset				(RST_BRIDGE),
+	.ready				(READY),
+	
+	.data					(RGB_DATA),
+	.startofpacket		(SOP),
+	.endofpacket		(EOP),
+	.empty				(),
+	.valid				(VALID)
+
+);
+
+
 CameraClockGenerator cam_clk (
 	.areset			(1'b1),
 	.inclk0			(MAX10_CLK1_50),
 	.c0				(PIXEL_CLK),
 	.locked			());
-
+	
 EDL_Final cpu (
 		.button_external_connection_export  (KEY),
 		.clk_clk							  		   (MAX10_CLK1_50),          //        clk.clk
-		.reset_reset								(1'b1), 					     //      reset.reset_n
 		.led_external_connection_export		(LEDR),
+		.reset_reset								(1'b1), 					     //      reset.reset_n
+		.reset_bridge_reset                 (RST_BRIDGE),                                 //                         reset_bridge.reset
 		.pixel_clk_clk								(PIXEL_CLK),                     //                  pixel_clk.clk
 		.pixel_reset_reset						(1'b1),                 //                pixel_reset.reset
 		.sdram_clk_clk								(DRAM_CLK), 			     //  sdram_clk.clk
@@ -147,6 +172,13 @@ EDL_Final cpu (
 		.sdram_wire_dqm							({DRAM_UDQM, DRAM_LDQM}), //           .dqm
 		.sdram_wire_ras_n							(DRAM_RAS_N),				  //           .ras_n
 		.sdram_wire_we_n							(DRAM_WE_N),   			  //           .we_n
+		.sysclk_clk									(SYSCLK),                                         //                               sysclk.clk
+		.video_dma_sink_data						(RGB_DATA),               //             video_dma_sink.data
+		.video_dma_sink_startofpacket			(SOP),      //                           .startofpacket
+		.video_dma_sink_endofpacket			(EOP),        //                           .endofpacket
+		.video_dma_sink_valid					(VALID),              //                           .valid
+		.video_dma_sink_ready               (READY) //                           .ready
 	);
+
 
 endmodule

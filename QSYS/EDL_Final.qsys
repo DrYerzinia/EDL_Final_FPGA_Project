@@ -13,7 +13,7 @@
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "10";
          type = "int";
       }
    }
@@ -37,7 +37,7 @@
    {
       datum _sortIndex
       {
-         value = "1";
+         value = "4";
          type = "int";
       }
    }
@@ -53,7 +53,7 @@
    {
       datum _sortIndex
       {
-         value = "2";
+         value = "5";
          type = "int";
       }
    }
@@ -69,7 +69,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "11";
          type = "int";
       }
    }
@@ -85,7 +85,7 @@
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "6";
          type = "int";
       }
    }
@@ -93,7 +93,15 @@
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "7";
+         type = "int";
+      }
+   }
+   element reset_bridge
+   {
+      datum _sortIndex
+      {
+         value = "3";
          type = "int";
       }
    }
@@ -101,7 +109,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "9";
          type = "int";
       }
    }
@@ -113,11 +121,27 @@
          type = "String";
       }
    }
+   element sdram_clk
+   {
+      datum _sortIndex
+      {
+         value = "2";
+         type = "int";
+      }
+   }
+   element sysclk_bridge
+   {
+      datum _sortIndex
+      {
+         value = "1";
+         type = "int";
+      }
+   }
    element video_dma_controller
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "8";
          type = "int";
       }
    }
@@ -127,14 +151,6 @@
       {
          value = "134221824";
          type = "String";
-      }
-   }
-   element video_test_pattern
-   {
-      datum _sortIndex
-      {
-         value = "5";
-         type = "int";
       }
    }
 }
@@ -176,8 +192,27 @@
    type="reset"
    dir="end" />
  <interface name="reset" internal="clk.ref_reset" type="reset" dir="end" />
- <interface name="sdram_clk" internal="clk.sdram_clk" type="clock" dir="start" />
+ <interface
+   name="reset_bridge"
+   internal="reset_bridge.out_reset"
+   type="reset"
+   dir="start" />
+ <interface
+   name="sdram_clk"
+   internal="sdram_clk.out_clk"
+   type="clock"
+   dir="start" />
  <interface name="sdram_wire" internal="sdram.wire" type="conduit" dir="end" />
+ <interface
+   name="sysclk"
+   internal="sysclk_bridge.out_clk"
+   type="clock"
+   dir="start" />
+ <interface
+   name="video_dma_sink"
+   internal="video_dma_controller.avalon_dma_sink"
+   type="avalon_streaming"
+   dir="end" />
  <module name="button" kind="altera_avalon_pio" version="18.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -209,8 +244,8 @@
   <parameter name="other_boards" value="None" />
  </module>
  <module name="cpu" kind="altera_nios2_gen2" version="18.1" enabled="1">
-  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="7" />
-  <parameter name="AUTO_CLK_RESET_DOMAIN" value="7" />
+  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="10" />
+  <parameter name="AUTO_CLK_RESET_DOMAIN" value="10" />
   <parameter name="AUTO_DEVICE" value="10M50DAF484C6GES" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="bht_ramBlockType" value="Automatic" />
@@ -440,6 +475,17 @@
   <parameter name="USE_RESET_REQUEST" value="0" />
  </module>
  <module
+   name="reset_bridge"
+   kind="altera_reset_bridge"
+   version="18.1"
+   enabled="1">
+  <parameter name="ACTIVE_LOW_RESET" value="0" />
+  <parameter name="AUTO_CLK_CLOCK_RATE" value="100000000" />
+  <parameter name="NUM_RESET_OUTPUTS" value="1" />
+  <parameter name="SYNCHRONOUS_EDGES" value="deassert" />
+  <parameter name="USE_RESET_REQUEST" value="0" />
+ </module>
+ <module
    name="sdram"
    kind="altera_avalon_new_sdram_controller"
    version="18.1"
@@ -469,6 +515,24 @@
   <parameter name="rowWidth" value="13" />
  </module>
  <module
+   name="sdram_clk"
+   kind="altera_clock_bridge"
+   version="18.1"
+   enabled="1">
+  <parameter name="DERIVED_CLOCK_RATE" value="100000000" />
+  <parameter name="EXPLICIT_CLOCK_RATE" value="100000000" />
+  <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
+ </module>
+ <module
+   name="sysclk_bridge"
+   kind="altera_clock_bridge"
+   version="18.1"
+   enabled="1">
+  <parameter name="DERIVED_CLOCK_RATE" value="100000000" />
+  <parameter name="EXPLICIT_CLOCK_RATE" value="100000000" />
+  <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
+ </module>
+ <module
    name="video_dma_controller"
    kind="altera_up_avalon_video_dma_controller"
    version="18.0"
@@ -483,16 +547,6 @@
   <parameter name="height" value="480" />
   <parameter name="mode">From Stream to Memory</parameter>
   <parameter name="start_address" value="100663296" />
-  <parameter name="width" value="640" />
- </module>
- <module
-   name="video_test_pattern"
-   kind="altera_up_avalon_video_test_pattern"
-   version="18.0"
-   enabled="1">
-  <parameter name="AUTO_CLK_CLOCK_RATE" value="100000000" />
-  <parameter name="AUTO_DEVICE_FAMILY" value="MAX 10" />
-  <parameter name="height" value="480" />
   <parameter name="width" value="640" />
  </module>
  <connection
@@ -565,15 +619,15 @@
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
-   kind="avalon_streaming"
-   version="18.1"
-   start="video_test_pattern.avalon_generator_source"
-   end="video_dma_controller.avalon_dma_sink" />
- <connection
    kind="clock"
    version="18.1"
    start="pixel_clk.out_clk"
    end="pixel_reset.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk.sdram_clk"
+   end="sdram_clk.in_clk" />
  <connection kind="clock" version="18.1" start="clk.sys_clk" end="cpu.clk" />
  <connection kind="clock" version="18.1" start="clk.sys_clk" end="jtag_uart.clk" />
  <connection kind="clock" version="18.1" start="clk.sys_clk" end="sdram.clk" />
@@ -583,15 +637,25 @@
    kind="clock"
    version="18.1"
    start="clk.sys_clk"
-   end="video_test_pattern.clk" />
+   end="video_dma_controller.clk" />
  <connection
    kind="clock"
    version="18.1"
    start="clk.sys_clk"
-   end="video_dma_controller.clk" />
+   end="reset_bridge.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk.sys_clk"
+   end="sysclk_bridge.in_clk" />
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.reset_source"
+   end="reset_bridge.in_reset" />
  <connection kind="reset" version="18.1" start="clk.reset_source" end="cpu.reset" />
  <connection
    kind="reset"
@@ -614,11 +678,6 @@
    version="18.1"
    start="clk.reset_source"
    end="video_dma_controller.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk.reset_source"
-   end="video_test_pattern.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

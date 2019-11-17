@@ -1,5 +1,7 @@
 # (11/17/2019) Testing PIO Camera to NIOS II
 
+## PIO Camera Read Attempt
+
 I injected a counter signal into the data stream in the last byte.  A sample is shown below.  It seems we are unable to keep up with the
 camera as the counter is going up by ~16 each time.  [0x00, 0x10, 0x23 0x3E, 0x51, 0x68]
 
@@ -10,11 +12,24 @@ camera as the counter is going up by ~16 each time.  [0x00, 0x10, 0x23 0x3E, 0x5
 
 Perhapse we need to use optimization to get the processor to run fast enough, though it appears we are a few orders of magnitude away from that working and this is not the right approach.
 
+## Video DMA IP Block
+
 Changing tactics using University Program video core IP.  Trying Video DMA Controller.  First pass feeding with Test Generator.
 
 To get BSP to build had to comment out line 87 of altera_up_avalon_video_dma_controller.tcl as it referenced a *_rgb.h which does not exist.
 
 NIOS-II would not initalize with the DMA Controller slave attached.  This was determined to be due to the pixel clock driving the clock input.  The system complains if I export the streaming interface without using an exported clock, so I am not sure how to connect this to my camera module.  Do I need to make a custom IP block to interface with my camera?  Attemped using the test pattern generator in combination with the block and got the correct result shown in the image below.
 
-![Test Pattern](img/test_pattern.png )
+![Test Pattern](img/test_pattern.png)
 
+## Understanding the Avalon Streaming Interface
+
+Now that we know this configuration works we can look at the Avalon streaming interface to figure out how it works.  I inserted a Signal Tap onto the interface lines to see how it behaves.  The capture is shown below.  It is centered around the begining/end of the frame since thats where all the signals are changing at the same time.  In this case we can see the valid signal is always high, thats because the generation block is guaranteed to always be ready.  The interface is purely driven by back pressure.  When the camera is driving it will be the time determining factor.  Hopefully we wil not need a FIFO, as I would like not to have to deal with backpressure.  The ready signal pulses high whenever the DMA block is able to sen danother byte.  We will need to drop valid low after the DMA block grabs our next value until we are ready to send another (i.e. got it from the camera).  The start and end signals are just pulsed high when the first and last pixels are valid respectivly.  Should be easy to replicate.  Effectivly just a reset on the buffer position.
+
+![Avalon Stream Capture](img/tpg_signal_ref.png)
+
+## Emulating Streaming Interface with Colorbar Test
+
+To insure that we can drive the interface form outside the streaming interface was exported and a color bar generator was written in verilog modled after the TPG from altera.  The QSYS HDL Generation worked without issues.  The system clock and reset had to be brought out with bridges to connect to the custom block.  Everything worked and the pattern below was pulled from memory.
+
+![Custom Color Bars Test](img/color_bar_generation.png)

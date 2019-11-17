@@ -69,7 +69,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  25 .quartus_project_dir 00000039  00000000  00000000  0006eb81  2**0
                   CONTENTS, READONLY
- 26 .sopcinfo     0004557d  00000000  00000000  0006ebba  2**0
+ 26 .sopcinfo     000474b8  00000000  00000000  0006ebba  2**0
                   CONTENTS, READONLY
 SYMBOL TABLE:
 04000000 l    d  .entry	00000000 .entry
@@ -938,7 +938,7 @@ int main()
  4000288:	e03fff15 	stw	zero,-4(fp)
  400028c:	00001506 	br	40002e4 <main+0x78>
 
-		printf("%08X ", image_data[i]);
+		printf("%06X ", image_data[i]);
  4000290:	d0e00017 	ldw	r3,-32768(gp)
  4000294:	e0bfff17 	ldw	r2,-4(fp)
  4000298:	1085883a 	add	r2,r2,r2

@@ -10,6 +10,7 @@ module EDL_Final (
 		input  wire        pixel_clk_clk,                     //                  pixel_clk.clk
 		input  wire        pixel_reset_reset,                 //                pixel_reset.reset
 		input  wire        reset_reset,                       //                      reset.reset
+		output wire        reset_bridge_reset,                //               reset_bridge.reset
 		output wire        sdram_clk_clk,                     //                  sdram_clk.clk
 		output wire [12:0] sdram_wire_addr,                   //                 sdram_wire.addr
 		output wire [1:0]  sdram_wire_ba,                     //                           .ba
@@ -19,15 +20,15 @@ module EDL_Final (
 		inout  wire [15:0] sdram_wire_dq,                     //                           .dq
 		output wire [1:0]  sdram_wire_dqm,                    //                           .dqm
 		output wire        sdram_wire_ras_n,                  //                           .ras_n
-		output wire        sdram_wire_we_n                    //                           .we_n
+		output wire        sdram_wire_we_n,                   //                           .we_n
+		output wire        sysclk_clk,                        //                     sysclk.clk
+		input  wire [23:0] video_dma_sink_data,               //             video_dma_sink.data
+		input  wire        video_dma_sink_startofpacket,      //                           .startofpacket
+		input  wire        video_dma_sink_endofpacket,        //                           .endofpacket
+		input  wire        video_dma_sink_valid,              //                           .valid
+		output wire        video_dma_sink_ready               //                           .ready
 	);
 
-	wire         video_test_pattern_avalon_generator_source_valid;                           // video_test_pattern:valid -> video_dma_controller:stream_valid
-	wire  [23:0] video_test_pattern_avalon_generator_source_data;                            // video_test_pattern:data -> video_dma_controller:stream_data
-	wire         video_test_pattern_avalon_generator_source_ready;                           // video_dma_controller:stream_ready -> video_test_pattern:ready
-	wire         video_test_pattern_avalon_generator_source_startofpacket;                   // video_test_pattern:startofpacket -> video_dma_controller:stream_startofpacket
-	wire         video_test_pattern_avalon_generator_source_endofpacket;                     // video_test_pattern:endofpacket -> video_dma_controller:stream_endofpacket
-	wire         clk_sys_clk_clk;                                                            // clk:sys_clk_clk -> [button:clk, cpu:clk, irq_mapper:clk, jtag_uart:clk, led:clk, mm_interconnect_0:clk_sys_clk_clk, rst_controller:clk, sdram:clk, video_dma_controller:clk, video_test_pattern:clk]
 	wire         video_dma_controller_avalon_dma_master_waitrequest;                         // mm_interconnect_0:video_dma_controller_avalon_dma_master_waitrequest -> video_dma_controller:master_waitrequest
 	wire  [31:0] video_dma_controller_avalon_dma_master_address;                             // video_dma_controller:master_address -> mm_interconnect_0:video_dma_controller_avalon_dma_master_address
 	wire         video_dma_controller_avalon_dma_master_write;                               // video_dma_controller:master_write -> mm_interconnect_0:video_dma_controller_avalon_dma_master_write
@@ -83,13 +84,12 @@ module EDL_Final (
 	wire  [31:0] mm_interconnect_0_led_s1_writedata;                                         // mm_interconnect_0:led_s1_writedata -> led:writedata
 	wire         irq_mapper_receiver0_irq;                                                   // jtag_uart:av_irq -> irq_mapper:receiver0_irq
 	wire  [31:0] cpu_irq_irq;                                                                // irq_mapper:sender_irq -> cpu:irq
-	wire         rst_controller_reset_out_reset;                                             // rst_controller:reset_out -> [button:reset_n, cpu:reset_n, irq_mapper:reset, jtag_uart:rst_n, led:reset_n, mm_interconnect_0:video_dma_controller_reset_reset_bridge_in_reset_reset, rst_translator:in_reset, sdram:reset_n, video_dma_controller:reset, video_test_pattern:reset]
 	wire         rst_controller_reset_out_reset_req;                                         // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
 	wire         clk_reset_source_reset;                                                     // clk:reset_source_reset -> rst_controller:reset_in0
 
 	EDL_Final_button button (
-		.clk      (clk_sys_clk_clk),                      //                 clk.clk
-		.reset_n  (~rst_controller_reset_out_reset),      //               reset.reset_n
+		.clk      (sysclk_clk),                           //                 clk.clk
+		.reset_n  (~reset_bridge_reset),                  //               reset.reset_n
 		.address  (mm_interconnect_0_button_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_button_s1_readdata), //                    .readdata
 		.in_port  (button_external_connection_export)     // external_connection.export
@@ -98,14 +98,14 @@ module EDL_Final (
 	EDL_Final_clk clk (
 		.ref_clk_clk        (clk_clk),                //      ref_clk.clk
 		.ref_reset_reset    (reset_reset),            //    ref_reset.reset
-		.sys_clk_clk        (clk_sys_clk_clk),        //      sys_clk.clk
+		.sys_clk_clk        (sysclk_clk),             //      sys_clk.clk
 		.sdram_clk_clk      (sdram_clk_clk),          //    sdram_clk.clk
 		.reset_source_reset (clk_reset_source_reset)  // reset_source.reset
 	);
 
 	EDL_Final_cpu cpu (
-		.clk                                 (clk_sys_clk_clk),                                   //                       clk.clk
-		.reset_n                             (~rst_controller_reset_out_reset),                   //                     reset.reset_n
+		.clk                                 (sysclk_clk),                                        //                       clk.clk
+		.reset_n                             (~reset_bridge_reset),                               //                     reset.reset_n
 		.reset_req                           (rst_controller_reset_out_reset_req),                //                          .reset_req
 		.d_address                           (cpu_data_master_address),                           //               data_master.address
 		.d_byteenable                        (cpu_data_master_byteenable),                        //                          .byteenable
@@ -133,8 +133,8 @@ module EDL_Final (
 	);
 
 	EDL_Final_jtag_uart jtag_uart (
-		.clk            (clk_sys_clk_clk),                                           //               clk.clk
-		.rst_n          (~rst_controller_reset_out_reset),                           //             reset.reset_n
+		.clk            (sysclk_clk),                                                //               clk.clk
+		.rst_n          (~reset_bridge_reset),                                       //             reset.reset_n
 		.av_chipselect  (mm_interconnect_0_jtag_uart_avalon_jtag_slave_chipselect),  // avalon_jtag_slave.chipselect
 		.av_address     (mm_interconnect_0_jtag_uart_avalon_jtag_slave_address),     //                  .address
 		.av_read_n      (~mm_interconnect_0_jtag_uart_avalon_jtag_slave_read),       //                  .read_n
@@ -146,8 +146,8 @@ module EDL_Final (
 	);
 
 	EDL_Final_led led (
-		.clk        (clk_sys_clk_clk),                     //                 clk.clk
-		.reset_n    (~rst_controller_reset_out_reset),     //               reset.reset_n
+		.clk        (sysclk_clk),                          //                 clk.clk
+		.reset_n    (~reset_bridge_reset),                 //               reset.reset_n
 		.address    (mm_interconnect_0_led_s1_address),    //                  s1.address
 		.write_n    (~mm_interconnect_0_led_s1_write),     //                    .write_n
 		.writedata  (mm_interconnect_0_led_s1_writedata),  //                    .writedata
@@ -157,8 +157,8 @@ module EDL_Final (
 	);
 
 	EDL_Final_sdram sdram (
-		.clk            (clk_sys_clk_clk),                          //   clk.clk
-		.reset_n        (~rst_controller_reset_out_reset),          // reset.reset_n
+		.clk            (sysclk_clk),                               //   clk.clk
+		.reset_n        (~reset_bridge_reset),                      // reset.reset_n
 		.az_addr        (mm_interconnect_0_sdram_s1_address),       //    s1.address
 		.az_be_n        (~mm_interconnect_0_sdram_s1_byteenable),   //      .byteenable_n
 		.az_cs          (mm_interconnect_0_sdram_s1_chipselect),    //      .chipselect
@@ -180,13 +180,13 @@ module EDL_Final (
 	);
 
 	EDL_Final_video_dma_controller video_dma_controller (
-		.clk                  (clk_sys_clk_clk),                                                            //                      clk.clk
-		.reset                (rst_controller_reset_out_reset),                                             //                    reset.reset
-		.stream_data          (video_test_pattern_avalon_generator_source_data),                            //          avalon_dma_sink.data
-		.stream_startofpacket (video_test_pattern_avalon_generator_source_startofpacket),                   //                         .startofpacket
-		.stream_endofpacket   (video_test_pattern_avalon_generator_source_endofpacket),                     //                         .endofpacket
-		.stream_valid         (video_test_pattern_avalon_generator_source_valid),                           //                         .valid
-		.stream_ready         (video_test_pattern_avalon_generator_source_ready),                           //                         .ready
+		.clk                  (sysclk_clk),                                                                 //                      clk.clk
+		.reset                (reset_bridge_reset),                                                         //                    reset.reset
+		.stream_data          (video_dma_sink_data),                                                        //          avalon_dma_sink.data
+		.stream_startofpacket (video_dma_sink_startofpacket),                                               //                         .startofpacket
+		.stream_endofpacket   (video_dma_sink_endofpacket),                                                 //                         .endofpacket
+		.stream_valid         (video_dma_sink_valid),                                                       //                         .valid
+		.stream_ready         (video_dma_sink_ready),                                                       //                         .ready
 		.slave_address        (mm_interconnect_0_video_dma_controller_avalon_dma_control_slave_address),    // avalon_dma_control_slave.address
 		.slave_byteenable     (mm_interconnect_0_video_dma_controller_avalon_dma_control_slave_byteenable), //                         .byteenable
 		.slave_read           (mm_interconnect_0_video_dma_controller_avalon_dma_control_slave_read),       //                         .read
@@ -199,19 +199,9 @@ module EDL_Final (
 		.master_writedata     (video_dma_controller_avalon_dma_master_writedata)                            //                         .writedata
 	);
 
-	EDL_Final_video_test_pattern video_test_pattern (
-		.clk           (clk_sys_clk_clk),                                          //                     clk.clk
-		.reset         (rst_controller_reset_out_reset),                           //                   reset.reset
-		.ready         (video_test_pattern_avalon_generator_source_ready),         // avalon_generator_source.ready
-		.data          (video_test_pattern_avalon_generator_source_data),          //                        .data
-		.startofpacket (video_test_pattern_avalon_generator_source_startofpacket), //                        .startofpacket
-		.endofpacket   (video_test_pattern_avalon_generator_source_endofpacket),   //                        .endofpacket
-		.valid         (video_test_pattern_avalon_generator_source_valid)          //                        .valid
-	);
-
 	EDL_Final_mm_interconnect_0 mm_interconnect_0 (
-		.clk_sys_clk_clk                                          (clk_sys_clk_clk),                                                            //                                      clk_sys_clk.clk
-		.video_dma_controller_reset_reset_bridge_in_reset_reset   (rst_controller_reset_out_reset),                                             // video_dma_controller_reset_reset_bridge_in_reset.reset
+		.clk_sys_clk_clk                                          (sysclk_clk),                                                                 //                                      clk_sys_clk.clk
+		.video_dma_controller_reset_reset_bridge_in_reset_reset   (reset_bridge_reset),                                                         // video_dma_controller_reset_reset_bridge_in_reset.reset
 		.cpu_data_master_address                                  (cpu_data_master_address),                                                    //                                  cpu_data_master.address
 		.cpu_data_master_waitrequest                              (cpu_data_master_waitrequest),                                                //                                                 .waitrequest
 		.cpu_data_master_byteenable                               (cpu_data_master_byteenable),                                                 //                                                 .byteenable
@@ -268,10 +258,10 @@ module EDL_Final (
 	);
 
 	EDL_Final_irq_mapper irq_mapper (
-		.clk           (clk_sys_clk_clk),                //       clk.clk
-		.reset         (rst_controller_reset_out_reset), // clk_reset.reset
-		.receiver0_irq (irq_mapper_receiver0_irq),       // receiver0.irq
-		.sender_irq    (cpu_irq_irq)                     //    sender.irq
+		.clk           (sysclk_clk),               //       clk.clk
+		.reset         (reset_bridge_reset),       // clk_reset.reset
+		.receiver0_irq (irq_mapper_receiver0_irq), // receiver0.irq
+		.sender_irq    (cpu_irq_irq)               //    sender.irq
 	);
 
 	altera_reset_controller #(
@@ -301,8 +291,8 @@ module EDL_Final (
 		.ADAPT_RESET_REQUEST       (0)
 	) rst_controller (
 		.reset_in0      (clk_reset_source_reset),             // reset_in0.reset
-		.clk            (clk_sys_clk_clk),                    //       clk.clk
-		.reset_out      (rst_controller_reset_out_reset),     // reset_out.reset
+		.clk            (sysclk_clk),                         //       clk.clk
+		.reset_out      (reset_bridge_reset),                 // reset_out.reset
 		.reset_req      (rst_controller_reset_out_reset_req), //          .reset_req
 		.reset_req_in0  (1'b0),                               // (terminated)
 		.reset_in1      (1'b0),                               // (terminated)
