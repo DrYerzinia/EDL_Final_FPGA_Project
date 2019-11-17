@@ -6,6 +6,7 @@ module CameraRGBScan(
 		cam_data,
 		data_valid,
 		image_start,
+		count,
 		r1,
 		r2,
 		g1,
@@ -25,6 +26,8 @@ module CameraRGBScan(
 
 	output reg           data_valid;
 
+	output reg	[7:0]		count;
+	
 	output reg				image_start;
 	
 	reg 						last_href;
@@ -67,6 +70,7 @@ module CameraRGBScan(
 		begin
 			// Start of image
 			image_start <= 1'b1;
+			count <= 0;
 		end
 		else if(last_href != href & href == 0)
 		begin
@@ -88,7 +92,7 @@ module CameraRGBScan(
 				Y1: begin
 					y1 <= cam_data;
 					state <= U;
-					data_valid <= 1'b0;
+					data_valid <= 1'b1;
 				end
 				U: begin
 					u  <= cam_data;
@@ -171,6 +175,8 @@ module CameraRGBScan(
 
 					//data <= rgb332_1;
 
+					count <= count + 1;
+					
 					data_valid <= 1'b1;
 					
 					image_start <= 1'b0;

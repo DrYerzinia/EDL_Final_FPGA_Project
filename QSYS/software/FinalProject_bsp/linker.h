@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Sat Nov 16 17:31:08 PST 2019
+ * Generated: Sun Nov 17 09:09:23 PST 2019
  */
 
 /*
@@ -65,10 +65,12 @@
  *
  */
 
-#define RESET_REGION_BASE 0x4000000
+#define ONCHIP_MEMORY_REGION_BASE 0x8010020
+#define ONCHIP_MEMORY_REGION_SPAN 65504
+#define RESET_REGION_BASE 0x8010000
 #define RESET_REGION_SPAN 32
-#define SDRAM_REGION_BASE 0x4000020
-#define SDRAM_REGION_SPAN 67108832
+#define SDRAM_REGION_BASE 0x4000000
+#define SDRAM_REGION_SPAN 67108864
 
 
 /*
@@ -76,8 +78,8 @@
  *
  */
 
-#define ALT_EXCEPTIONS_DEVICE SDRAM
-#define ALT_RESET_DEVICE SDRAM
+#define ALT_EXCEPTIONS_DEVICE ONCHIP_MEMORY
+#define ALT_RESET_DEVICE ONCHIP_MEMORY
 #define ALT_RODATA_DEVICE SDRAM
 #define ALT_RWDATA_DEVICE SDRAM
 #define ALT_TEXT_DEVICE SDRAM

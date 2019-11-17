@@ -145,19 +145,22 @@ CameraRGBScan camera (
 		.cam_data	    ({GPIO[7:3], GPIO[11], GPIO[1], GPIO[10]}),
 		.data_valid     (data_valid),
 		.image_start    (image_start),
+		.count			 (HEX4),
 		.r1			    (HEX0),
 		.r2			    (HEX1),
 		.g1			    (HEX2),
 		.g2			    (HEX3),
-		.b1			    (HEX4),
+		.b1			    (),
 		.b2			    (HEX5)
 	);
 
 EDL_Final cpu (
 		.button_export 							(KEY),
-		.camera_1_export							({image_start, data_valid, HEX0, HEX2, HEX4}),
+		//.camera_1_export							({image_start, data_valid, HEX0, HEX2, HEX4}),
 		.clk_clk							  		   (MAX10_CLK1_50),          //        clk.clk
 		.led_export									(LEDR),
+		.pixel_clk_in_clk							(pclk),             //   pixel_clk_in.clk
+		.pixel_reset_reset						(1'b0),            //    pixel_reset.reset
 		.reset_reset								(1'b1), 					     //      reset.reset_n
 		.sdram_clk_clk								(DRAM_CLK), 			     //  sdram_clk.clk
 		.sdram_wire_addr							(DRAM_ADDR),				  // sdram_wire.addr
@@ -169,6 +172,11 @@ EDL_Final cpu (
 		.sdram_wire_dqm							({DRAM_UDQM, DRAM_LDQM}), //           .dqm
 		.sdram_wire_ras_n							(DRAM_RAS_N),				  //           .ras_n
 		.sdram_wire_we_n							(DRAM_WE_N),   			  //           .we_n
+		//.video_dma_sink_data						(),          // video_dma_sink.data
+		//.video_dma_sink_startofpacket			(image_start), //               .startofpacket
+		//.video_dma_sink_endofpacket			(),   //               .endofpacket
+		//.video_dma_sink_valid					(data_valid),         //               .valid
+		//.video_dma_sink_ready					()          //               .ready
 	);
 
 endmodule

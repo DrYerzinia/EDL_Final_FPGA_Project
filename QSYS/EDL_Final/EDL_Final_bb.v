@@ -1,7 +1,6 @@
 
 module EDL_Final (
 	button_export,
-	camera_1_export,
 	clk_clk,
 	led_export,
 	reset_reset,
@@ -14,10 +13,11 @@ module EDL_Final (
 	sdram_wire_dq,
 	sdram_wire_dqm,
 	sdram_wire_ras_n,
-	sdram_wire_we_n);	
+	sdram_wire_we_n,
+	pixel_clk_in_clk,
+	pixel_reset_reset);	
 
 	input	[1:0]	button_export;
-	input	[25:0]	camera_1_export;
 	input		clk_clk;
 	output	[9:0]	led_export;
 	input		reset_reset;
@@ -31,4 +31,6 @@ module EDL_Final (
 	output	[1:0]	sdram_wire_dqm;
 	output		sdram_wire_ras_n;
 	output		sdram_wire_we_n;
+	input		pixel_clk_in_clk;
+	input		pixel_reset_reset;
 endmodule

@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Sat Nov 16 17:31:08 PST 2019
+ * Generated: Sun Nov 17 09:09:23 PST 2019
  */
 
 /*
@@ -50,12 +50,14 @@
 
 MEMORY
 {
-    reset : ORIGIN = 0x4000000, LENGTH = 32
-    sdram : ORIGIN = 0x4000020, LENGTH = 67108832
+    sdram : ORIGIN = 0x4000000, LENGTH = 67108864
+    reset : ORIGIN = 0x8010000, LENGTH = 32
+    onchip_memory : ORIGIN = 0x8010020, LENGTH = 65504
 }
 
 /* Define symbols for each memory base-address */
 __alt_mem_sdram = 0x4000000;
+__alt_mem_onchip_memory = 0x8010000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
@@ -111,7 +113,7 @@ SECTIONS
         KEEP (*(.exceptions.exit));
         KEEP (*(.exceptions));
         PROVIDE (__ram_exceptions_end = ABSOLUTE(.));
-    } > sdram
+    } > onchip_memory
 
     PROVIDE (__flash_exceptions_start = LOADADDR(.exceptions));
 
@@ -319,6 +321,23 @@ SECTIONS
     } > sdram
 
     PROVIDE (_alt_partition_sdram_load_addr = LOADADDR(.sdram));
+
+    /*
+     *
+     * This section's LMA is set to the .text region.
+     * crt0 will copy to this section's specified mapped region virtual memory address (VMA)
+     *
+     */
+
+    .onchip_memory : AT ( LOADADDR (.sdram) + SIZEOF (.sdram) )
+    {
+        PROVIDE (_alt_partition_onchip_memory_start = ABSOLUTE(.));
+        *(.onchip_memory .onchip_memory. onchip_memory.*)
+        . = ALIGN(4);
+        PROVIDE (_alt_partition_onchip_memory_end = ABSOLUTE(.));
+    } > onchip_memory
+
+    PROVIDE (_alt_partition_onchip_memory_load_addr = LOADADDR(.onchip_memory));
 
     /*
      * Stabs debugging sections.
