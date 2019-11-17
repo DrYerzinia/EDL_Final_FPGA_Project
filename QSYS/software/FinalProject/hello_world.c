@@ -16,9 +16,23 @@
 
 #include <stdio.h>
 
+#include "altera_avalon_pio_regs.h"
+#include "system.h"
+
 int main()
 {
-  printf("Hello from Nios II!\n");
 
-  return 0;
+	int switch_datain;
+	printf("Hello from Nios II!\n");
+
+	while (1){
+
+		switch_datain = ~IORD_ALTERA_AVALON_PIO_DATA(BUTTON_BASE);
+		switch_datain &= (0b0000000011);
+		IOWR_ALTERA_AVALON_PIO_DATA(LED_BASE, switch_datain);
+
+	}
+
+	return 0;
+
 }

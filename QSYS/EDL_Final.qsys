@@ -6,9 +6,25 @@
    version="1.0"
    description=""
    tags=""
-   categories="" />
+   categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
+   element button
+   {
+      datum _sortIndex
+      {
+         value = "4";
+         type = "int";
+      }
+   }
+   element button.s1
+   {
+      datum baseAddress
+      {
+         value = "134221824";
+         type = "String";
+      }
+   }
    element clk
    {
       datum _sortIndex
@@ -45,8 +61,16 @@
    {
       datum baseAddress
       {
-         value = "134221824";
+         value = "134221840";
          type = "String";
+      }
+   }
+   element led
+   {
+      datum _sortIndex
+      {
+         value = "5";
+         type = "int";
       }
    }
    element sdram
@@ -86,10 +110,34 @@
  <parameter name="timeStamp" value="0" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
+ <interface
+   name="button_external_connection"
+   internal="button.external_connection"
+   type="conduit"
+   dir="end" />
  <interface name="clk" internal="clk.ref_clk" type="clock" dir="end" />
+ <interface
+   name="led_external_connection"
+   internal="led.external_connection"
+   type="conduit"
+   dir="end" />
  <interface name="reset" internal="clk.ref_reset" type="reset" dir="end" />
  <interface name="sdram_clk" internal="clk.sdram_clk" type="clock" dir="start" />
  <interface name="sdram_wire" internal="sdram.wire" type="conduit" dir="end" />
+ <module name="button" kind="altera_avalon_pio" version="18.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="2" />
+ </module>
  <module
    name="clk"
    kind="altera_up_avalon_sys_sdram_pll"
@@ -126,7 +174,7 @@
   <parameter name="dataAddrWidth" value="28" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8001000' end='0x8001008' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='led.s1' start='0x0' end='0x10' type='altera_avalon_pio.s1' /><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='button.s1' start='0x8001000' end='0x8001010' type='altera_avalon_pio.s1' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8001010' end='0x8001018' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -303,6 +351,20 @@
   <parameter name="writeBufferDepth" value="64" />
   <parameter name="writeIRQThreshold" value="8" />
  </module>
+ <module name="led" kind="altera_avalon_pio" version="18.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Output" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="10" />
+ </module>
  <module
    name="sdram"
    kind="altera_avalon_new_sdram_controller"
@@ -338,7 +400,7 @@
    start="cpu.data_master"
    end="jtag_uart.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08001000" />
+  <parameter name="baseAddress" value="0x08001010" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -353,6 +415,16 @@
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="sdram.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x04000000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection kind="avalon" version="18.1" start="cpu.data_master" end="button.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x08001000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection kind="avalon" version="18.1" start="cpu.data_master" end="led.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -376,6 +448,8 @@
  <connection kind="clock" version="18.1" start="clk.sys_clk" end="cpu.clk" />
  <connection kind="clock" version="18.1" start="clk.sys_clk" end="jtag_uart.clk" />
  <connection kind="clock" version="18.1" start="clk.sys_clk" end="sdram.clk" />
+ <connection kind="clock" version="18.1" start="clk.sys_clk" end="button.clk" />
+ <connection kind="clock" version="18.1" start="clk.sys_clk" end="led.clk" />
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -390,6 +464,12 @@
    version="18.1"
    start="clk.reset_source"
    end="jtag_uart.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.reset_source"
+   end="button.reset" />
+ <connection kind="reset" version="18.1" start="clk.reset_source" end="led.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

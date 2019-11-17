@@ -1,7 +1,7 @@
 
 module CameraRGBScan(
 	pclk, href, vsync, cam_data,
-	data, wraddress, wrclock, wren
+	data
 	);
 
 	input 					pclk;
