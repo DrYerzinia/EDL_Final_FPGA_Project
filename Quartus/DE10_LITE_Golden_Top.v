@@ -122,7 +122,11 @@ module DE10_LITE_Golden_Top(
 );
 
 
-wire PIXEL_CLK;
+wire 		  CAMERA_CLOCK;		// Clock driving camera
+wire [7:0] CAMERA_DATA;			// Camera parallel interface
+wire       PIXEL_CLOCK;			// Pixel clock coming back from camera
+wire 		  VSYNC;					// Camera vertical sync pulse
+wire 		  HREF;					// camera horizontal reference
 
 wire RST_BRIDGE;
 wire SYSCLK;
@@ -133,6 +137,48 @@ wire 			EOP;
 wire 			VALID;
 wire 			READY;
 
+// Camera external connections
+
+assign GPIO[0] = CAMERA_CLOCK;
+
+assign PIXEL_CLOCK = GPIO[2];
+assign CAMERA_DATA = {GPIO[7:3], GPIO[11], GPIO[1], GPIO[10]};
+assign VSYNC 		 = GPIO[8];
+assign HREF  		 = GPIO[9];
+
+// Turn off HEX displays
+assign HEX0 = 8'hFF;
+assign HEX1 = 8'hFF;
+assign HEX2 = 8'hFF;
+assign HEX3 = 8'hFF;
+assign HEX4 = 8'hFF;
+assign HEX5 = 8'hFF;
+
+CameraClockGenerator cam_clk (
+	.inclk0			(MAX10_CLK1_50),
+	.c0				(CAMERA_CLOCK),
+);
+
+CameraStreamer streamer (
+
+	.clk					(SYSCLK),
+	.reset				(RST_BRIDGE),
+	.ready				(READY),
+
+	.camera_data		(CAMERA_DATA),
+	.pixel_clock		(PIXEL_CLOCK),
+	.vsync				(VSYNC),
+	.href					(HREF),
+
+	.data					(RGB_DATA),
+	.startofpacket		(SOP),
+	.endofpacket		(EOP),
+	.empty				(),
+	.valid				(VALID)
+	
+);
+
+/*
 ColorBarTest color_bar_generator (
 
 	.clk					(SYSCLK),
@@ -146,38 +192,32 @@ ColorBarTest color_bar_generator (
 	.valid				(VALID)
 
 );
-
-
-CameraClockGenerator cam_clk (
-	.areset			(1'b1),
-	.inclk0			(MAX10_CLK1_50),
-	.c0				(PIXEL_CLK),
-	.locked			());
+*/
 	
 EDL_Final cpu (
 		.button_external_connection_export  (KEY),
-		.clk_clk							  		   (MAX10_CLK1_50),          //        clk.clk
+		.clk_clk							  		   (MAX10_CLK1_50),          //            clk.clk
 		.led_external_connection_export		(LEDR),
-		.reset_reset								(1'b1), 					     //      reset.reset_n
-		.reset_bridge_reset                 (RST_BRIDGE),                                 //                         reset_bridge.reset
-		.pixel_clk_clk								(PIXEL_CLK),                     //                  pixel_clk.clk
-		.pixel_reset_reset						(1'b1),                 //                pixel_reset.reset
-		.sdram_clk_clk								(DRAM_CLK), 			     //  sdram_clk.clk
-		.sdram_wire_addr							(DRAM_ADDR),				  // sdram_wire.addr
-		.sdram_wire_ba								(DRAM_BA),				     //           .ba
-		.sdram_wire_cas_n							(DRAM_CAS_N),				  //           .cas_n
-		.sdram_wire_cke 							(DRAM_CKE),					  //           .cke
-		.sdram_wire_cs_n							(DRAM_CS_N),				  //           .cs_n
-		.sdram_wire_dq								(DRAM_DQ), 					  //           .dq
-		.sdram_wire_dqm							({DRAM_UDQM, DRAM_LDQM}), //           .dqm
-		.sdram_wire_ras_n							(DRAM_RAS_N),				  //           .ras_n
-		.sdram_wire_we_n							(DRAM_WE_N),   			  //           .we_n
-		.sysclk_clk									(SYSCLK),                                         //                               sysclk.clk
-		.video_dma_sink_data						(RGB_DATA),               //             video_dma_sink.data
-		.video_dma_sink_startofpacket			(SOP),      //                           .startofpacket
-		.video_dma_sink_endofpacket			(EOP),        //                           .endofpacket
-		.video_dma_sink_valid					(VALID),              //                           .valid
-		.video_dma_sink_ready               (READY) //                           .ready
+		.reset_reset								(1'b1), 					     //          reset.reset_n
+		.reset_bridge_reset                 (RST_BRIDGE),             //   reset_bridge.reset
+		.pixel_clk_clk								(PIXEL_CLK),              //      pixel_clk.clk
+		.pixel_reset_reset						(1'b1),                   //    pixel_reset.reset
+		.sdram_clk_clk								(DRAM_CLK), 			     //      sdram_clk.clk
+		.sdram_wire_addr							(DRAM_ADDR),				  //     sdram_wire.addr
+		.sdram_wire_ba								(DRAM_BA),				     //               .ba
+		.sdram_wire_cas_n							(DRAM_CAS_N),				  //               .cas_n
+		.sdram_wire_cke 							(DRAM_CKE),					  //               .cke
+		.sdram_wire_cs_n							(DRAM_CS_N),				  //               .cs_n
+		.sdram_wire_dq								(DRAM_DQ), 					  //               .dq
+		.sdram_wire_dqm							({DRAM_UDQM, DRAM_LDQM}), //               .dqm
+		.sdram_wire_ras_n							(DRAM_RAS_N),				  //               .ras_n
+		.sdram_wire_we_n							(DRAM_WE_N),   			  //               .we_n
+		.sysclk_clk									(SYSCLK),                 //         sysclk.clk
+		.video_dma_sink_data						(RGB_DATA),               // video_dma_sink.data
+		.video_dma_sink_startofpacket			(SOP),      				  //               .startofpacket
+		.video_dma_sink_endofpacket			(EOP),        				  //               .endofpacket
+		.video_dma_sink_valid					(VALID),              	  //               .valid
+		.video_dma_sink_ready               (READY) 						  //               .ready
 	);
 
 

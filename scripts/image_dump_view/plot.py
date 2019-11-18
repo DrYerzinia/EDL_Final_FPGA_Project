@@ -8,10 +8,9 @@ IMAGE_HEIGHT = 480
 
 with open("image.log", "r") as image_file:
 
+    image_line = []
+
     try:
-
-        image_line = []
-
         for line in image_file:
 
             values = line.strip().split(" ")
@@ -28,13 +27,12 @@ with open("image.log", "r") as image_file:
                 if len(image_line) >= IMAGE_WIDTH:
                     image.append(image_line)
                     image_line = []
-
     except:
         pass
 
 image = np.array(image)
 
-#print(np.shape(image))
+print(np.shape(image))
 
 imgplot = plt.imshow(image)
 plt.show()

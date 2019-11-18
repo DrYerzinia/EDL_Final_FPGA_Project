@@ -33,3 +33,5 @@ Now that we know this configuration works we can look at the Avalon streaming in
 To insure that we can drive the interface form outside the streaming interface was exported and a color bar generator was written in verilog modled after the TPG from altera.  The QSYS HDL Generation worked without issues.  The system clock and reset had to be brought out with bridges to connect to the custom block.  Everything worked and the pattern below was pulled from memory.
 
 ![Custom Color Bars Test](img/color_bar_generation.png)
+
+Next step is to actually create the camera block that implements the steaming interface.  There are 3 challenges here.  We may need a FIFO if the streaming interface lags sometimes.  We will need to implement the VALID signal for when the steaming interface is ready but we are still waiting on the camera.  We are crossing the camera pixel clock and sysclock domains.  A FIFO would solve the clock domain issue killing to birds with one stone.  Implement a small circular buffer.  Will need to cross over the start/end status as well.  We can use a 32-bit FIFO and use the unused upper 8 bits for control information.  Use a small block RAM.

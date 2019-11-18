@@ -20,6 +20,8 @@
 #include "altera_avalon_pio_regs.h"
 #include "system.h"
 
+#define VIDEO_DMA_CONTROLLER_BASE 0x8001000
+
 #define IMAGE_WIDTH  640
 #define IMAGE_HEIGHT 480
 #define IMAGE_SIZE   ( IMAGE_HEIGHT * IMAGE_WIDTH )
@@ -30,6 +32,11 @@ int main()
 {
 
 	printf("Hello from Nios II!\n");
+
+	volatile uint32_t * control = (uint32_t *)(VIDEO_DMA_CONTROLLER_BASE + 12);
+
+	// Disable the DMA controller before downloading image
+	*control &= 0xFFFFFFFB;
 
 	uint32_t i;
 	for (i = 0; i < IMAGE_SIZE; i++) {

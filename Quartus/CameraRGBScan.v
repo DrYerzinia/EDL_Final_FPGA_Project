@@ -27,7 +27,7 @@ module CameraRGBScan(
 	reg signed 	[15:0]	r1_s, r2_s, r3_s,
 								g1_s, g2_s, g3_s,
 								b1_s, b2_s, b3_s;
-								
+
 	reg 			[2:0] 	state;
 	
 	reg						image_start;
