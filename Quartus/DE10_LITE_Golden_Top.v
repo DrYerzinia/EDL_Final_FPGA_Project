@@ -137,6 +137,12 @@ wire 			EOP;
 wire 			VALID;
 wire 			READY;
 
+wire		  PWM_CLOCK;
+wire [7:0] PWM_1;
+wire [7:0] PWM_2;
+wire 		  PWM_1_OUT;
+wire 		  PWM_2_OUT;
+
 // Camera external connections
 
 assign GPIO[0] = CAMERA_CLOCK;
@@ -154,9 +160,25 @@ assign HEX3 = 8'hFF;
 assign HEX4 = 8'hFF;
 assign HEX5 = 8'hFF;
 
+assign GPIO[34] = PWM_1_OUT;
+assign GPIO[35] = PWM_2_OUT;
+
+PWM pwm_1(
+    .clk				(PWM_CLOCK),
+    .PWM_in			(PWM_1),
+    .PWM_out		(PWM_1_OUT)
+);
+
+PWM pwm_2(
+    .clk				(PWM_CLOCK),
+    .PWM_in			(PWM_2),
+    .PWM_out		(PWM_2_OUT)
+);
+
 CameraClockGenerator cam_clk (
 	.inclk0			(MAX10_CLK1_50),
 	.c0				(CAMERA_CLOCK),
+	.c1				(PWM_CLOCK)
 );
 
 CameraStreamer streamer (
@@ -195,13 +217,23 @@ ColorBarTest color_bar_generator (
 */
 	
 EDL_Final cpu (
-		.button_external_connection_export  (KEY),
+
 		.clk_clk							  		   (MAX10_CLK1_50),          //            clk.clk
-		.led_external_connection_export		(LEDR),
+
+		.sysclk_clk									(SYSCLK),                 //         sysclk.clk
+		
 		.reset_reset								(1'b1), 					     //          reset.reset_n
 		.reset_bridge_reset                 (RST_BRIDGE),             //   reset_bridge.reset
+
 		.pixel_clk_clk								(PIXEL_CLK),              //      pixel_clk.clk
 		.pixel_reset_reset						(1'b1),                   //    pixel_reset.reset
+		
+		.button_external_connection_export  (KEY),
+
+		.led_external_connection_export		(LEDR),
+		
+		.pwm_export									({PWM_1, PWM_2}),                        //                        pwm.export
+				
 		.sdram_clk_clk								(DRAM_CLK), 			     //      sdram_clk.clk
 		.sdram_wire_addr							(DRAM_ADDR),				  //     sdram_wire.addr
 		.sdram_wire_ba								(DRAM_BA),				     //               .ba
@@ -212,12 +244,13 @@ EDL_Final cpu (
 		.sdram_wire_dqm							({DRAM_UDQM, DRAM_LDQM}), //               .dqm
 		.sdram_wire_ras_n							(DRAM_RAS_N),				  //               .ras_n
 		.sdram_wire_we_n							(DRAM_WE_N),   			  //               .we_n
-		.sysclk_clk									(SYSCLK),                 //         sysclk.clk
+
 		.video_dma_sink_data						(RGB_DATA),               // video_dma_sink.data
 		.video_dma_sink_startofpacket			(SOP),      				  //               .startofpacket
 		.video_dma_sink_endofpacket			(EOP),        				  //               .endofpacket
 		.video_dma_sink_valid					(VALID),              	  //               .valid
 		.video_dma_sink_ready               (READY) 						  //               .ready
+
 	);
 
 

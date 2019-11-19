@@ -9,6 +9,7 @@ module EDL_Final (
 		output wire [9:0]  led_external_connection_export,    //    led_external_connection.export
 		input  wire        pixel_clk_clk,                     //                  pixel_clk.clk
 		input  wire        pixel_reset_reset,                 //                pixel_reset.reset
+		output wire [15:0] pwm_export,                        //                        pwm.export
 		input  wire        reset_reset,                       //                      reset.reset
 		output wire        reset_bridge_reset,                //               reset_bridge.reset
 		output wire        sdram_clk_clk,                     //                  sdram_clk.clk
@@ -82,6 +83,11 @@ module EDL_Final (
 	wire   [1:0] mm_interconnect_0_led_s1_address;                                           // mm_interconnect_0:led_s1_address -> led:address
 	wire         mm_interconnect_0_led_s1_write;                                             // mm_interconnect_0:led_s1_write -> led:write_n
 	wire  [31:0] mm_interconnect_0_led_s1_writedata;                                         // mm_interconnect_0:led_s1_writedata -> led:writedata
+	wire         mm_interconnect_0_pwm_s1_chipselect;                                        // mm_interconnect_0:pwm_s1_chipselect -> pwm:chipselect
+	wire  [31:0] mm_interconnect_0_pwm_s1_readdata;                                          // pwm:readdata -> mm_interconnect_0:pwm_s1_readdata
+	wire   [1:0] mm_interconnect_0_pwm_s1_address;                                           // mm_interconnect_0:pwm_s1_address -> pwm:address
+	wire         mm_interconnect_0_pwm_s1_write;                                             // mm_interconnect_0:pwm_s1_write -> pwm:write_n
+	wire  [31:0] mm_interconnect_0_pwm_s1_writedata;                                         // mm_interconnect_0:pwm_s1_writedata -> pwm:writedata
 	wire         irq_mapper_receiver0_irq;                                                   // jtag_uart:av_irq -> irq_mapper:receiver0_irq
 	wire  [31:0] cpu_irq_irq;                                                                // irq_mapper:sender_irq -> cpu:irq
 	wire         rst_controller_reset_out_reset_req;                                         // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
@@ -154,6 +160,17 @@ module EDL_Final (
 		.chipselect (mm_interconnect_0_led_s1_chipselect), //                    .chipselect
 		.readdata   (mm_interconnect_0_led_s1_readdata),   //                    .readdata
 		.out_port   (led_external_connection_export)       // external_connection.export
+	);
+
+	EDL_Final_pwm pwm (
+		.clk        (sysclk_clk),                          //                 clk.clk
+		.reset_n    (~reset_bridge_reset),                 //               reset.reset_n
+		.address    (mm_interconnect_0_pwm_s1_address),    //                  s1.address
+		.write_n    (~mm_interconnect_0_pwm_s1_write),     //                    .write_n
+		.writedata  (mm_interconnect_0_pwm_s1_writedata),  //                    .writedata
+		.chipselect (mm_interconnect_0_pwm_s1_chipselect), //                    .chipselect
+		.readdata   (mm_interconnect_0_pwm_s1_readdata),   //                    .readdata
+		.out_port   (pwm_export)                           // external_connection.export
 	);
 
 	EDL_Final_sdram sdram (
@@ -240,6 +257,11 @@ module EDL_Final (
 		.led_s1_readdata                                          (mm_interconnect_0_led_s1_readdata),                                          //                                                 .readdata
 		.led_s1_writedata                                         (mm_interconnect_0_led_s1_writedata),                                         //                                                 .writedata
 		.led_s1_chipselect                                        (mm_interconnect_0_led_s1_chipselect),                                        //                                                 .chipselect
+		.pwm_s1_address                                           (mm_interconnect_0_pwm_s1_address),                                           //                                           pwm_s1.address
+		.pwm_s1_write                                             (mm_interconnect_0_pwm_s1_write),                                             //                                                 .write
+		.pwm_s1_readdata                                          (mm_interconnect_0_pwm_s1_readdata),                                          //                                                 .readdata
+		.pwm_s1_writedata                                         (mm_interconnect_0_pwm_s1_writedata),                                         //                                                 .writedata
+		.pwm_s1_chipselect                                        (mm_interconnect_0_pwm_s1_chipselect),                                        //                                                 .chipselect
 		.sdram_s1_address                                         (mm_interconnect_0_sdram_s1_address),                                         //                                         sdram_s1.address
 		.sdram_s1_write                                           (mm_interconnect_0_sdram_s1_write),                                           //                                                 .write
 		.sdram_s1_read                                            (mm_interconnect_0_sdram_s1_read),                                            //                                                 .read

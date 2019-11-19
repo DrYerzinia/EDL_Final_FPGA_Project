@@ -53,6 +53,14 @@ kiss_t jtag_kiss;
 #define JTAG_UART_DATA ((volatile int*) JTAG_UART_BASE)
 #define JTAG_UART_CONTROL ((volatile int*) (JTAG_UART_BASE+4))
 
+#define PWM_BASE 0x8001000
+
+static void set_pwm_50(){
+
+	IOWR_ALTERA_AVALON_PIO_DATA(PWM_BASE, 0x8080);
+
+}
+
 static void jtag_kiss_send(uint8_t byte){
 
          // Wait for room in buffer
@@ -183,10 +191,14 @@ int main()
 	jtag_kiss.send = jtag_kiss_send;
 
 	// Send startup message
-	const char hello_world[] = "\x81Hello from Nios II!";
-	kiss_send_packet(&jtag_kiss, (const uint8_t *) hello_world, sizeof(hello_world) - 1);
+	//const char hello_world[] = "\x81Hello from Nios II!";
+	//kiss_send_packet(&jtag_kiss, (const uint8_t *) hello_world, sizeof(hello_world) - 1);
 
+	set_pwm_50();
+
+	/*
 	usleep(1000000);
+
 
 	// Send image
 	const static bool jpeg_transfer = false;
@@ -196,6 +208,8 @@ int main()
 		// Naive Slow Transfer
 		take_raw_picture_and_send_to_jtag();
 	}
+	*/
+	while(1);
 
 	return 0;
 

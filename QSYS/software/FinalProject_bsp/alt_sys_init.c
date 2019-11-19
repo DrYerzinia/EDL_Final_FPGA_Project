@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Sun Nov 17 14:51:17 MST 2019
+ * Generated: Tue Nov 19 01:07:39 MST 2019
  */
 
 /*

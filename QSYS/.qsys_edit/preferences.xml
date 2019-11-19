@@ -3,11 +3,11 @@
  <debug showDebugMenu="0" />
  <systemtable filter="All Interfaces">
   <columns>
-   <connections preferredWidth="223" />
+   <connections preferredWidth="255" />
    <irq preferredWidth="34" />
   </columns>
  </systemtable>
  <library
-   expandedCategories="Project,Library/University Program,Library/University Program/Audio &amp; Video/Video,Library/University Program/Audio &amp; Video,Library" />
+   expandedCategories="Library,Project,Library/University Program/Communications,Library/Interface Protocols/Serial,Library/University Program,Library/Interface Protocols" />
  <window width="1936" height="1056" x="-8" y="-8" />
 </preferences>

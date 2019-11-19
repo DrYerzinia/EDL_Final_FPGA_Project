@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Sun Nov 17 14:51:17 MST 2019
+ * Generated: Tue Nov 19 12:06:02 MST 2019
  */
 
 /*
@@ -156,19 +156,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/jtag_uart"
-#define ALT_STDERR_BASE 0x8001030
+#define ALT_STDERR_BASE 0x8001040
 #define ALT_STDERR_DEV jtag_uart
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/jtag_uart"
-#define ALT_STDIN_BASE 0x8001030
+#define ALT_STDIN_BASE 0x8001040
 #define ALT_STDIN_DEV jtag_uart
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/jtag_uart"
-#define ALT_STDOUT_BASE 0x8001030
+#define ALT_STDOUT_BASE 0x8001040
 #define ALT_STDOUT_DEV jtag_uart
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -220,7 +220,7 @@
  */
 
 #define ALT_MODULE_CLASS_jtag_uart altera_avalon_jtag_uart
-#define JTAG_UART_BASE 0x8001030
+#define JTAG_UART_BASE 0x8001040
 #define JTAG_UART_IRQ 0
 #define JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_UART_NAME "/dev/jtag_uart"
@@ -257,6 +257,33 @@
 #define LED_RESET_VALUE 0
 #define LED_SPAN 16
 #define LED_TYPE "altera_avalon_pio"
+
+
+/*
+ * pwm configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_pwm altera_avalon_pio
+#define PWM_BASE 0x8001000
+#define PWM_BIT_CLEARING_EDGE_REGISTER 0
+#define PWM_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PWM_CAPTURE 0
+#define PWM_DATA_WIDTH 16
+#define PWM_DO_TEST_BENCH_WIRING 0
+#define PWM_DRIVEN_SIM_VALUE 0
+#define PWM_EDGE_TYPE "NONE"
+#define PWM_FREQ 100000000
+#define PWM_HAS_IN 0
+#define PWM_HAS_OUT 1
+#define PWM_HAS_TRI 0
+#define PWM_IRQ -1
+#define PWM_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define PWM_IRQ_TYPE "NONE"
+#define PWM_NAME "/dev/pwm"
+#define PWM_RESET_VALUE 0
+#define PWM_SPAN 16
+#define PWM_TYPE "altera_avalon_pio"
 
 
 /*
@@ -304,7 +331,7 @@
  */
 
 #define ALT_MODULE_CLASS_video_dma_controller altera_up_avalon_video_dma_controller
-#define VIDEO_DMA_CONTROLLER_BASE 0x8001000
+#define VIDEO_DMA_CONTROLLER_BASE 0x8001030
 #define VIDEO_DMA_CONTROLLER_IRQ -1
 #define VIDEO_DMA_CONTROLLER_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define VIDEO_DMA_CONTROLLER_NAME "/dev/video_dma_controller"
