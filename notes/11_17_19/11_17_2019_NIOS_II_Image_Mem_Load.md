@@ -35,3 +35,13 @@ To insure that we can drive the interface form outside the streaming interface w
 ![Custom Color Bars Test](img/color_bar_generation.png)
 
 Next step is to actually create the camera block that implements the steaming interface.  There are 3 challenges here.  We may need a FIFO if the streaming interface lags sometimes.  We will need to implement the VALID signal for when the steaming interface is ready but we are still waiting on the camera.  We are crossing the camera pixel clock and sysclock domains.  A FIFO would solve the clock domain issue killing to birds with one stone.  Implement a small circular buffer.  Will need to cross over the start/end status as well.  We can use a 32-bit FIFO and use the unused upper 8 bits for control information.  Use a small block RAM.
+
+Got an image coming through.  Fixed a few issues.  The FIFO needs negative edge on the CPU side.  This may be messing with the other logic.  The YUV to RGB decoding was not taking into account overflow of the signed math conversion so I added a state for that.  Some of the second pixel conversions where doing compares against the first pixel data.  The remaining problems are occationaly we will miss a pixel lock and get off by one and end with UY and VY flipped.  The pixel clock in general has a very confusing pattern that makes no sense.  Perhaps our output clock is flawed in some way or I've damaged the board.  Should check the clock volatage and make sure its in spec for the camera.  We are also getting more pixels than we should output sometimes, this offsets the lower image rows to the right.  Need to double check the EOP to make sure its consistently in the correct spot, that will tell if it is happening before or after the FIFO.
+
+Final figured out problem.  The altpll generating the XVCLK for the camera had its input frequency set at 100MHz but it was being driven by a 50MHz clock.  This was causing all the problems above.  See good result below.
+
+![Kerbal Photo](img/Kerbal.png)
+
+I set up a KISS interface on the JTAG UART.  This allows sending of log messages as well as images over the UART without idiotic printfing memory.  A raw image download only takes 30 seconds.  We are also now using the buffer swap in the DMA controller instead of just disabling the DMA controller.  This allows continus frames and give us time to work with the image.
+
+A JPEG encoder was added but its running extremely slowly.  Probably because there is no hardware multipler and this uses floating point math.  Need to find a better embedded JPEG encoder library.  Worked though.

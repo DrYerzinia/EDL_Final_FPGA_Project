@@ -142,7 +142,9 @@ ACDS_VERSION := 18.1
 ELF := FinalProject.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := hello_world.c
+C_SRCS += hello_world.c
+C_SRCS += camera.c
+C_SRCS += kiss.c
 CXX_SRCS :=
 ASM_SRCS :=
 

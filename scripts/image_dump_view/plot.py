@@ -30,9 +30,13 @@ with open("image.log", "r") as image_file:
     except:
         pass
 
-image = np.array(image)
+image = np.array(image, dtype=np.uint8)
 
 print(np.shape(image))
+
+gbr = image[...,[2,0,1]].copy()
+with open("image.dat", "wb") as image_dat_file:
+    np.save(image_dat_file, gbr)
 
 imgplot = plt.imshow(image)
 plt.show()

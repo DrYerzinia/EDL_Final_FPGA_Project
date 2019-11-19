@@ -16,9 +16,7 @@ module CameraStreamer (
 	endofpacket,
 	empty,
 	valid,
-
-	the_end
-
+	
 );
 
 /*****************************************************************************
@@ -198,8 +196,6 @@ reg [19:0]				pixel_counter;
 							
 reg						first_pixel;
 
-output reg				the_end;
-
 initial
 begin
 
@@ -216,8 +212,6 @@ begin
 	// VSYNC indicates start of image setup start_of_packet
 	if(vsync)
 	begin
-
-		the_end <= 0;
 
 		// Start of image
 		image_start <= 1'b1;
@@ -249,7 +243,6 @@ begin
 			begin
 				FIFO_DATA_IN <= {8'b00000000, r1, g1, b1};
 				HAVE_PIXELS <= 2'b01;
-				the_end <= 0;
 			end
 			else
 			begin
@@ -258,7 +251,6 @@ begin
 			
 				if (pixel_counter == 307200)
 				begin
-					the_end <= 1;
 					FIFO_DATA_IN <= {8'b00000010, r1, g1, b1};
 				end
 				else
@@ -271,21 +263,20 @@ begin
 		end
 		else
 		begin
-			the_end <= 0;
 			FIFO_WRITE   <= 1'b0;
 		end
-
+		
 	end
 
 	// We are in the line
 	else if(href == 1)
 	begin
-		the_end <= 0;
+
 		// The format form the camera is YUYV so each set of pixels is
 		// the combination of 4 bytes from the camera so in the line we
 		// use a state machine to track which element we are at
 		// Y1 U Y2 V
-
+		
 		case (state)
 
 			// First element is Y
@@ -358,7 +349,11 @@ begin
 				b2_s <= (y2 - 16) + ((u - 128) << 2);
 
 				// Truncate signed results so no negative values
-				if(r1_s > 0)
+				if(r1_s > 255)
+				begin
+					r1 <= 255;
+				end
+				else if(r1_s > 0)
 				begin
 					r1 <= r1_s[7:0];
 				end
@@ -367,7 +362,11 @@ begin
 					r1 <= 0;
 				end
 
-				if(r2_s > 0)
+				if(r2_s > 255)
+				begin
+					r2 <= 255;
+				end
+				else if(r2_s > 0)
 				begin
 					r2 <= r2_s[7:0];
 				end
@@ -376,7 +375,11 @@ begin
 					r2 <= 0;
 				end
 
-				if(g1_s > 0)
+				if(g1_s > 255)
+				begin
+					g1 <= 255;
+				end
+				else if(g1_s > 0)
 				begin
 					g1 <= g1_s[7:0];
 				end
@@ -385,7 +388,11 @@ begin
 					g1 <= 0;
 				end
 
-				if(g2_s > 0)
+				if(g2_s > 255)
+				begin
+					g2 <= 255;
+				end
+				else if(g2_s > 0)
 				begin
 					g2 <= g2_s[7:0];
 				end
