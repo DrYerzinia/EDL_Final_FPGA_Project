@@ -143,6 +143,11 @@ wire [7:0] PWM_2;
 wire 		  PWM_1_OUT;
 wire 		  PWM_2_OUT;
 
+//encoder counters
+wire signed [31:0] left_enc, right_enc;
+assign left_enc = 0;
+assign right_enc = 0;
+
 // Camera external connections
 
 assign GPIO[0] = CAMERA_CLOCK;
@@ -205,6 +210,20 @@ CameraStreamer streamer (
 	.empty				(),
 	.valid				(VALID)
 	
+);
+
+quadrature left_wheel(
+	.clk 					(SYSCLK),
+	.quadA(/*left gpio*/),
+	.quadB(/*left gpio*/),
+	.count(left_enc)
+);
+
+quadrature right_wheel(
+	.clk 					(SYSCLK),
+	.quadA(/*right gpio*/),
+	.quadB(/*right gpio*/),
+	.count(right_enc)
 );
 
 /*
