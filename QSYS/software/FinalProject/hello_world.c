@@ -55,9 +55,35 @@ kiss_t jtag_kiss;
 
 #define PWM_BASE 0x8001000
 
-static void set_pwm_50(){
+static void set_motors(int speed_left, int speed_right){
 
-	IOWR_ALTERA_AVALON_PIO_DATA(PWM_BASE, 0x8080);
+  if(speed_left == 0){               // Stop left motor if input 0
+    //digitalWrite(pinCW_Right,LOW);
+    //digitalWrite(pinCC_Right,LOW);
+  } else if(speed_left < 0){
+    //digitalWrite(pinCW_Left,HIGH);
+    //digitalWrite(pinCC_Left,LOW);
+    speed_left *= -1;
+  } else {
+    //digitalWrite(pinCW_Left,LOW);
+    //digitalWrite(pinCC_Left,HIGH);
+  }
+
+  if(speed_right == 0){              // Stop right motor if input 0
+    //digitalWrite(pinCW_Right,LOW);
+    //digitalWrite(pinCC_Right,LOW);
+  } else if(speed_right < 0){
+    //digitalWrite(pinCW_Right,HIGH);
+    //digitalWrite(pinCC_Right,LOW);
+    speed_right *= -1;
+  } else {
+    //digitalWrite(pinCW_Right, LOW);
+    //digitalWrite(pinCC_Right,HIGH);
+  }
+
+  // Set the PWM values
+  volatile uint32_t pwm_command = ( ((uint32_t)speed_right) << 8) | ((uint32_t)speed_left);
+  IOWR_ALTERA_AVALON_PIO_DATA(PWM_BASE, pwm_command);
 
 }
 
@@ -194,7 +220,15 @@ int main()
 	//const char hello_world[] = "\x81Hello from Nios II!";
 	//kiss_send_packet(&jtag_kiss, (const uint8_t *) hello_world, sizeof(hello_world) - 1);
 
-	set_pwm_50();
+
+	// Motor ramp test
+	while(1){
+		int i;
+		for(i = 0; i < 255; i++){
+			set_motors(i, i);
+			usleep(10000);
+		}
+	}
 
 	/*
 	usleep(1000000);

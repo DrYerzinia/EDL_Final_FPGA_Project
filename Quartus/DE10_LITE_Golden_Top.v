@@ -160,8 +160,15 @@ assign HEX3 = 8'hFF;
 assign HEX4 = 8'hFF;
 assign HEX5 = 8'hFF;
 
-assign GPIO[34] = PWM_1_OUT;
-assign GPIO[35] = PWM_2_OUT;
+assign ARDUINO_IO[0] = PWM_1_OUT;
+
+assign ARDUINO_IO[1] = 1'b1;
+assign ARDUINO_IO[2] = 1'b0;
+
+assign ARDUINO_IO[5] = PWM_2_OUT;
+
+assign ARDUINO_IO[6] = 1'b1;
+assign ARDUINO_IO[7] = 1'b0;
 
 PWM pwm_1(
     .clk				(PWM_CLOCK),
