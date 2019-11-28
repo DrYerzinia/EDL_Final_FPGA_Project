@@ -144,9 +144,8 @@ wire 		  PWM_1_OUT;
 wire 		  PWM_2_OUT;
 
 //encoder counters
-wire signed [31:0] left_enc, right_enc;
-assign left_enc = 0;
-assign right_enc = 0;
+wire signed [31:0] LEFT_ENC;
+wire signed [31:0] RIGHT_ENC;
 
 // Camera external connections
 
@@ -165,15 +164,23 @@ assign HEX3 = 8'hFF;
 assign HEX4 = 8'hFF;
 assign HEX5 = 8'hFF;
 
+// Setup Arduino GPIO for motor drive
+
 assign ARDUINO_IO[0] = PWM_1_OUT;
 
 assign ARDUINO_IO[1] = 1'b1;
 assign ARDUINO_IO[2] = 1'b0;
 
+assign ENC_A_1 = ARDUINO_IO[3];
+assign ENC_B_1 = ARDUINO_IO[4];
+
 assign ARDUINO_IO[5] = PWM_2_OUT;
 
 assign ARDUINO_IO[6] = 1'b1;
 assign ARDUINO_IO[7] = 1'b0;
+
+assign ENC_A_2 = ARDUINO_IO[8];
+assign ENC_B_2 = ARDUINO_IO[9];
 
 PWM pwm_1(
     .clk				(PWM_CLOCK),
@@ -214,16 +221,16 @@ CameraStreamer streamer (
 
 quadrature left_wheel(
 	.clk 					(SYSCLK),
-	.quadA(/*left gpio*/),
-	.quadB(/*left gpio*/),
-	.count(left_enc)
+	.quadA				(ENC_A_1),
+	.quadB				(ENC_B_1),
+	.count				(LEFT_ENC)
 );
 
 quadrature right_wheel(
 	.clk 					(SYSCLK),
-	.quadA(/*right gpio*/),
-	.quadB(/*right gpio*/),
-	.count(right_enc)
+	.quadA				(ENC_A_2),
+	.quadB				(ENC_B_2),
+	.count				(RIGHT_ENC)
 );
 
 /*
@@ -258,8 +265,11 @@ EDL_Final cpu (
 
 		.led_external_connection_export		(LEDR),
 		
-		.pwm_export									({PWM_1, PWM_2}),                        //                        pwm.export
-				
+		.pwm_export									({PWM_1, PWM_2}),         //                        pwm.export
+
+		.encoder_left_export						(LEFT_ENC),               //               encoder_left.export
+		.encoder_right_export					(RIGHT_ENC),              //              encoder_right.export
+		
 		.sdram_clk_clk								(DRAM_CLK), 			     //      sdram_clk.clk
 		.sdram_wire_addr							(DRAM_ADDR),				  //     sdram_wire.addr
 		.sdram_wire_ba								(DRAM_BA),				     //               .ba

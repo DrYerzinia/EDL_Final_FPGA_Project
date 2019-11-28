@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Nov 19, 2019 12:06:01 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1574190361813</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Nov 27, 2019 10:57:42 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1574920662271</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\DrYerzinia\Documents\EDL_Final_FPGA_Project\QSYS\software\FinalProject_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\EDL_Final.sopcinfo</SopcDesignFile>
@@ -905,32 +905,44 @@
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>pwm</slaveDescriptor>
+                <slaveDescriptor>encoder_left</slaveDescriptor>
                 <addressRange>0x08001000 - 0x0800100F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>led</slaveDescriptor>
+                <slaveDescriptor>encoder_right</slaveDescriptor>
                 <addressRange>0x08001010 - 0x0800101F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>button</slaveDescriptor>
+                <slaveDescriptor>pwm</slaveDescriptor>
                 <addressRange>0x08001020 - 0x0800102F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>video_dma_controller</slaveDescriptor>
+                <slaveDescriptor>led</slaveDescriptor>
                 <addressRange>0x08001030 - 0x0800103F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>button</slaveDescriptor>
+                <addressRange>0x08001040 - 0x0800104F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>video_dma_controller</slaveDescriptor>
+                <addressRange>0x08001050 - 0x0800105F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>jtag_uart</slaveDescriptor>
-                <addressRange>0x08001040 - 0x08001047</addressRange>
+                <addressRange>0x08001060 - 0x08001067</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>

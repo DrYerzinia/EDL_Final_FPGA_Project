@@ -53,7 +53,24 @@ kiss_t jtag_kiss;
 #define JTAG_UART_DATA ((volatile int*) JTAG_UART_BASE)
 #define JTAG_UART_CONTROL ((volatile int*) (JTAG_UART_BASE+4))
 
+// PWM
 #define PWM_BASE 0x8001000
+
+// Encoder
+#define ENCODER_LEFT_BASE 0x8001000
+#define ENCODER_RIGHT_BASE 0x8001010
+
+static int32_t read_encoder_left(void){
+
+	return IORD_ALTERA_AVALON_PIO_DATA(ENCODER_LEFT_BASE);
+
+}
+
+static int32_t read_encoder_right(void){
+
+	return IORD_ALTERA_AVALON_PIO_DATA(ENCODER_RIGHT_BASE);
+
+}
 
 static void set_motors(int speed_left, int speed_right){
 
@@ -221,14 +238,23 @@ int main()
 	//kiss_send_packet(&jtag_kiss, (const uint8_t *) hello_world, sizeof(hello_world) - 1);
 
 
+	// Encoder test
+	int32_t encoder_left, encoder_right;
+	while(1){
+		encoder_left = read_encoder_left();
+		encoder_right = read_encoder_right();
+		usleep(10000);
+	}
+
 	// Motor ramp test
+	/*
 	while(1){
 		int i;
 		for(i = 0; i < 255; i++){
 			set_motors(i, i);
 			usleep(10000);
 		}
-	}
+	}*/
 
 	/*
 	usleep(1000000);
