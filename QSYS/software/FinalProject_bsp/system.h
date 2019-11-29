@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Wed Nov 27 22:57:43 MST 2019
+ * Generated: Thu Nov 28 20:03:48 MST 2019
  */
 
 /*
@@ -156,19 +156,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/jtag_uart"
-#define ALT_STDERR_BASE 0x8001060
+#define ALT_STDERR_BASE 0x8001090
 #define ALT_STDERR_DEV jtag_uart
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/jtag_uart"
-#define ALT_STDIN_BASE 0x8001060
+#define ALT_STDIN_BASE 0x8001090
 #define ALT_STDIN_DEV jtag_uart
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/jtag_uart"
-#define ALT_STDOUT_BASE 0x8001060
+#define ALT_STDOUT_BASE 0x8001090
 #define ALT_STDOUT_DEV jtag_uart
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -182,7 +182,7 @@
  */
 
 #define ALT_MODULE_CLASS_button altera_avalon_pio
-#define BUTTON_BASE 0x8001040
+#define BUTTON_BASE 0x8001070
 #define BUTTON_BIT_CLEARING_EDGE_REGISTER 0
 #define BUTTON_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define BUTTON_CAPTURE 0
@@ -209,7 +209,7 @@
  */
 
 #define ALT_MODULE_CLASS_encoder_left altera_avalon_pio
-#define ENCODER_LEFT_BASE 0x8001000
+#define ENCODER_LEFT_BASE 0x8001030
 #define ENCODER_LEFT_BIT_CLEARING_EDGE_REGISTER 0
 #define ENCODER_LEFT_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define ENCODER_LEFT_CAPTURE 0
@@ -236,7 +236,7 @@
  */
 
 #define ALT_MODULE_CLASS_encoder_right altera_avalon_pio
-#define ENCODER_RIGHT_BASE 0x8001010
+#define ENCODER_RIGHT_BASE 0x8001040
 #define ENCODER_RIGHT_BIT_CLEARING_EDGE_REGISTER 0
 #define ENCODER_RIGHT_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define ENCODER_RIGHT_CAPTURE 0
@@ -274,7 +274,7 @@
  */
 
 #define ALT_MODULE_CLASS_jtag_uart altera_avalon_jtag_uart
-#define JTAG_UART_BASE 0x8001060
+#define JTAG_UART_BASE 0x8001090
 #define JTAG_UART_IRQ 0
 #define JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_UART_NAME "/dev/jtag_uart"
@@ -292,7 +292,7 @@
  */
 
 #define ALT_MODULE_CLASS_led altera_avalon_pio
-#define LED_BASE 0x8001030
+#define LED_BASE 0x8001060
 #define LED_BIT_CLEARING_EDGE_REGISTER 0
 #define LED_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define LED_CAPTURE 0
@@ -314,12 +314,66 @@
 
 
 /*
+ * motor_direction configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_motor_direction altera_avalon_pio
+#define MOTOR_DIRECTION_BASE 0x8001020
+#define MOTOR_DIRECTION_BIT_CLEARING_EDGE_REGISTER 0
+#define MOTOR_DIRECTION_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define MOTOR_DIRECTION_CAPTURE 0
+#define MOTOR_DIRECTION_DATA_WIDTH 4
+#define MOTOR_DIRECTION_DO_TEST_BENCH_WIRING 0
+#define MOTOR_DIRECTION_DRIVEN_SIM_VALUE 0
+#define MOTOR_DIRECTION_EDGE_TYPE "NONE"
+#define MOTOR_DIRECTION_FREQ 100000000
+#define MOTOR_DIRECTION_HAS_IN 0
+#define MOTOR_DIRECTION_HAS_OUT 1
+#define MOTOR_DIRECTION_HAS_TRI 0
+#define MOTOR_DIRECTION_IRQ -1
+#define MOTOR_DIRECTION_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define MOTOR_DIRECTION_IRQ_TYPE "NONE"
+#define MOTOR_DIRECTION_NAME "/dev/motor_direction"
+#define MOTOR_DIRECTION_RESET_VALUE 0
+#define MOTOR_DIRECTION_SPAN 16
+#define MOTOR_DIRECTION_TYPE "altera_avalon_pio"
+
+
+/*
+ * on_button configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_on_button altera_avalon_pio
+#define ON_BUTTON_BASE 0x8001010
+#define ON_BUTTON_BIT_CLEARING_EDGE_REGISTER 0
+#define ON_BUTTON_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define ON_BUTTON_CAPTURE 0
+#define ON_BUTTON_DATA_WIDTH 1
+#define ON_BUTTON_DO_TEST_BENCH_WIRING 0
+#define ON_BUTTON_DRIVEN_SIM_VALUE 0
+#define ON_BUTTON_EDGE_TYPE "NONE"
+#define ON_BUTTON_FREQ 100000000
+#define ON_BUTTON_HAS_IN 1
+#define ON_BUTTON_HAS_OUT 0
+#define ON_BUTTON_HAS_TRI 0
+#define ON_BUTTON_IRQ -1
+#define ON_BUTTON_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define ON_BUTTON_IRQ_TYPE "NONE"
+#define ON_BUTTON_NAME "/dev/on_button"
+#define ON_BUTTON_RESET_VALUE 0
+#define ON_BUTTON_SPAN 16
+#define ON_BUTTON_TYPE "altera_avalon_pio"
+
+
+/*
  * pwm configuration
  *
  */
 
 #define ALT_MODULE_CLASS_pwm altera_avalon_pio
-#define PWM_BASE 0x8001020
+#define PWM_BASE 0x8001050
 #define PWM_BIT_CLEARING_EDGE_REGISTER 0
 #define PWM_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define PWM_CAPTURE 0
@@ -380,12 +434,39 @@
 
 
 /*
+ * uptime configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_uptime altera_avalon_pio
+#define UPTIME_BASE 0x8001000
+#define UPTIME_BIT_CLEARING_EDGE_REGISTER 0
+#define UPTIME_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define UPTIME_CAPTURE 0
+#define UPTIME_DATA_WIDTH 32
+#define UPTIME_DO_TEST_BENCH_WIRING 0
+#define UPTIME_DRIVEN_SIM_VALUE 0
+#define UPTIME_EDGE_TYPE "NONE"
+#define UPTIME_FREQ 100000000
+#define UPTIME_HAS_IN 1
+#define UPTIME_HAS_OUT 0
+#define UPTIME_HAS_TRI 0
+#define UPTIME_IRQ -1
+#define UPTIME_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define UPTIME_IRQ_TYPE "NONE"
+#define UPTIME_NAME "/dev/uptime"
+#define UPTIME_RESET_VALUE 0
+#define UPTIME_SPAN 16
+#define UPTIME_TYPE "altera_avalon_pio"
+
+
+/*
  * video_dma_controller configuration
  *
  */
 
 #define ALT_MODULE_CLASS_video_dma_controller altera_up_avalon_video_dma_controller
-#define VIDEO_DMA_CONTROLLER_BASE 0x8001050
+#define VIDEO_DMA_CONTROLLER_BASE 0x8001080
 #define VIDEO_DMA_CONTROLLER_IRQ -1
 #define VIDEO_DMA_CONTROLLER_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define VIDEO_DMA_CONTROLLER_NAME "/dev/video_dma_controller"

@@ -2,6 +2,8 @@ import os
 import ctypes
 import time
 
+import struct
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -119,8 +121,13 @@ while 1:
                     imgplot = plt.imshow(image)
                     plt.show()
 
+                # State message
+                if kiss_packet[0] == 0x90:
+                    drive, yaw = struct.unpack("<ff", kiss_packet[1:])
+                    print(drive)
+
                 found_packet = True
 
-    time.sleep(0.01)
+    #time.sleep(0.001)
 
 JAClose(link)

@@ -145,6 +145,7 @@ ELF := FinalProject.elf
 C_SRCS += hello_world.c
 C_SRCS += camera.c
 C_SRCS += kiss.c
+C_SRCS += pid.c
 CXX_SRCS :=
 ASM_SRCS :=
 

@@ -9,6 +9,8 @@ module EDL_Final (
 		input  wire [31:0] encoder_left_export,               //               encoder_left.export
 		input  wire [31:0] encoder_right_export,              //              encoder_right.export
 		output wire [9:0]  led_external_connection_export,    //    led_external_connection.export
+		output wire [3:0]  motor_direction_export,            //            motor_direction.export
+		input  wire        on_button_export,                  //                  on_button.export
 		input  wire        pixel_clk_clk,                     //                  pixel_clk.clk
 		input  wire        pixel_reset_reset,                 //                pixel_reset.reset
 		output wire [15:0] pwm_export,                        //                        pwm.export
@@ -25,6 +27,7 @@ module EDL_Final (
 		output wire        sdram_wire_ras_n,                  //                           .ras_n
 		output wire        sdram_wire_we_n,                   //                           .we_n
 		output wire        sysclk_clk,                        //                     sysclk.clk
+		input  wire [31:0] uptime_export,                     //                     uptime.export
 		input  wire [23:0] video_dma_sink_data,               //             video_dma_sink.data
 		input  wire        video_dma_sink_startofpacket,      //                           .startofpacket
 		input  wire        video_dma_sink_endofpacket,        //                           .endofpacket
@@ -94,6 +97,15 @@ module EDL_Final (
 	wire   [1:0] mm_interconnect_0_encoder_right_s1_address;                                 // mm_interconnect_0:encoder_right_s1_address -> encoder_right:address
 	wire  [31:0] mm_interconnect_0_encoder_left_s1_readdata;                                 // encoder_left:readdata -> mm_interconnect_0:encoder_left_s1_readdata
 	wire   [1:0] mm_interconnect_0_encoder_left_s1_address;                                  // mm_interconnect_0:encoder_left_s1_address -> encoder_left:address
+	wire         mm_interconnect_0_motor_direction_s1_chipselect;                            // mm_interconnect_0:motor_direction_s1_chipselect -> motor_direction:chipselect
+	wire  [31:0] mm_interconnect_0_motor_direction_s1_readdata;                              // motor_direction:readdata -> mm_interconnect_0:motor_direction_s1_readdata
+	wire   [1:0] mm_interconnect_0_motor_direction_s1_address;                               // mm_interconnect_0:motor_direction_s1_address -> motor_direction:address
+	wire         mm_interconnect_0_motor_direction_s1_write;                                 // mm_interconnect_0:motor_direction_s1_write -> motor_direction:write_n
+	wire  [31:0] mm_interconnect_0_motor_direction_s1_writedata;                             // mm_interconnect_0:motor_direction_s1_writedata -> motor_direction:writedata
+	wire  [31:0] mm_interconnect_0_on_button_s1_readdata;                                    // on_button:readdata -> mm_interconnect_0:on_button_s1_readdata
+	wire   [1:0] mm_interconnect_0_on_button_s1_address;                                     // mm_interconnect_0:on_button_s1_address -> on_button:address
+	wire  [31:0] mm_interconnect_0_uptime_s1_readdata;                                       // uptime:readdata -> mm_interconnect_0:uptime_s1_readdata
+	wire   [1:0] mm_interconnect_0_uptime_s1_address;                                        // mm_interconnect_0:uptime_s1_address -> uptime:address
 	wire         irq_mapper_receiver0_irq;                                                   // jtag_uart:av_irq -> irq_mapper:receiver0_irq
 	wire  [31:0] cpu_irq_irq;                                                                // irq_mapper:sender_irq -> cpu:irq
 	wire         rst_controller_reset_out_reset_req;                                         // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
@@ -184,6 +196,25 @@ module EDL_Final (
 		.out_port   (led_external_connection_export)       // external_connection.export
 	);
 
+	EDL_Final_motor_direction motor_direction (
+		.clk        (sysclk_clk),                                      //                 clk.clk
+		.reset_n    (~reset_bridge_reset),                             //               reset.reset_n
+		.address    (mm_interconnect_0_motor_direction_s1_address),    //                  s1.address
+		.write_n    (~mm_interconnect_0_motor_direction_s1_write),     //                    .write_n
+		.writedata  (mm_interconnect_0_motor_direction_s1_writedata),  //                    .writedata
+		.chipselect (mm_interconnect_0_motor_direction_s1_chipselect), //                    .chipselect
+		.readdata   (mm_interconnect_0_motor_direction_s1_readdata),   //                    .readdata
+		.out_port   (motor_direction_export)                           // external_connection.export
+	);
+
+	EDL_Final_on_button on_button (
+		.clk      (sysclk_clk),                              //                 clk.clk
+		.reset_n  (~reset_bridge_reset),                     //               reset.reset_n
+		.address  (mm_interconnect_0_on_button_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_0_on_button_s1_readdata), //                    .readdata
+		.in_port  (on_button_export)                         // external_connection.export
+	);
+
 	EDL_Final_pwm pwm (
 		.clk        (sysclk_clk),                          //                 clk.clk
 		.reset_n    (~reset_bridge_reset),                 //               reset.reset_n
@@ -216,6 +247,14 @@ module EDL_Final (
 		.zs_dqm         (sdram_wire_dqm),                           //      .export
 		.zs_ras_n       (sdram_wire_ras_n),                         //      .export
 		.zs_we_n        (sdram_wire_we_n)                           //      .export
+	);
+
+	EDL_Final_encoder_left uptime (
+		.clk      (sysclk_clk),                           //                 clk.clk
+		.reset_n  (~reset_bridge_reset),                  //               reset.reset_n
+		.address  (mm_interconnect_0_uptime_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_0_uptime_s1_readdata), //                    .readdata
+		.in_port  (uptime_export)                         // external_connection.export
 	);
 
 	EDL_Final_video_dma_controller video_dma_controller (
@@ -283,6 +322,13 @@ module EDL_Final (
 		.led_s1_readdata                                          (mm_interconnect_0_led_s1_readdata),                                          //                                                 .readdata
 		.led_s1_writedata                                         (mm_interconnect_0_led_s1_writedata),                                         //                                                 .writedata
 		.led_s1_chipselect                                        (mm_interconnect_0_led_s1_chipselect),                                        //                                                 .chipselect
+		.motor_direction_s1_address                               (mm_interconnect_0_motor_direction_s1_address),                               //                               motor_direction_s1.address
+		.motor_direction_s1_write                                 (mm_interconnect_0_motor_direction_s1_write),                                 //                                                 .write
+		.motor_direction_s1_readdata                              (mm_interconnect_0_motor_direction_s1_readdata),                              //                                                 .readdata
+		.motor_direction_s1_writedata                             (mm_interconnect_0_motor_direction_s1_writedata),                             //                                                 .writedata
+		.motor_direction_s1_chipselect                            (mm_interconnect_0_motor_direction_s1_chipselect),                            //                                                 .chipselect
+		.on_button_s1_address                                     (mm_interconnect_0_on_button_s1_address),                                     //                                     on_button_s1.address
+		.on_button_s1_readdata                                    (mm_interconnect_0_on_button_s1_readdata),                                    //                                                 .readdata
 		.pwm_s1_address                                           (mm_interconnect_0_pwm_s1_address),                                           //                                           pwm_s1.address
 		.pwm_s1_write                                             (mm_interconnect_0_pwm_s1_write),                                             //                                                 .write
 		.pwm_s1_readdata                                          (mm_interconnect_0_pwm_s1_readdata),                                          //                                                 .readdata
@@ -297,6 +343,8 @@ module EDL_Final (
 		.sdram_s1_readdatavalid                                   (mm_interconnect_0_sdram_s1_readdatavalid),                                   //                                                 .readdatavalid
 		.sdram_s1_waitrequest                                     (mm_interconnect_0_sdram_s1_waitrequest),                                     //                                                 .waitrequest
 		.sdram_s1_chipselect                                      (mm_interconnect_0_sdram_s1_chipselect),                                      //                                                 .chipselect
+		.uptime_s1_address                                        (mm_interconnect_0_uptime_s1_address),                                        //                                        uptime_s1.address
+		.uptime_s1_readdata                                       (mm_interconnect_0_uptime_s1_readdata),                                       //                                                 .readdata
 		.video_dma_controller_avalon_dma_control_slave_address    (mm_interconnect_0_video_dma_controller_avalon_dma_control_slave_address),    //    video_dma_controller_avalon_dma_control_slave.address
 		.video_dma_controller_avalon_dma_control_slave_write      (mm_interconnect_0_video_dma_controller_avalon_dma_control_slave_write),      //                                                 .write
 		.video_dma_controller_avalon_dma_control_slave_read       (mm_interconnect_0_video_dma_controller_avalon_dma_control_slave_read),       //                                                 .read

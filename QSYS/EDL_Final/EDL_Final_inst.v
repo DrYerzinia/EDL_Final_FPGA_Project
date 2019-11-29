@@ -1,7 +1,11 @@
 	EDL_Final u0 (
 		.button_external_connection_export (<connected-to-button_external_connection_export>), // button_external_connection.export
 		.clk_clk                           (<connected-to-clk_clk>),                           //                        clk.clk
+		.encoder_left_export               (<connected-to-encoder_left_export>),               //               encoder_left.export
+		.encoder_right_export              (<connected-to-encoder_right_export>),              //              encoder_right.export
 		.led_external_connection_export    (<connected-to-led_external_connection_export>),    //    led_external_connection.export
+		.motor_direction_export            (<connected-to-motor_direction_export>),            //            motor_direction.export
+		.on_button_export                  (<connected-to-on_button_export>),                  //                  on_button.export
 		.pixel_clk_clk                     (<connected-to-pixel_clk_clk>),                     //                  pixel_clk.clk
 		.pixel_reset_reset                 (<connected-to-pixel_reset_reset>),                 //                pixel_reset.reset
 		.pwm_export                        (<connected-to-pwm_export>),                        //                        pwm.export
@@ -23,7 +27,6 @@
 		.video_dma_sink_endofpacket        (<connected-to-video_dma_sink_endofpacket>),        //                           .endofpacket
 		.video_dma_sink_valid              (<connected-to-video_dma_sink_valid>),              //                           .valid
 		.video_dma_sink_ready              (<connected-to-video_dma_sink_ready>),              //                           .ready
-		.encoder_left_export               (<connected-to-encoder_left_export>),               //               encoder_left.export
-		.encoder_right_export              (<connected-to-encoder_right_export>)               //              encoder_right.export
+		.uptime_export                     (<connected-to-uptime_export>)                      //                     uptime.export
 	);
 

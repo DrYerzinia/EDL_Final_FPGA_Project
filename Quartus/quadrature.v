@@ -1,4 +1,5 @@
 module quadrature(clk, quadA, quadB, count);
+
 input clk, quadA, quadB;
 output signed [31:0] count;
 

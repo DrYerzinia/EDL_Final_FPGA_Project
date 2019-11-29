@@ -2,7 +2,11 @@
 module EDL_Final (
 	button_external_connection_export,
 	clk_clk,
+	encoder_left_export,
+	encoder_right_export,
 	led_external_connection_export,
+	motor_direction_export,
+	on_button_export,
 	pixel_clk_clk,
 	pixel_reset_reset,
 	pwm_export,
@@ -24,12 +28,15 @@ module EDL_Final (
 	video_dma_sink_endofpacket,
 	video_dma_sink_valid,
 	video_dma_sink_ready,
-	encoder_left_export,
-	encoder_right_export);	
+	uptime_export);	
 
 	input	[1:0]	button_external_connection_export;
 	input		clk_clk;
+	input	[31:0]	encoder_left_export;
+	input	[31:0]	encoder_right_export;
 	output	[9:0]	led_external_connection_export;
+	output	[3:0]	motor_direction_export;
+	input		on_button_export;
 	input		pixel_clk_clk;
 	input		pixel_reset_reset;
 	output	[15:0]	pwm_export;
@@ -51,6 +58,5 @@ module EDL_Final (
 	input		video_dma_sink_endofpacket;
 	input		video_dma_sink_valid;
 	output		video_dma_sink_ready;
-	input	[31:0]	encoder_left_export;
-	input	[31:0]	encoder_right_export;
+	input	[31:0]	uptime_export;
 endmodule

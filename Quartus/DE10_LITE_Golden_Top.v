@@ -143,6 +143,15 @@ wire [7:0] PWM_2;
 wire 		  PWM_1_OUT;
 wire 		  PWM_2_OUT;
 
+wire C_1;
+wire CW_1;
+wire C_2;
+wire CW_2;
+
+wire ON_OFF;
+
+wire [31:0] UPTIME;
+
 //encoder counters
 wire signed [31:0] LEFT_ENC;
 wire signed [31:0] RIGHT_ENC;
@@ -168,19 +177,29 @@ assign HEX5 = 8'hFF;
 
 assign ARDUINO_IO[0] = PWM_1_OUT;
 
-assign ARDUINO_IO[1] = 1'b1;
-assign ARDUINO_IO[2] = 1'b0;
+assign ARDUINO_IO[1] = C_1;
+assign ARDUINO_IO[2] = CW_1;
 
 assign ENC_A_1 = ARDUINO_IO[3];
 assign ENC_B_1 = ARDUINO_IO[4];
 
 assign ARDUINO_IO[5] = PWM_2_OUT;
 
-assign ARDUINO_IO[6] = 1'b1;
-assign ARDUINO_IO[7] = 1'b0;
+assign ARDUINO_IO[6] = C_2;
+assign ARDUINO_IO[7] = CW_2;
 
 assign ENC_A_2 = ARDUINO_IO[8];
 assign ENC_B_2 = ARDUINO_IO[9];
+
+assign ON_OFF = ARDUINO_IO[10];
+
+Uptime uptime(
+
+    .clk				(PWM_CLOCK),
+    .uptime			(UPTIME)
+
+);
+
 
 PWM pwm_1(
     .clk				(PWM_CLOCK),
@@ -220,14 +239,14 @@ CameraStreamer streamer (
 );
 
 quadrature left_wheel(
-	.clk 					(SYSCLK),
+	.clk 					(PWM_CLOCK),
 	.quadA				(ENC_A_1),
 	.quadB				(ENC_B_1),
 	.count				(LEFT_ENC)
 );
 
 quadrature right_wheel(
-	.clk 					(SYSCLK),
+	.clk 					(PWM_CLOCK),
 	.quadA				(ENC_A_2),
 	.quadB				(ENC_B_2),
 	.count				(RIGHT_ENC)
@@ -251,41 +270,46 @@ ColorBarTest color_bar_generator (
 	
 EDL_Final cpu (
 
-		.clk_clk							  		   (MAX10_CLK1_50),          //            clk.clk
+		.clk_clk							  		   (MAX10_CLK1_50),          //             clk.clk
 
-		.sysclk_clk									(SYSCLK),                 //         sysclk.clk
+		.sysclk_clk									(SYSCLK),                 //          sysclk.clk
 		
-		.reset_reset								(1'b1), 					     //          reset.reset_n
-		.reset_bridge_reset                 (RST_BRIDGE),             //   reset_bridge.reset
+		.reset_reset								(1'b1), 					     //           reset.reset_n
+		.reset_bridge_reset                 (RST_BRIDGE),             //    reset_bridge.reset
 
-		.pixel_clk_clk								(PIXEL_CLK),              //      pixel_clk.clk
-		.pixel_reset_reset						(1'b1),                   //    pixel_reset.reset
+		.pixel_clk_clk								(PIXEL_CLK),              //       pixel_clk.clk
+		.pixel_reset_reset						(1'b1),                   //     pixel_reset.reset
 		
 		.button_external_connection_export  (KEY),
 
 		.led_external_connection_export		(LEDR),
 		
-		.pwm_export									({PWM_1, PWM_2}),         //                        pwm.export
+		.pwm_export									({PWM_1, PWM_2}),         //             pwm.export
 
-		.encoder_left_export						(LEFT_ENC),               //               encoder_left.export
-		.encoder_right_export					(RIGHT_ENC),              //              encoder_right.export
+		.encoder_left_export						(LEFT_ENC),               //    encoder_left.export
+		.encoder_right_export					(RIGHT_ENC),              //   encoder_right.export
+
+		.motor_direction_export					({C_1, CW_1, C_2, CW_2}), // motor_direction.export
+		.on_button_export							(ON_OFF),                 //       on_button.export
+
+		.uptime_export								(UPTIME),                 //          uptime.export
 		
-		.sdram_clk_clk								(DRAM_CLK), 			     //      sdram_clk.clk
-		.sdram_wire_addr							(DRAM_ADDR),				  //     sdram_wire.addr
-		.sdram_wire_ba								(DRAM_BA),				     //               .ba
-		.sdram_wire_cas_n							(DRAM_CAS_N),				  //               .cas_n
-		.sdram_wire_cke 							(DRAM_CKE),					  //               .cke
-		.sdram_wire_cs_n							(DRAM_CS_N),				  //               .cs_n
-		.sdram_wire_dq								(DRAM_DQ), 					  //               .dq
-		.sdram_wire_dqm							({DRAM_UDQM, DRAM_LDQM}), //               .dqm
-		.sdram_wire_ras_n							(DRAM_RAS_N),				  //               .ras_n
-		.sdram_wire_we_n							(DRAM_WE_N),   			  //               .we_n
+		.sdram_clk_clk								(DRAM_CLK), 			     //       sdram_clk.clk
+		.sdram_wire_addr							(DRAM_ADDR),				  //      sdram_wire.addr
+		.sdram_wire_ba								(DRAM_BA),				     //                .ba
+		.sdram_wire_cas_n							(DRAM_CAS_N),				  //                .cas_n
+		.sdram_wire_cke 							(DRAM_CKE),					  //                .cke
+		.sdram_wire_cs_n							(DRAM_CS_N),				  //                .cs_n
+		.sdram_wire_dq								(DRAM_DQ), 					  //                .dq
+		.sdram_wire_dqm							({DRAM_UDQM, DRAM_LDQM}), //                .dqm
+		.sdram_wire_ras_n							(DRAM_RAS_N),				  //                .ras_n
+		.sdram_wire_we_n							(DRAM_WE_N),   			  //                .we_n
 
-		.video_dma_sink_data						(RGB_DATA),               // video_dma_sink.data
-		.video_dma_sink_startofpacket			(SOP),      				  //               .startofpacket
-		.video_dma_sink_endofpacket			(EOP),        				  //               .endofpacket
-		.video_dma_sink_valid					(VALID),              	  //               .valid
-		.video_dma_sink_ready               (READY) 						  //               .ready
+		.video_dma_sink_data						(RGB_DATA),               //  video_dma_sink.data
+		.video_dma_sink_startofpacket			(SOP),      				  //                .startofpacket
+		.video_dma_sink_endofpacket			(EOP),        				  //                .endofpacket
+		.video_dma_sink_valid					(VALID),              	  //                .valid
+		.video_dma_sink_ready               (READY) 						  //                .ready
 
 	);
 
