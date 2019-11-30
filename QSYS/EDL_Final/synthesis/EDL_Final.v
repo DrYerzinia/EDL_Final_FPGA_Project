@@ -9,6 +9,7 @@ module EDL_Final (
 		input  wire [31:0] encoder_left_export,               //               encoder_left.export
 		input  wire [31:0] encoder_right_export,              //              encoder_right.export
 		output wire [9:0]  led_external_connection_export,    //    led_external_connection.export
+		input  wire [3:0]  line_detect_export,                //                line_detect.export
 		output wire [3:0]  motor_direction_export,            //            motor_direction.export
 		input  wire        on_button_export,                  //                  on_button.export
 		input  wire        pixel_clk_clk,                     //                  pixel_clk.clk
@@ -106,6 +107,8 @@ module EDL_Final (
 	wire   [1:0] mm_interconnect_0_on_button_s1_address;                                     // mm_interconnect_0:on_button_s1_address -> on_button:address
 	wire  [31:0] mm_interconnect_0_uptime_s1_readdata;                                       // uptime:readdata -> mm_interconnect_0:uptime_s1_readdata
 	wire   [1:0] mm_interconnect_0_uptime_s1_address;                                        // mm_interconnect_0:uptime_s1_address -> uptime:address
+	wire  [31:0] mm_interconnect_0_line_detect_s1_readdata;                                  // line_detect:readdata -> mm_interconnect_0:line_detect_s1_readdata
+	wire   [1:0] mm_interconnect_0_line_detect_s1_address;                                   // mm_interconnect_0:line_detect_s1_address -> line_detect:address
 	wire         irq_mapper_receiver0_irq;                                                   // jtag_uart:av_irq -> irq_mapper:receiver0_irq
 	wire  [31:0] cpu_irq_irq;                                                                // irq_mapper:sender_irq -> cpu:irq
 	wire         rst_controller_reset_out_reset_req;                                         // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
@@ -194,6 +197,14 @@ module EDL_Final (
 		.chipselect (mm_interconnect_0_led_s1_chipselect), //                    .chipselect
 		.readdata   (mm_interconnect_0_led_s1_readdata),   //                    .readdata
 		.out_port   (led_external_connection_export)       // external_connection.export
+	);
+
+	EDL_Final_line_detect line_detect (
+		.clk      (sysclk_clk),                                //                 clk.clk
+		.reset_n  (~reset_bridge_reset),                       //               reset.reset_n
+		.address  (mm_interconnect_0_line_detect_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_0_line_detect_s1_readdata), //                    .readdata
+		.in_port  (line_detect_export)                         // external_connection.export
 	);
 
 	EDL_Final_motor_direction motor_direction (
@@ -322,6 +333,8 @@ module EDL_Final (
 		.led_s1_readdata                                          (mm_interconnect_0_led_s1_readdata),                                          //                                                 .readdata
 		.led_s1_writedata                                         (mm_interconnect_0_led_s1_writedata),                                         //                                                 .writedata
 		.led_s1_chipselect                                        (mm_interconnect_0_led_s1_chipselect),                                        //                                                 .chipselect
+		.line_detect_s1_address                                   (mm_interconnect_0_line_detect_s1_address),                                   //                                   line_detect_s1.address
+		.line_detect_s1_readdata                                  (mm_interconnect_0_line_detect_s1_readdata),                                  //                                                 .readdata
 		.motor_direction_s1_address                               (mm_interconnect_0_motor_direction_s1_address),                               //                               motor_direction_s1.address
 		.motor_direction_s1_write                                 (mm_interconnect_0_motor_direction_s1_write),                                 //                                                 .write
 		.motor_direction_s1_readdata                              (mm_interconnect_0_motor_direction_s1_readdata),                              //                                                 .readdata

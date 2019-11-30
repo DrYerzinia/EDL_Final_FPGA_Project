@@ -152,6 +152,8 @@ wire ON_OFF;
 
 wire [31:0] UPTIME;
 
+wire [3:0] LINE_DETECT;
+
 //encoder counters
 wire signed [31:0] LEFT_ENC;
 wire signed [31:0] RIGHT_ENC;
@@ -217,6 +219,17 @@ CameraClockGenerator cam_clk (
 	.inclk0			(MAX10_CLK1_50),
 	.c0				(CAMERA_CLOCK),
 	.c1				(PWM_CLOCK)
+);
+
+Edge_Detecting_Line_Follower edlf (
+
+	.camera_data		(CAMERA_DATA),
+	.pixel_clock		(PIXEL_CLOCK),
+	.vsync				(VSYNC),
+	.href					(HREF),
+
+	.line_position     (LINE_DETECT)
+
 );
 
 CameraStreamer streamer (
@@ -293,6 +306,8 @@ EDL_Final cpu (
 		.on_button_export							(ON_OFF),                 //       on_button.export
 
 		.uptime_export								(UPTIME),                 //          uptime.export
+		
+		.line_detect_export						(LINE_DETECT),            //     line_detect.export
 		
 		.sdram_clk_clk								(DRAM_CLK), 			     //       sdram_clk.clk
 		.sdram_wire_addr							(DRAM_ADDR),				  //      sdram_wire.addr

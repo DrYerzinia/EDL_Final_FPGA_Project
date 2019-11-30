@@ -81,6 +81,16 @@ kiss_buffer = b''
 
 KISS_END = b'\xC0'
 
+tx_buffer = ctypes.create_string_buffer(1024)
+tx_buffer_p = ctypes.c_char_p(ctypes.addressof(tx_buffer))
+
+tx_buffer[0] = 0xC0
+tx_buffer[1] = 0x70
+tx_buffer[2] = 0xC0
+
+JAWrite(link, tx_buffer_p, 3)
+JAFlush(link)
+
 while 1:
 
     result = JARead(link, string_buffer_p, 1024)
@@ -107,6 +117,10 @@ while 1:
                 kiss_packet = kiss_packet.replace(b'\xDB\xDD', b'\xDB')
 
                 # Log message
+                if kiss_packet[0] == 0x70:
+                    print(kiss_packet[1])
+
+                # Log message
                 if kiss_packet[0] == 0x81:
                     print(kiss_packet[1:])
 
@@ -116,8 +130,13 @@ while 1:
 
                 # RAW Image
                 elif kiss_packet[0] == 0x83:
+
                     image = np.frombuffer(kiss_packet[1:], dtype=np.uint8)
                     image = np.reshape(image, (480, 640, 3))
+ 
+                    with open("image.dat", "wb") as image_dat_file:
+                        np.save(image_dat_file, image)
+ 
                     imgplot = plt.imshow(image)
                     plt.show()
 
@@ -128,6 +147,6 @@ while 1:
 
                 found_packet = True
 
-    #time.sleep(0.001)
+    time.sleep(0.01)
 
 JAClose(link)

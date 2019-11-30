@@ -38,6 +38,8 @@
 
 #define UPTIME_BASE						0x8001000
 
+#define LINE_DETECT_BASE				0x80010a0
+
 // VIDEO DMA CONTROLLER defines
 #define VIDEO_DMA_CONTROLLER__BUFFER_OFFSET					0
 #define VIDEO_DMA_CONTROLLER__BACK_BUFFER_OFFSET			4
@@ -51,10 +53,22 @@
 
 // KISS Interface defines
 typedef enum {
+
+	KISS_PACKET_OPCODES__DO_LOOP		= 0x50,
+	KISS_PACKET_OPCODES__DO_SPIN_5		= 0x51,
+	KISS_PACKET_OPCODES__MOVE_FORWARD	= 0x52,
+	KISS_PACKET_OPCODES__MOVE_BACKWARD	= 0x53,
+	KISS_PACKET_OPCODES__TURN_LEFT		= 0x54,
+	KISS_PACKET_OPCODES__TURN_RIGHT		= 0x55,
+
+	KISS_PACKET_OPCODES__GET_LINE_POS	= 0x70,
+	KISS_PACKET_OPCODES__FOLLOW_LINE	= 0x71,
+
 	KISS_PACKET_OPCODES__LOG			= 0x81,
 	KISS_PACKET_OPCODES__JPEG_IMAGE 	= 0x82,
 	KISS_PACKET_OPCODES__RAW_IMAGE 		= 0x83,
 	KISS_PACKET_OPCODES__STATES			= 0x90
+
 } KISS_PACKET_OPCODES;
 
 // Camera image properties
@@ -71,8 +85,12 @@ volatile uint32_t * const image_buffer_b = (uint32_t *) VIDEO_DMA_CONTROLLER__BU
 
 kiss_t jtag_kiss;
 
+uint8_t jtag_kiss_rx_buffer[100];
+
 #define JTAG_UART_DATA ((volatile int*) JTAG_UART_BASE)
 #define JTAG_UART_CONTROL ((volatile int*) (JTAG_UART_BASE+4))
+
+#define JTAG_UART__MASK__RVALID		0x00008000
 
 #define max( a, b ) ( ( a > b) ? a : b )
 #define min( a, b ) ( ( a < b) ? a : b )
@@ -238,6 +256,12 @@ const uint8_t minimum_stable_pwm = 60; // Minimum PWM with steady motor rotation
 PID_t drive_pid;
 PID_t yaw_pid;
 
+static uint32_t read_line_detect(void){
+
+	return IORD_ALTERA_AVALON_PIO_DATA(LINE_DETECT_BASE);
+
+}
+
 /**
  * Reads the left encoder ticks
  *
@@ -396,7 +420,6 @@ fp_t figure_8_drive_changes[] =
 		CM_100,
 		0.0f
 	};
-
 fp_t figure_8_yaw_changes[] =
 	{
 		0.0f,
@@ -412,50 +435,71 @@ fp_t figure_8_yaw_changes[] =
 		0.0f,
 		TURN_90
 	};
-
 control_t figure_8_ctrl = {
 	.num_states = 12,
 	.drive_changes = figure_8_drive_changes,
 	.yaw_changes = figure_8_yaw_changes
 };
 
-fp_t spin_5_drive_changes[] =
-	{
-		0.0f
-	};
-
-fp_t spin_5_yaw_changes[] =
-	{
-		4 * 5 * TURN_90
-	};
-
+fp_t spin_5_drive_changes[] = { 0.0f };
+fp_t spin_5_yaw_changes[] = { 4 * 5 * TURN_90 };
 control_t spin_5_times_ctrl = {
 	.num_states = 1,
 	.drive_changes = spin_5_drive_changes,
 	.yaw_changes = spin_5_yaw_changes
 };
 
-fp_t spin_1_drive_changes[] =
-	{
-		0.0f
-	};
-
-fp_t spin_1_yaw_changes[] =
-	{
-		4 * TURN_90
-	};
-
+fp_t spin_1_drive_changes[] = { 0.0f };
+fp_t spin_1_yaw_changes[] = { 4 * TURN_90 };
 control_t spin_1_time_ctrl = {
 	.num_states = 1,
 	.drive_changes = spin_1_drive_changes,
 	.yaw_changes = spin_1_yaw_changes
 };
 
-static void motor_control_loop(void){
+fp_t forward_drive_changes[] = { 0.5f };
+fp_t forward_yaw_changes[] = { 0.0f };
+control_t forward_ctrl = {
+	.num_states = 1,
+	.drive_changes = forward_drive_changes,
+	.yaw_changes = forward_yaw_changes
+};
+
+fp_t backward_drive_changes[] = { -0.5f };
+fp_t backward_yaw_changes[] = { 0.0f };
+control_t backward_ctrl = {
+	.num_states = 1,
+	.drive_changes = backward_drive_changes,
+	.yaw_changes = backward_yaw_changes
+};
+
+fp_t left_drive_changes[] = { 0.0f };
+fp_t left_yaw_changes[] = { -0.25f * TURN_90 };
+control_t left_ctrl = {
+	.num_states = 1,
+	.drive_changes = left_drive_changes,
+	.yaw_changes = left_yaw_changes
+};
+
+fp_t right_drive_changes[] = { 0.0f };
+fp_t right_yaw_changes[] = { 0.25f * TURN_90 };
+control_t right_ctrl = {
+	.num_states = 1,
+	.drive_changes = right_drive_changes,
+	.yaw_changes = right_yaw_changes
+};
+
+static void wait_button_press(void){
+
+	// wait for ON switch
+	while ( ( IORD_ALTERA_AVALON_PIO_DATA(ON_BUTTON_BASE) & 1 )  == 0){
+		usleep(1000);
+	}
+
+}
+static void motor_control_loop(control_t * instructions, bool wait){
 
 	motor_init();
-
-	control_t * instructions = &figure_8_ctrl;
 
 	//  Initialize drive and yaw setpoints to 0
 	drive_pid.setpoint = 0.0f;
@@ -468,92 +512,88 @@ static void motor_control_loop(void){
 	// State machine finished, allows exiting of task loop to wait for another switch press to run again
 	bool done = false;
 
-	while(1){
+	if(wait){
+		wait_button_press();
+	}
 
-		// wait for ON switch
-		while ( ( IORD_ALTERA_AVALON_PIO_DATA(ON_BUTTON_BASE) & 1 )  == 0){
-			usleep(1000);
+	usleep(100000);    // Allow user to step away before robot moves
+
+	// Reset state variables
+	done = false;
+	state = 0;
+
+	// setup encoder offsets
+	float left_offset = read_encoder_left() / 1000.0f;
+	float right_offset = read_encoder_right() / 1000.0f;
+
+	// reset state
+	drive_pid.setpoint = 0.0f;
+	yaw_pid.setpoint = 0.0f;
+
+	float last_time = read_uptime() / 1000.0;
+
+	// Run control loops while robot is operating
+	while(!done){
+
+		float uptime = read_uptime() / 1000.0;
+
+		float dt = uptime - last_time;
+
+		// scale encoder outputs to be more consistent with PID gains
+		float left_value = ( read_encoder_left() / 1000.0f ) - left_offset;
+		float right_value = ( read_encoder_right() / 1000.0f ) - right_offset;
+
+		// Convert encoder values to Drive and Yaw state values for control
+		float drive_value = ( left_value + right_value ) / 2.0f;
+		float yaw_value = left_value - right_value;
+
+		/*{
+			uint8_t states_msg[9];
+
+			states_msg[0] = KISS_PACKET_OPCODES__STATES;
+			memcpy(states_msg + 1, &dt, sizeof(dt));
+			memcpy(states_msg + 5, &yaw_value, sizeof(yaw_value));
+
+			kiss_send_packet(&jtag_kiss, (const uint8_t *) states_msg, 9);
+		}*/
+
+		// Compute the control efforts from the PID loops
+		fp_t drive_output = pid_compute(&drive_pid, drive_value, dt);
+		fp_t yaw_output   = pid_compute(&yaw_pid, yaw_value, dt);
+
+		// Mix the control efforts into the motors
+		int16_t left_output = normalize_output(scale_output(drive_output) + scale_output(yaw_output));
+		int16_t right_output = normalize_output(scale_output(drive_output) - scale_output(yaw_output));
+
+		// send the control efforts to the motors
+		set_motors(left_output, right_output);
+
+		// Wait for drive and yaw goals to be met, then start a state transition
+		if(drive_value < drive_pid.setpoint + TOLERANCE && drive_value > drive_pid.setpoint - TOLERANCE
+		   && yaw_value < yaw_pid.setpoint + TOLERANCE && yaw_value > yaw_pid.setpoint - TOLERANCE){
+			state++;
+			state_change = true;
 		}
 
-		usleep(100000);    // Allow user to step away before robot moves
+		// Switch states to perform a figure 8 motion
+		if(state_change){
 
-		// Reset state variables
-		done = false;
-		state = 0;
-
-		// setup encoder offsets
-		float left_offset = read_encoder_left() / 1000.0f;
-		float right_offset = read_encoder_right() / 1000.0f;
-
-		// reset state
-		drive_pid.setpoint = 0.0f;
-		yaw_pid.setpoint = 0.0f;
-
-		float last_time = read_uptime() / 1000.0;
-
-		// Run control loops while robot is operating
-		while(!done){
-
-			float uptime = read_uptime() / 1000.0;
-
-			float dt = uptime - last_time;
-
-			// scale encoder outputs to be more consistent with PID gains
-			float left_value = ( read_encoder_left() / 1000.0f ) - left_offset;
-			float right_value = ( read_encoder_right() / 1000.0f ) - right_offset;
-
-			// Convert encoder values to Drive and Yaw state values for control
-			float drive_value = ( left_value + right_value ) / 2.0f;
-			float yaw_value = left_value - right_value;
-
-			/*{
-				uint8_t states_msg[9];
-
-				states_msg[0] = KISS_PACKET_OPCODES__STATES;
-				memcpy(states_msg + 1, &dt, sizeof(dt));
-				memcpy(states_msg + 5, &yaw_value, sizeof(yaw_value));
-
-				kiss_send_packet(&jtag_kiss, (const uint8_t *) states_msg, 9);
-			}*/
-
-			// Compute the control efforts from the PID loops
-			fp_t drive_output = pid_compute(&drive_pid, drive_value, dt);
-			fp_t yaw_output   = pid_compute(&yaw_pid, yaw_value, dt);
-
-			// Mix the control efforts into the motors
-			int16_t left_output = normalize_output(scale_output(drive_output) + scale_output(yaw_output));
-			int16_t right_output = normalize_output(scale_output(drive_output) - scale_output(yaw_output));
-
-			// send the control efforts to the motors
-			set_motors(left_output, right_output);
-
-			// Wait for drive and yaw goals to be met, then start a state transition
-			if(drive_value < drive_pid.setpoint + TOLERANCE && drive_value > drive_pid.setpoint - TOLERANCE
-			   && yaw_value < yaw_pid.setpoint + TOLERANCE && yaw_value > yaw_pid.setpoint - TOLERANCE){
-				state++;
-				state_change = true;
+			if(state == ( instructions->num_states + 1) ){
+				set_motors(0, 0);
+				done = true;
+			} else {
+				drive_pid.setpoint += instructions->drive_changes[state - 1];
+				yaw_pid.setpoint += instructions->yaw_changes[state - 1];
 			}
 
-			// Switch states to perform a figure 8 motion
-			if(state_change){
-
-				if(state == ( instructions->num_states + 1) ){
-					set_motors(0, 0);
-					done = true;
-				} else {
-					drive_pid.setpoint += instructions->drive_changes[state - 1];
-					yaw_pid.setpoint += instructions->yaw_changes[state - 1];
-				}
-
-				state_change = false;
-
-			}
-
-			last_time = uptime;
+			state_change = false;
 
 		}
+
+		last_time = uptime;
 
 	}
+
 }
 
 // Tests //////////////////////////////////////////////////////////////////////
@@ -575,6 +615,37 @@ static void encoder_test(){
 
 		usleep(10000);
 	}
+
+}
+
+static void follow_line(){
+
+	uint32_t i;
+	for(i = 0; i < 20000; i++){
+
+		// line position -8 to 8
+		int8_t line = read_line_detect() - 8;
+
+		int8_t yaw_bias = 0;
+
+		if(line < 0){
+			yaw_bias = 35;
+			//set_motors(-1 * 15, 15);
+		} else if(line > 0){
+			yaw_bias = -35;
+			//set_motors(15, -1 * 15);
+		} else {
+			//set_motors(0, 0);
+			//break;
+		}
+
+		set_motors(45 - yaw_bias, 45 + yaw_bias);
+
+		usleep(100);
+
+	}
+
+	set_motors(0, 0);
 
 }
 
@@ -616,13 +687,19 @@ static void image_download_test(){
 	}
 
 }
+
 // MAIN ///////////////////////////////////////////////////////////////////////
 
 int main()
 {
 
 	// Setup JTAG kiss interface
-	jtag_kiss.send = jtag_kiss_send;
+	jtag_kiss.send 				 = jtag_kiss_send;
+	jtag_kiss.rx_state 			 = KISS_STATE__NORMAL;
+	jtag_kiss.rx_buffer 		 = jtag_kiss_rx_buffer;
+	jtag_kiss.rx_buffer_position = 0;
+
+	*JTAG_UART_CONTROL = 0; // Disable interrupts
 
 	// Send startup message
 	const char hello_world[] = "\x81Hello from Nios II!";
@@ -630,11 +707,78 @@ int main()
 
 	usleep(1000000);
 
-	motor_control_loop();
+	while(1){
+
+		// Read UART and see if there is data
+		uint32_t data = *JTAG_UART_DATA;
+		if( (data & JTAG_UART__MASK__RVALID ) != 0){
+
+			uint16_t len = kiss_rx_byte(&jtag_kiss, (uint8_t)( data & 0xFF ) );
+
+			if(len > 0){
+
+				switch(jtag_kiss.rx_buffer[0]){
+
+					case KISS_PACKET_OPCODES__DO_LOOP:
+						motor_control_loop(&figure_8_ctrl, false);
+						break;
+
+					case KISS_PACKET_OPCODES__DO_SPIN_5:
+						motor_control_loop(&spin_5_times_ctrl, false);
+						break;
+
+					case KISS_PACKET_OPCODES__MOVE_FORWARD:
+						motor_control_loop(&forward_ctrl, false);
+						break;
+
+					case KISS_PACKET_OPCODES__MOVE_BACKWARD:
+						motor_control_loop(&backward_ctrl, false);
+						break;
+
+					case KISS_PACKET_OPCODES__TURN_LEFT:
+						motor_control_loop(&left_ctrl, false);
+						break;
+
+					case KISS_PACKET_OPCODES__TURN_RIGHT:
+						motor_control_loop(&right_ctrl, false);
+						break;
+
+
+					case KISS_PACKET_OPCODES__GET_LINE_POS:
+						{
+
+							uint8_t line_detect_message[2];
+
+							line_detect_message[0] = KISS_PACKET_OPCODES__GET_LINE_POS;
+							line_detect_message[1] = read_line_detect();
+
+							kiss_send_packet(&jtag_kiss, (const uint8_t *) line_detect_message, 2);
+						}
+						break;
+
+					case KISS_PACKET_OPCODES__FOLLOW_LINE:
+						follow_line();
+						break;
+
+					case KISS_PACKET_OPCODES__RAW_IMAGE:
+						image_download_test();
+						break;
+
+					default:
+						break;
+
+				}
+
+			}
+
+		}
+
+	}
+
+	//image_download_test();
+	//motor_control_loop();
 	//motor_ramp_test();
 	//encoder_test();
-
-	while(1);
 
 	return 0;
 

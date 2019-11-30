@@ -22,11 +22,12 @@
 		.sdram_wire_ras_n                  (<connected-to-sdram_wire_ras_n>),                  //                           .ras_n
 		.sdram_wire_we_n                   (<connected-to-sdram_wire_we_n>),                   //                           .we_n
 		.sysclk_clk                        (<connected-to-sysclk_clk>),                        //                     sysclk.clk
+		.uptime_export                     (<connected-to-uptime_export>),                     //                     uptime.export
 		.video_dma_sink_data               (<connected-to-video_dma_sink_data>),               //             video_dma_sink.data
 		.video_dma_sink_startofpacket      (<connected-to-video_dma_sink_startofpacket>),      //                           .startofpacket
 		.video_dma_sink_endofpacket        (<connected-to-video_dma_sink_endofpacket>),        //                           .endofpacket
 		.video_dma_sink_valid              (<connected-to-video_dma_sink_valid>),              //                           .valid
 		.video_dma_sink_ready              (<connected-to-video_dma_sink_ready>),              //                           .ready
-		.uptime_export                     (<connected-to-uptime_export>)                      //                     uptime.export
+		.line_detect_export                (<connected-to-line_detect_export>)                 //                line_detect.export
 	);
 

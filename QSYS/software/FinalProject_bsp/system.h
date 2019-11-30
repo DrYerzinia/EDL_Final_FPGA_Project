@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Thu Nov 28 20:03:48 MST 2019
+ * Generated: Sat Nov 30 00:11:32 MST 2019
  */
 
 /*
@@ -311,6 +311,33 @@
 #define LED_RESET_VALUE 0
 #define LED_SPAN 16
 #define LED_TYPE "altera_avalon_pio"
+
+
+/*
+ * line_detect configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_line_detect altera_avalon_pio
+#define LINE_DETECT_BASE 0x80010a0
+#define LINE_DETECT_BIT_CLEARING_EDGE_REGISTER 0
+#define LINE_DETECT_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define LINE_DETECT_CAPTURE 0
+#define LINE_DETECT_DATA_WIDTH 4
+#define LINE_DETECT_DO_TEST_BENCH_WIRING 0
+#define LINE_DETECT_DRIVEN_SIM_VALUE 0
+#define LINE_DETECT_EDGE_TYPE "NONE"
+#define LINE_DETECT_FREQ 100000000
+#define LINE_DETECT_HAS_IN 1
+#define LINE_DETECT_HAS_OUT 0
+#define LINE_DETECT_HAS_TRI 0
+#define LINE_DETECT_IRQ -1
+#define LINE_DETECT_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define LINE_DETECT_IRQ_TYPE "NONE"
+#define LINE_DETECT_NAME "/dev/line_detect"
+#define LINE_DETECT_RESET_VALUE 0
+#define LINE_DETECT_SPAN 16
+#define LINE_DETECT_TYPE "altera_avalon_pio"
 
 
 /*

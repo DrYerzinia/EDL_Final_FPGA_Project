@@ -23,12 +23,13 @@ module EDL_Final (
 	sdram_wire_ras_n,
 	sdram_wire_we_n,
 	sysclk_clk,
+	uptime_export,
 	video_dma_sink_data,
 	video_dma_sink_startofpacket,
 	video_dma_sink_endofpacket,
 	video_dma_sink_valid,
 	video_dma_sink_ready,
-	uptime_export);	
+	line_detect_export);	
 
 	input	[1:0]	button_external_connection_export;
 	input		clk_clk;
@@ -53,10 +54,11 @@ module EDL_Final (
 	output		sdram_wire_ras_n;
 	output		sdram_wire_we_n;
 	output		sysclk_clk;
+	input	[31:0]	uptime_export;
 	input	[23:0]	video_dma_sink_data;
 	input		video_dma_sink_startofpacket;
 	input		video_dma_sink_endofpacket;
 	input		video_dma_sink_valid;
 	output		video_dma_sink_ready;
-	input	[31:0]	uptime_export;
+	input	[3:0]	line_detect_export;
 endmodule

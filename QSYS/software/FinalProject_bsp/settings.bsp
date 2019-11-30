@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Nov 28, 2019 8:03:47 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1574996627237</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Nov 30, 2019 12:11:31 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1575097891980</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\DrYerzinia\Documents\EDL_Final_FPGA_Project\QSYS\software\FinalProject_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\EDL_Final.sopcinfo</SopcDesignFile>
@@ -963,6 +963,12 @@
                 <addressRange>0x08001090 - 0x08001097</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>line_detect</slaveDescriptor>
+                <addressRange>0x080010A0 - 0x080010AF</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
         </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>

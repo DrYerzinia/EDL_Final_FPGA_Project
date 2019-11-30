@@ -72,3 +72,63 @@ void kiss_end(kiss_t * kiss){
 	kiss->send(KISS_SYMBOLS__FEND);
 
 }
+
+uint16_t kiss_rx_byte(kiss_t * kiss, uint8_t next_symbol){
+
+	switch( kiss->rx_state ){
+
+		case KISS_STATE__NORMAL:
+			{
+
+				switch( next_symbol ){
+
+					case KISS_SYMBOLS__FEND:
+						{
+
+							uint16_t len = kiss->rx_buffer_position;
+
+							kiss->rx_state = KISS_STATE__NORMAL;
+							kiss->rx_buffer_position = 0;
+
+							if(len > 0){
+								return len;
+							}
+
+						}
+
+						break;
+
+					case KISS_SYMBOLS__FESC:
+						kiss->rx_state = KISS_STATE__ESC;
+						break;
+
+					default:
+						kiss->rx_buffer[kiss->rx_buffer_position++] = next_symbol;
+						break;
+
+				}
+			}
+			break;
+
+		case KISS_STATE__ESC:
+			switch( next_symbol ){
+				case KISS_SYMBOLS__TFEND:
+					kiss->rx_buffer[kiss->rx_buffer_position++] = KISS_SYMBOLS__FEND;
+					break;
+
+				case KISS_SYMBOLS__TFESC:
+					kiss->rx_buffer[kiss->rx_buffer_position++] = KISS_SYMBOLS__FEND;
+					break;
+
+				default:
+					// State machine hurt itself in confusion
+					break;
+			}
+			kiss->rx_state = KISS_STATE__NORMAL;
+			break;
+
+	}
+
+	return 0;
+
+}

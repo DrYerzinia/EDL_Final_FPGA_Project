@@ -32,8 +32,12 @@ typedef enum {
 
 typedef struct {
 
-	kiss_state_e state;
-	send_byte send;
+	kiss_state_e  state;
+	send_byte 	  send;
+
+	kiss_state_e  rx_state;
+	uint8_t *     rx_buffer;
+	uint16_t	  rx_buffer_position;
 
 } kiss_t;
 
@@ -42,5 +46,7 @@ void kiss_send_packet(kiss_t * kiss, const uint8_t * data, size_t len);
 void kiss_start(kiss_t * kiss);
 void kiss_send_data(kiss_t * kiss, const uint8_t * data, size_t len);
 void kiss_end(kiss_t * kiss);
+
+uint16_t kiss_rx_byte(kiss_t * kiss, uint8_t next_symbol);
 
 #endif /* KISS_H_ */
