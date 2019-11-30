@@ -621,7 +621,7 @@ static void encoder_test(){
 static void follow_line(){
 
 	uint32_t i;
-	for(i = 0; i < 20000; i++){
+	for(i = 0; i < 100000; i++){
 
 		// line position -8 to 8
 		int8_t line = read_line_detect() - 8;
@@ -629,17 +629,17 @@ static void follow_line(){
 		int8_t yaw_bias = 0;
 
 		if(line < 0){
-			yaw_bias = 35;
+			yaw_bias = line * -5;
 			//set_motors(-1 * 15, 15);
 		} else if(line > 0){
-			yaw_bias = -35;
+			yaw_bias = line * -5;
 			//set_motors(15, -1 * 15);
 		} else {
 			//set_motors(0, 0);
 			//break;
 		}
 
-		set_motors(45 - yaw_bias, 45 + yaw_bias);
+		set_motors(35 - yaw_bias, 35 + yaw_bias);
 
 		usleep(100);
 
