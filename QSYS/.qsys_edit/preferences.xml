@@ -7,7 +7,6 @@
    <irq preferredWidth="34" />
   </columns>
  </systemtable>
- <library
-   expandedCategories="Library,Project,Library/University Program/Communications,Library/Interface Protocols/Serial,Library/University Program,Library/Interface Protocols" />
- <window width="1936" height="1056" x="-8" y="-8" />
+ <library expandedCategories="Library,Project" />
+ <window width="1370" height="873" x="70" y="27" />
 </preferences>

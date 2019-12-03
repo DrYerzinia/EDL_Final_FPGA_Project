@@ -4,6 +4,7 @@
 		.led_external_connection_export    (<connected-to-led_external_connection_export>),    //    led_external_connection.export
 		.pixel_clk_clk                     (<connected-to-pixel_clk_clk>),                     //                  pixel_clk.clk
 		.pixel_reset_reset                 (<connected-to-pixel_reset_reset>),                 //                pixel_reset.reset
+		.pwm_export                        (<connected-to-pwm_export>),                        //                        pwm.export
 		.reset_reset                       (<connected-to-reset_reset>),                       //                      reset.reset
 		.reset_bridge_reset                (<connected-to-reset_bridge_reset>),                //               reset_bridge.reset
 		.sdram_clk_clk                     (<connected-to-sdram_clk_clk>),                     //                  sdram_clk.clk
@@ -21,7 +22,6 @@
 		.video_dma_sink_startofpacket      (<connected-to-video_dma_sink_startofpacket>),      //                           .startofpacket
 		.video_dma_sink_endofpacket        (<connected-to-video_dma_sink_endofpacket>),        //                           .endofpacket
 		.video_dma_sink_valid              (<connected-to-video_dma_sink_valid>),              //                           .valid
-		.video_dma_sink_ready              (<connected-to-video_dma_sink_ready>),              //                           .ready
-		.pwm_export                        (<connected-to-pwm_export>)                         //                        pwm.export
+		.video_dma_sink_ready              (<connected-to-video_dma_sink_ready>)               //                           .ready
 	);
 

@@ -121,6 +121,14 @@
          type = "int";
       }
    }
+   element rs232_0
+   {
+      datum _sortIndex
+      {
+         value = "13";
+         type = "int";
+      }
+   }
    element sdram
    {
       datum _sortIndex
@@ -284,7 +292,7 @@
   <parameter name="dataAddrWidth" value="28" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='pwm.s1' start='0x8001000' end='0x8001010' type='altera_avalon_pio.s1' /><slave name='led.s1' start='0x8001010' end='0x8001020' type='altera_avalon_pio.s1' /><slave name='button.s1' start='0x8001020' end='0x8001030' type='altera_avalon_pio.s1' /><slave name='video_dma_controller.avalon_dma_control_slave' start='0x8001030' end='0x8001040' type='altera_up_avalon_video_dma_controller.avalon_dma_control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8001040' end='0x8001048' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='rs232_0.avalon_rs232_slave' start='0x0' end='0x8' type='altera_up_avalon_rs232.avalon_rs232_slave' /><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='pwm.s1' start='0x8001000' end='0x8001010' type='altera_avalon_pio.s1' /><slave name='led.s1' start='0x8001010' end='0x8001020' type='altera_avalon_pio.s1' /><slave name='button.s1' start='0x8001020' end='0x8001030' type='altera_avalon_pio.s1' /><slave name='video_dma_controller.avalon_dma_control_slave' start='0x8001030' end='0x8001040' type='altera_up_avalon_video_dma_controller.avalon_dma_control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8001040' end='0x8001048' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -330,7 +338,7 @@
   <parameter name="instruction_master_high_performance_paddr_size" value="0" />
   <parameter name="instruction_master_paddr_base" value="0" />
   <parameter name="instruction_master_paddr_size" value="0" />
-  <parameter name="internalIrqMaskSystemInfo" value="1" />
+  <parameter name="internalIrqMaskSystemInfo" value="3" />
   <parameter name="io_regionbase" value="0" />
   <parameter name="io_regionsize" value="0" />
   <parameter name="master_addr_map" value="false" />
@@ -521,6 +529,19 @@
   <parameter name="USE_RESET_REQUEST" value="0" />
  </module>
  <module
+   name="rs232_0"
+   kind="altera_up_avalon_rs232"
+   version="17.1"
+   enabled="1">
+  <parameter name="AUTO_CLK_CLOCK_RATE" value="100000000" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="MAX 10" />
+  <parameter name="avalon_bus_type" value="Memory Mapped" />
+  <parameter name="baud" value="9600" />
+  <parameter name="data_bits" value="8" />
+  <parameter name="parity" value="None" />
+  <parameter name="stop_bits" value="1" />
+ </module>
+ <module
    name="sdram"
    kind="altera_avalon_new_sdram_controller"
    version="18.1"
@@ -615,6 +636,15 @@
    kind="avalon"
    version="18.1"
    start="cpu.data_master"
+   end="rs232_0.avalon_rs232_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
    end="cpu.debug_mem_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x08000800" />
@@ -684,11 +714,19 @@
    start="clk.sys_clk"
    end="reset_bridge.clk" />
  <connection kind="clock" version="18.1" start="clk.sys_clk" end="pwm.clk" />
+ <connection kind="clock" version="18.1" start="clk.sys_clk" end="rs232_0.clk" />
  <connection
    kind="clock"
    version="18.1"
    start="clk.sys_clk"
    end="sysclk_bridge.in_clk" />
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="cpu.irq"
+   end="rs232_0.interrupt">
+  <parameter name="irqNumber" value="1" />
+ </connection>
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -720,6 +758,11 @@
    start="clk.reset_source"
    end="video_dma_controller.reset" />
  <connection kind="reset" version="18.1" start="clk.reset_source" end="pwm.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.reset_source"
+   end="rs232_0.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

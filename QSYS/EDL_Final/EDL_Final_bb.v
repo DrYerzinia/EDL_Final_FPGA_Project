@@ -5,6 +5,7 @@ module EDL_Final (
 	led_external_connection_export,
 	pixel_clk_clk,
 	pixel_reset_reset,
+	pwm_export,
 	reset_reset,
 	reset_bridge_reset,
 	sdram_clk_clk,
@@ -22,14 +23,14 @@ module EDL_Final (
 	video_dma_sink_startofpacket,
 	video_dma_sink_endofpacket,
 	video_dma_sink_valid,
-	video_dma_sink_ready,
-	pwm_export);	
+	video_dma_sink_ready);	
 
 	input	[1:0]	button_external_connection_export;
 	input		clk_clk;
 	output	[9:0]	led_external_connection_export;
 	input		pixel_clk_clk;
 	input		pixel_reset_reset;
+	output	[15:0]	pwm_export;
 	input		reset_reset;
 	output		reset_bridge_reset;
 	output		sdram_clk_clk;
@@ -48,5 +49,4 @@ module EDL_Final (
 	input		video_dma_sink_endofpacket;
 	input		video_dma_sink_valid;
 	output		video_dma_sink_ready;
-	output	[15:0]	pwm_export;
 endmodule
