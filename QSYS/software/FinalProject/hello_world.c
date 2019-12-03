@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "altera_avalon_pio_regs.h"
+#include "sys/alt_irq.h"
 #include "system.h"
 
 #include "kiss.h"
@@ -621,7 +622,7 @@ static void encoder_test(){
 static void follow_line(){
 
 	uint32_t i;
-	for(i = 0; i < 100000; i++){
+	for(i = 0; i < 500000; i++){
 
 		// line position -8 to 8
 		int8_t line = read_line_detect() - 8;
@@ -629,10 +630,10 @@ static void follow_line(){
 		int8_t yaw_bias = 0;
 
 		if(line < 0){
-			yaw_bias = line * -5;
+			yaw_bias = line * -10;
 			//set_motors(-1 * 15, 15);
 		} else if(line > 0){
-			yaw_bias = line * -5;
+			yaw_bias = line * -10;
 			//set_motors(15, -1 * 15);
 		} else {
 			//set_motors(0, 0);
@@ -690,6 +691,39 @@ static void image_download_test(){
 
 // MAIN ///////////////////////////////////////////////////////////////////////
 
+bool packet_ready = false;
+uint16_t packet_length = 0;
+
+void jtag_uart_handler(void * context){
+
+	bool has_data = true;
+
+	while(has_data){
+
+		// Read UART and see if there is data
+		uint32_t data = *JTAG_UART_DATA;
+		if( (data & JTAG_UART__MASK__RVALID ) != 0){
+
+			uint16_t len = kiss_rx_byte(&jtag_kiss, (uint8_t)( data & 0xFF ) );
+
+			if(len > 0){
+
+				packet_ready = true;
+				packet_length = len;
+
+			}
+
+		} else {
+
+			has_data = false;
+
+		}
+
+	}
+
+}
+
+
 int main()
 {
 
@@ -700,6 +734,8 @@ int main()
 	jtag_kiss.rx_buffer_position = 0;
 
 	*JTAG_UART_CONTROL = 0; // Disable interrupts
+	alt_ic_isr_register(JTAG_UART_IRQ, JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID, jtag_uart_handler, NULL, NULL);
+	*JTAG_UART_CONTROL = 0x00000001; // Read interrupt
 
 	// Send startup message
 	const char hello_world[] = "\x81Hello from Nios II!";
@@ -708,66 +744,65 @@ int main()
 	usleep(1000000);
 
 	while(1){
+		wait_button_press();
+		follow_line();
+	}
 
-		// Read UART and see if there is data
-		uint32_t data = *JTAG_UART_DATA;
-		if( (data & JTAG_UART__MASK__RVALID ) != 0){
+	while(1){
 
-			uint16_t len = kiss_rx_byte(&jtag_kiss, (uint8_t)( data & 0xFF ) );
+		if(packet_ready){
 
-			if(len > 0){
+			packet_ready = false;
 
-				switch(jtag_kiss.rx_buffer[0]){
+			switch(jtag_kiss.rx_buffer[0]){
 
-					case KISS_PACKET_OPCODES__DO_LOOP:
-						motor_control_loop(&figure_8_ctrl, false);
-						break;
+				case KISS_PACKET_OPCODES__DO_LOOP:
+					motor_control_loop(&figure_8_ctrl, false);
+					break;
 
-					case KISS_PACKET_OPCODES__DO_SPIN_5:
-						motor_control_loop(&spin_5_times_ctrl, false);
-						break;
+				case KISS_PACKET_OPCODES__DO_SPIN_5:
+					motor_control_loop(&spin_5_times_ctrl, false);
+					break;
 
-					case KISS_PACKET_OPCODES__MOVE_FORWARD:
-						motor_control_loop(&forward_ctrl, false);
-						break;
+				case KISS_PACKET_OPCODES__MOVE_FORWARD:
+					motor_control_loop(&forward_ctrl, false);
+					break;
 
-					case KISS_PACKET_OPCODES__MOVE_BACKWARD:
-						motor_control_loop(&backward_ctrl, false);
-						break;
+				case KISS_PACKET_OPCODES__MOVE_BACKWARD:
+					motor_control_loop(&backward_ctrl, false);
+					break;
 
-					case KISS_PACKET_OPCODES__TURN_LEFT:
-						motor_control_loop(&left_ctrl, false);
-						break;
+				case KISS_PACKET_OPCODES__TURN_LEFT:
+					motor_control_loop(&left_ctrl, false);
+					break;
 
-					case KISS_PACKET_OPCODES__TURN_RIGHT:
-						motor_control_loop(&right_ctrl, false);
-						break;
+				case KISS_PACKET_OPCODES__TURN_RIGHT:
+					motor_control_loop(&right_ctrl, false);
+					break;
 
 
-					case KISS_PACKET_OPCODES__GET_LINE_POS:
-						{
+				case KISS_PACKET_OPCODES__GET_LINE_POS:
+					{
 
-							uint8_t line_detect_message[2];
+						uint8_t line_detect_message[2];
 
-							line_detect_message[0] = KISS_PACKET_OPCODES__GET_LINE_POS;
-							line_detect_message[1] = read_line_detect();
+						line_detect_message[0] = KISS_PACKET_OPCODES__GET_LINE_POS;
+						line_detect_message[1] = read_line_detect();
 
-							kiss_send_packet(&jtag_kiss, (const uint8_t *) line_detect_message, 2);
-						}
-						break;
+						kiss_send_packet(&jtag_kiss, (const uint8_t *) line_detect_message, 2);
+					}
+					break;
 
-					case KISS_PACKET_OPCODES__FOLLOW_LINE:
-						follow_line();
-						break;
+				case KISS_PACKET_OPCODES__FOLLOW_LINE:
+					follow_line();
+					break;
 
-					case KISS_PACKET_OPCODES__RAW_IMAGE:
-						image_download_test();
-						break;
+				case KISS_PACKET_OPCODES__RAW_IMAGE:
+					image_download_test();
+					break;
 
-					default:
-						break;
-
-				}
+				default:
+					break;
 
 			}
 
