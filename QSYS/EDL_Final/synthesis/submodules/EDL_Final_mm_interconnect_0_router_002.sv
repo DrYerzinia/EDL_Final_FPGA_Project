@@ -47,23 +47,23 @@ module EDL_Final_mm_interconnect_0_router_002_default_decode
      parameter DEFAULT_CHANNEL = 0,
                DEFAULT_WR_CHANNEL = -1,
                DEFAULT_RD_CHANNEL = -1,
-               DEFAULT_DESTID = 6 
+               DEFAULT_DESTID = 10 
    )
-  (output [94 - 92 : 0] default_destination_id,
-   output [8-1 : 0] default_wr_channel,
-   output [8-1 : 0] default_rd_channel,
-   output [8-1 : 0] default_src_channel
+  (output [96 - 93 : 0] default_destination_id,
+   output [13-1 : 0] default_wr_channel,
+   output [13-1 : 0] default_rd_channel,
+   output [13-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
-    DEFAULT_DESTID[94 - 92 : 0];
+    DEFAULT_DESTID[96 - 93 : 0];
 
   generate
     if (DEFAULT_CHANNEL == -1) begin : no_default_channel_assignment
       assign default_src_channel = '0;
     end
     else begin : default_channel_assignment
-      assign default_src_channel = 8'b1 << DEFAULT_CHANNEL;
+      assign default_src_channel = 13'b1 << DEFAULT_CHANNEL;
     end
   endgenerate
 
@@ -73,8 +73,8 @@ module EDL_Final_mm_interconnect_0_router_002_default_decode
       assign default_rd_channel = '0;
     end
     else begin : default_rw_channel_assignment
-      assign default_wr_channel = 8'b1 << DEFAULT_WR_CHANNEL;
-      assign default_rd_channel = 8'b1 << DEFAULT_RD_CHANNEL;
+      assign default_wr_channel = 13'b1 << DEFAULT_WR_CHANNEL;
+      assign default_rd_channel = 13'b1 << DEFAULT_RD_CHANNEL;
     end
   endgenerate
 
@@ -93,7 +93,7 @@ module EDL_Final_mm_interconnect_0_router_002
     // Command Sink (Input)
     // -------------------
     input                       sink_valid,
-    input  [108-1 : 0]    sink_data,
+    input  [110-1 : 0]    sink_data,
     input                       sink_startofpacket,
     input                       sink_endofpacket,
     output                      sink_ready,
@@ -102,8 +102,8 @@ module EDL_Final_mm_interconnect_0_router_002
     // Command Source (Output)
     // -------------------
     output                          src_valid,
-    output reg [108-1    : 0] src_data,
-    output reg [8-1 : 0] src_channel,
+    output reg [110-1    : 0] src_data,
+    output reg [13-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
     input                           src_ready
@@ -114,12 +114,12 @@ module EDL_Final_mm_interconnect_0_router_002
     // -------------------------------------------------------
     localparam PKT_ADDR_H = 67;
     localparam PKT_ADDR_L = 36;
-    localparam PKT_DEST_ID_H = 94;
-    localparam PKT_DEST_ID_L = 92;
-    localparam PKT_PROTECTION_H = 98;
-    localparam PKT_PROTECTION_L = 96;
-    localparam ST_DATA_W = 108;
-    localparam ST_CHANNEL_W = 8;
+    localparam PKT_DEST_ID_H = 96;
+    localparam PKT_DEST_ID_L = 93;
+    localparam PKT_PROTECTION_H = 100;
+    localparam PKT_PROTECTION_L = 98;
+    localparam ST_DATA_W = 110;
+    localparam ST_CHANNEL_W = 13;
     localparam DECODER_TYPE = 0;
 
     localparam PKT_TRANS_WRITE = 70;
@@ -165,7 +165,7 @@ module EDL_Final_mm_interconnect_0_router_002
     assign src_startofpacket = sink_startofpacket;
     assign src_endofpacket   = sink_endofpacket;
     wire [PKT_DEST_ID_W-1:0] default_destid;
-    wire [8-1 : 0] default_src_channel;
+    wire [13-1 : 0] default_src_channel;
 
 
 
@@ -191,13 +191,13 @@ module EDL_Final_mm_interconnect_0_router_002
 
     // ( 0x4000000 .. 0x8000000 )
     if ( {address[RG:PAD0],{PAD0{1'b0}}} == 28'h4000000   ) begin
-            src_channel = 8'b01;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 6;
+            src_channel = 13'b01;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 10;
     end
 
     // ( 0x8000800 .. 0x8001000 )
     if ( {address[RG:PAD1],{PAD1{1'b0}}} == 28'h8000800   ) begin
-            src_channel = 8'b10;
+            src_channel = 13'b10;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 1;
     end
 

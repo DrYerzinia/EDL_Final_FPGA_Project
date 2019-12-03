@@ -21,7 +21,7 @@
    {
       datum baseAddress
       {
-         value = "134221856";
+         value = "134221936";
          type = "String";
       }
    }
@@ -49,6 +49,38 @@
          type = "String";
       }
    }
+   element encoder_left
+   {
+      datum _sortIndex
+      {
+         value = "13";
+         type = "int";
+      }
+   }
+   element encoder_left.s1
+   {
+      datum baseAddress
+      {
+         value = "134221872";
+         type = "String";
+      }
+   }
+   element encoder_right
+   {
+      datum _sortIndex
+      {
+         value = "14";
+         type = "int";
+      }
+   }
+   element encoder_right.s1
+   {
+      datum baseAddress
+      {
+         value = "134221888";
+         type = "String";
+      }
+   }
    element jtag_uart
    {
       datum _sortIndex
@@ -61,7 +93,7 @@
    {
       datum baseAddress
       {
-         value = "134221888";
+         value = "134221968";
          type = "String";
       }
    }
@@ -74,6 +106,46 @@
       }
    }
    element led.s1
+   {
+      datum baseAddress
+      {
+         value = "134221920";
+         type = "String";
+      }
+   }
+   element line_detect
+   {
+      datum _sortIndex
+      {
+         value = "18";
+         type = "int";
+      }
+   }
+   element motor_direction
+   {
+      datum _sortIndex
+      {
+         value = "15";
+         type = "int";
+      }
+   }
+   element motor_direction.s1
+   {
+      datum baseAddress
+      {
+         value = "134221856";
+         type = "String";
+      }
+   }
+   element on_button
+   {
+      datum _sortIndex
+      {
+         value = "16";
+         type = "int";
+      }
+   }
+   element on_button.s1
    {
       datum baseAddress
       {
@@ -109,7 +181,7 @@
    {
       datum baseAddress
       {
-         value = "134221824";
+         value = "134221904";
          type = "String";
       }
    }
@@ -118,14 +190,6 @@
       datum _sortIndex
       {
          value = "3";
-         type = "int";
-      }
-   }
-   element rs232_0
-   {
-      datum _sortIndex
-      {
-         value = "13";
          type = "int";
       }
    }
@@ -161,6 +225,22 @@
          type = "int";
       }
    }
+   element uptime
+   {
+      datum _sortIndex
+      {
+         value = "17";
+         type = "int";
+      }
+   }
+   element uptime.s1
+   {
+      datum baseAddress
+      {
+         value = "134221824";
+         type = "String";
+      }
+   }
    element video_dma_controller
    {
       datum _sortIndex
@@ -173,7 +253,7 @@
    {
       datum baseAddress
       {
-         value = "134221872";
+         value = "134221952";
          type = "String";
       }
    }
@@ -205,8 +285,33 @@
    dir="end" />
  <interface name="clk" internal="clk.ref_clk" type="clock" dir="end" />
  <interface
+   name="encoder_left"
+   internal="encoder_left.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="encoder_right"
+   internal="encoder_right.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
    name="led_external_connection"
    internal="led.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="line_detect"
+   internal="line_detect.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="motor_direction"
+   internal="motor_direction.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="on_button"
+   internal="on_button.external_connection"
    type="conduit"
    dir="end" />
  <interface name="pixel_clk" internal="pixel_clk.in_clk" type="clock" dir="end" />
@@ -237,6 +342,11 @@
    internal="sysclk_bridge.out_clk"
    type="clock"
    dir="start" />
+ <interface
+   name="uptime"
+   internal="uptime.external_connection"
+   type="conduit"
+   dir="end" />
  <interface
    name="video_dma_sink"
    internal="video_dma_controller.avalon_dma_sink"
@@ -292,7 +402,7 @@
   <parameter name="dataAddrWidth" value="28" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='rs232_0.avalon_rs232_slave' start='0x0' end='0x8' type='altera_up_avalon_rs232.avalon_rs232_slave' /><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='pwm.s1' start='0x8001000' end='0x8001010' type='altera_avalon_pio.s1' /><slave name='led.s1' start='0x8001010' end='0x8001020' type='altera_avalon_pio.s1' /><slave name='button.s1' start='0x8001020' end='0x8001030' type='altera_avalon_pio.s1' /><slave name='video_dma_controller.avalon_dma_control_slave' start='0x8001030' end='0x8001040' type='altera_up_avalon_video_dma_controller.avalon_dma_control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8001040' end='0x8001048' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='uptime.s1' start='0x8001000' end='0x8001010' type='altera_avalon_pio.s1' /><slave name='on_button.s1' start='0x8001010' end='0x8001020' type='altera_avalon_pio.s1' /><slave name='motor_direction.s1' start='0x8001020' end='0x8001030' type='altera_avalon_pio.s1' /><slave name='encoder_left.s1' start='0x8001030' end='0x8001040' type='altera_avalon_pio.s1' /><slave name='encoder_right.s1' start='0x8001040' end='0x8001050' type='altera_avalon_pio.s1' /><slave name='pwm.s1' start='0x8001050' end='0x8001060' type='altera_avalon_pio.s1' /><slave name='led.s1' start='0x8001060' end='0x8001070' type='altera_avalon_pio.s1' /><slave name='button.s1' start='0x8001070' end='0x8001080' type='altera_avalon_pio.s1' /><slave name='video_dma_controller.avalon_dma_control_slave' start='0x8001080' end='0x8001090' type='altera_up_avalon_video_dma_controller.avalon_dma_control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8001090' end='0x8001098' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='line_detect.s1' start='0x80010A0' end='0x80010B0' type='altera_avalon_pio.s1' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -338,7 +448,7 @@
   <parameter name="instruction_master_high_performance_paddr_size" value="0" />
   <parameter name="instruction_master_paddr_base" value="0" />
   <parameter name="instruction_master_paddr_size" value="0" />
-  <parameter name="internalIrqMaskSystemInfo" value="3" />
+  <parameter name="internalIrqMaskSystemInfo" value="1" />
   <parameter name="io_regionbase" value="0" />
   <parameter name="io_regionsize" value="0" />
   <parameter name="master_addr_map" value="false" />
@@ -451,6 +561,42 @@
   <parameter name="userDefinedSettings" value="" />
  </module>
  <module
+   name="encoder_left"
+   kind="altera_avalon_pio"
+   version="18.1"
+   enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="32" />
+ </module>
+ <module
+   name="encoder_right"
+   kind="altera_avalon_pio"
+   version="18.1"
+   enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="32" />
+ </module>
+ <module
    name="jtag_uart"
    kind="altera_avalon_jtag_uart"
    version="18.1"
@@ -482,6 +628,56 @@
   <parameter name="simDoTestBenchWiring" value="false" />
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="10" />
+ </module>
+ <module
+   name="line_detect"
+   kind="altera_avalon_pio"
+   version="18.1"
+   enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="4" />
+ </module>
+ <module
+   name="motor_direction"
+   kind="altera_avalon_pio"
+   version="18.1"
+   enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Output" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="4" />
+ </module>
+ <module name="on_button" kind="altera_avalon_pio" version="18.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="1" />
  </module>
  <module
    name="pixel_clk"
@@ -527,19 +723,6 @@
   <parameter name="NUM_RESET_OUTPUTS" value="1" />
   <parameter name="SYNCHRONOUS_EDGES" value="deassert" />
   <parameter name="USE_RESET_REQUEST" value="0" />
- </module>
- <module
-   name="rs232_0"
-   kind="altera_up_avalon_rs232"
-   version="17.1"
-   enabled="1">
-  <parameter name="AUTO_CLK_CLOCK_RATE" value="100000000" />
-  <parameter name="AUTO_DEVICE_FAMILY" value="MAX 10" />
-  <parameter name="avalon_bus_type" value="Memory Mapped" />
-  <parameter name="baud" value="9600" />
-  <parameter name="data_bits" value="8" />
-  <parameter name="parity" value="None" />
-  <parameter name="stop_bits" value="1" />
  </module>
  <module
    name="sdram"
@@ -588,6 +771,20 @@
   <parameter name="EXPLICIT_CLOCK_RATE" value="100000000" />
   <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
  </module>
+ <module name="uptime" kind="altera_avalon_pio" version="18.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="32" />
+ </module>
  <module
    name="video_dma_controller"
    kind="altera_up_avalon_video_dma_controller"
@@ -620,7 +817,7 @@
    start="cpu.data_master"
    end="video_dma_controller.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08001030" />
+  <parameter name="baseAddress" value="0x08001080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -629,16 +826,7 @@
    start="cpu.data_master"
    end="jtag_uart.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08001040" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.1"
-   start="cpu.data_master"
-   end="rs232_0.avalon_rs232_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="baseAddress" value="0x08001090" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -657,17 +845,67 @@
  </connection>
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="button.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08001020" />
+  <parameter name="baseAddress" value="0x08001070" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="led.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08001010" />
+  <parameter name="baseAddress" value="0x08001060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="pwm.s1">
   <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x08001050" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="encoder_right.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x08001040" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="encoder_left.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x08001030" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="motor_direction.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x08001020" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="on_button.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x08001010" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection kind="avalon" version="18.1" start="cpu.data_master" end="uptime.s1">
+  <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x08001000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="line_detect.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x080010a0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -714,19 +952,29 @@
    start="clk.sys_clk"
    end="reset_bridge.clk" />
  <connection kind="clock" version="18.1" start="clk.sys_clk" end="pwm.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="rs232_0.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk.sys_clk"
+   end="encoder_right.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk.sys_clk"
+   end="encoder_left.clk" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk.sys_clk"
+   end="motor_direction.clk" />
+ <connection kind="clock" version="18.1" start="clk.sys_clk" end="on_button.clk" />
+ <connection kind="clock" version="18.1" start="clk.sys_clk" end="line_detect.clk" />
+ <connection kind="clock" version="18.1" start="clk.sys_clk" end="uptime.clk" />
  <connection
    kind="clock"
    version="18.1"
    start="clk.sys_clk"
    end="sysclk_bridge.in_clk" />
- <connection
-   kind="interrupt"
-   version="18.1"
-   start="cpu.irq"
-   end="rs232_0.interrupt">
-  <parameter name="irqNumber" value="1" />
- </connection>
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -762,7 +1010,32 @@
    kind="reset"
    version="18.1"
    start="clk.reset_source"
-   end="rs232_0.reset" />
+   end="encoder_left.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.reset_source"
+   end="encoder_right.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.reset_source"
+   end="motor_direction.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.reset_source"
+   end="on_button.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.reset_source"
+   end="uptime.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.reset_source"
+   end="line_detect.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

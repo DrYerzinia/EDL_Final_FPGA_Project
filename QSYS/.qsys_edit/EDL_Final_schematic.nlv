@@ -1,41 +1,49 @@
 # # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
 # 
-preplace inst EDL_Final.sdram -pg 1 -lvl 3 -y 230
+preplace inst EDL_Final.sdram -pg 1 -lvl 3 -y 430
+preplace inst EDL_Final.motor_direction -pg 1 -lvl 3 -y 130
+preplace inst EDL_Final.on_button -pg 1 -lvl 3 -y 690
 preplace inst EDL_Final.clk.reset_from_locked -pg 1
-preplace inst EDL_Final.pwm -pg 1 -lvl 3 -y 30
+preplace inst EDL_Final.pwm -pg 1 -lvl 3 -y 230
 preplace inst EDL_Final.cpu.reset_bridge -pg 1
 preplace inst EDL_Final -pg 1 -lvl 1 -y 40 -regy -20
-preplace inst EDL_Final.pixel_clk -pg 1 -lvl 1 -y 290
-preplace inst EDL_Final.jtag_uart -pg 1 -lvl 3 -y 130
-preplace inst EDL_Final.sdram_clk -pg 1 -lvl 2 -y 490
-preplace inst EDL_Final.reset_bridge -pg 1 -lvl 2 -y 340
+preplace inst EDL_Final.pixel_clk -pg 1 -lvl 1 -y 390
+preplace inst EDL_Final.jtag_uart -pg 1 -lvl 3 -y 330
+preplace inst EDL_Final.sdram_clk -pg 1 -lvl 2 -y 610
+preplace inst EDL_Final.reset_bridge -pg 1 -lvl 2 -y 530
 preplace inst EDL_Final.cpu.cpu -pg 1
 preplace inst EDL_Final.clk.sys_pll -pg 1
-preplace inst EDL_Final.pixel_reset -pg 1 -lvl 2 -y 280
-preplace inst EDL_Final.cpu -pg 1 -lvl 2 -y 130
-preplace inst EDL_Final.clk -pg 1 -lvl 1 -y 190
-preplace inst EDL_Final.led -pg 1 -lvl 3 -y 410
-preplace inst EDL_Final.video_dma_controller -pg 1 -lvl 3 -y 670
-preplace inst EDL_Final.sysclk_bridge -pg 1 -lvl 2 -y 630
-preplace inst EDL_Final.button -pg 1 -lvl 3 -y 510
+preplace inst EDL_Final.pixel_reset -pg 1 -lvl 2 -y 370
+preplace inst EDL_Final.encoder_right -pg 1 -lvl 3 -y 890
+preplace inst EDL_Final.cpu -pg 1 -lvl 2 -y 200
+preplace inst EDL_Final.clk -pg 1 -lvl 1 -y 280
+preplace inst EDL_Final.led -pg 1 -lvl 3 -y 550
+preplace inst EDL_Final.video_dma_controller -pg 1 -lvl 3 -y 1010
+preplace inst EDL_Final.sysclk_bridge -pg 1 -lvl 2 -y 730
+preplace inst EDL_Final.button -pg 1 -lvl 3 -y 790
 preplace inst EDL_Final.cpu.clock_bridge -pg 1
-preplace netloc FAN_OUT<net_container>EDL_Final</net_container>(SLAVE)button.reset,(SLAVE)pwm.reset,(SLAVE)reset_bridge.in_reset,(SLAVE)sdram.reset,(SLAVE)cpu.reset,(SLAVE)jtag_uart.reset,(MASTER)clk.reset_source,(SLAVE)led.reset,(SLAVE)video_dma_controller.reset) 1 1 2 500 460 960
-preplace netloc POINT_TO_POINT<net_container>EDL_Final</net_container>(MASTER)cpu.irq,(SLAVE)jtag_uart.irq) 1 2 1 900
+preplace inst EDL_Final.encoder_left -pg 1 -lvl 3 -y 30
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(MASTER)reset_bridge.out_reset,(MASTER)EDL_Final.reset_bridge) 1 2 2 NJ 540 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)clk.ref_reset,(SLAVE)EDL_Final.reset) 1 0 1 NJ
+preplace netloc POINT_TO_POINT<net_container>EDL_Final</net_container>(MASTER)cpu.irq,(SLAVE)jtag_uart.irq) 1 2 1 920
 preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.clk,(SLAVE)clk.ref_clk) 1 0 1 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)pixel_clk.in_clk,(SLAVE)EDL_Final.pixel_clk) 1 0 1 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.reset,(SLAVE)clk.ref_reset) 1 0 1 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.pixel_reset,(SLAVE)pixel_reset.in_reset) 1 0 2 NJ 340 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.button_external_connection,(SLAVE)button.external_connection) 1 0 3 NJ 540 NJ 540 NJ
-preplace netloc INTERCONNECT<net_container>EDL_Final</net_container>(MASTER)video_dma_controller.avalon_dma_master,(MASTER)cpu.instruction_master,(SLAVE)video_dma_controller.avalon_dma_control_slave,(MASTER)cpu.data_master,(SLAVE)button.s1,(SLAVE)sdram.s1,(SLAVE)jtag_uart.avalon_jtag_slave,(SLAVE)pwm.s1,(SLAVE)led.s1,(SLAVE)cpu.debug_mem_slave) 1 1 3 520 270 880 780 1230
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)led.external_connection,(SLAVE)EDL_Final.led_external_connection) 1 0 3 NJ 440 NJ 440 NJ
-preplace netloc POINT_TO_POINT<net_container>EDL_Final</net_container>(SLAVE)sdram_clk.in_clk,(MASTER)clk.sdram_clk) 1 1 1 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)encoder_right.external_connection,(SLAVE)EDL_Final.encoder_right) 1 0 3 NJ 800 NJ 800 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.on_button,(SLAVE)on_button.external_connection) 1 0 3 NJ 700 NJ 700 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.led_external_connection,(SLAVE)led.external_connection) 1 0 3 NJ 600 NJ 600 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)button.external_connection,(SLAVE)EDL_Final.button_external_connection) 1 0 3 NJ 780 NJ 780 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)pixel_reset.in_reset,(SLAVE)EDL_Final.pixel_reset) 1 0 2 NJ 440 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.pixel_clk,(SLAVE)pixel_clk.in_clk) 1 0 1 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.motor_direction,(SLAVE)motor_direction.external_connection) 1 0 3 NJ 140 NJ 140 NJ
+preplace netloc POINT_TO_POINT<net_container>EDL_Final</net_container>(SLAVE)sdram_clk.in_clk,(MASTER)clk.sdram_clk) 1 1 1 460
 preplace netloc POINT_TO_POINT<net_container>EDL_Final</net_container>(MASTER)pixel_clk.out_clk,(SLAVE)pixel_reset.clk) 1 1 1 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(MASTER)sysclk_bridge.out_clk,(MASTER)EDL_Final.sysclk) 1 2 2 NJ 640 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)sdram.wire,(SLAVE)EDL_Final.sdram_wire) 1 0 3 NJ 410 NJ 410 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(MASTER)EDL_Final.sdram_clk,(MASTER)sdram_clk.out_clk) 1 2 2 NJ 620 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.video_dma_sink,(SLAVE)video_dma_controller.avalon_dma_sink) 1 0 3 NJ 700 NJ 700 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(MASTER)EDL_Final.reset_bridge,(MASTER)reset_bridge.out_reset) 1 2 2 NJ 350 NJ
-preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.pwm,(SLAVE)pwm.external_connection) 1 0 3 NJ 60 NJ 60 NJ
-preplace netloc FAN_OUT<net_container>EDL_Final</net_container>(SLAVE)cpu.clk,(MASTER)clk.sys_clk,(SLAVE)sdram.clk,(SLAVE)reset_bridge.clk,(SLAVE)video_dma_controller.clk,(SLAVE)led.clk,(SLAVE)sysclk_bridge.in_clk,(SLAVE)jtag_uart.clk,(SLAVE)button.clk,(SLAVE)pwm.clk) 1 1 2 480 620 920
-levelinfo -pg 1 0 170 1360
-levelinfo -hier EDL_Final 180 260 640 990 1250
+preplace netloc FAN_OUT<net_container>EDL_Final</net_container>(SLAVE)sysclk_bridge.in_clk,(SLAVE)jtag_uart.clk,(SLAVE)sdram.clk,(SLAVE)pwm.clk,(SLAVE)cpu.clk,(SLAVE)reset_bridge.clk,(SLAVE)encoder_left.clk,(SLAVE)on_button.clk,(SLAVE)button.clk,(SLAVE)encoder_right.clk,(SLAVE)motor_direction.clk,(SLAVE)video_dma_controller.clk,(MASTER)clk.sys_clk,(SLAVE)led.clk) 1 1 2 420 720 1020
+preplace netloc INTERCONNECT<net_container>EDL_Final</net_container>(SLAVE)video_dma_controller.avalon_dma_control_slave,(SLAVE)encoder_right.s1,(SLAVE)motor_direction.s1,(SLAVE)jtag_uart.avalon_jtag_slave,(SLAVE)cpu.debug_mem_slave,(MASTER)cpu.data_master,(MASTER)cpu.instruction_master,(SLAVE)button.s1,(SLAVE)on_button.s1,(SLAVE)encoder_left.s1,(SLAVE)pwm.s1,(SLAVE)led.s1,(SLAVE)sdram.s1,(MASTER)video_dma_controller.avalon_dma_master) 1 1 3 540 360 940 1000 1290
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(MASTER)sysclk_bridge.out_clk,(MASTER)EDL_Final.sysclk) 1 2 2 NJ 680 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(MASTER)EDL_Final.sdram_clk,(MASTER)sdram_clk.out_clk) 1 2 2 NJ 660 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)encoder_left.external_connection,(SLAVE)EDL_Final.encoder_left) 1 0 3 NJ 60 NJ 60 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.video_dma_sink,(SLAVE)video_dma_controller.avalon_dma_sink) 1 0 3 NJ 1040 NJ 1040 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.sdram_wire,(SLAVE)sdram.wire) 1 0 3 NJ 380 NJ 340 NJ
+preplace netloc EXPORT<net_container>EDL_Final</net_container>(SLAVE)EDL_Final.pwm,(SLAVE)pwm.external_connection) 1 0 3 NJ 160 NJ 160 NJ
+preplace netloc FAN_OUT<net_container>EDL_Final</net_container>(SLAVE)led.reset,(SLAVE)video_dma_controller.reset,(SLAVE)encoder_right.reset,(SLAVE)cpu.reset,(SLAVE)reset_bridge.in_reset,(SLAVE)jtag_uart.reset,(SLAVE)motor_direction.reset,(SLAVE)on_button.reset,(SLAVE)sdram.reset,(MASTER)clk.reset_source,(SLAVE)encoder_left.reset,(SLAVE)button.reset,(SLAVE)pwm.reset) 1 1 2 520 440 960
+levelinfo -pg 1 0 170 1420
+levelinfo -hier EDL_Final 180 260 660 1050 1310
