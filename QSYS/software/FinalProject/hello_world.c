@@ -91,6 +91,18 @@ uint8_t jtag_kiss_rx_buffer[100];
 #define JTAG_UART_DATA ((volatile int*) JTAG_UART_BASE)
 #define JTAG_UART_CONTROL ((volatile int*) (JTAG_UART_BASE+4))
 
+
+#define BLE_UART_BASE 0x80000c0
+#define BLE_UART_IRQ 1
+#define BLE_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
+
+#define BLE_UART_RX_DATA ((volatile int*) BLE_UART_BASE)
+#define BLE_UART_TX_DATA ((volatile int*) (BLE_UART_BASE+4))
+#define BLE_UART_STATUS  ((volatile int*) (BLE_UART_BASE+8))
+#define BLE_UART_CONTROL ((volatile int*) (BLE_UART_BASE+12))
+#define BLE_UART_DIVISOR ((volatile int*) (BLE_UART_BASE+16))
+#define BLE_UART_EOP     ((volatile int*) (BLE_UART_BASE+20))
+
 #define JTAG_UART__MASK__RVALID		0x00008000
 
 #define max( a, b ) ( ( a > b) ? a : b )
@@ -622,7 +634,7 @@ static void encoder_test(){
 static void follow_line(){
 
 	uint32_t i;
-	for(i = 0; i < 500000; i++){
+	for(i = 0; i < 100000; i++){
 
 		// line position -8 to 8
 		int8_t line = read_line_detect() - 8;
@@ -691,6 +703,73 @@ static void image_download_test(){
 
 // MAIN ///////////////////////////////////////////////////////////////////////
 
+#define BLE_BUFFER_LEN 20
+
+uint8_t ble_buffer[BLE_BUFFER_LEN] = {0};
+uint8_t ble_buffer_position = 0;
+
+void ble_uart_handler(void * context){
+
+	if( (*BLE_UART_STATUS & 0x0080 ) != 0){
+
+		uint8_t byte = *BLE_UART_RX_DATA;
+
+		ble_buffer[ble_buffer_position++] = byte;
+
+		if((byte & 0xFF) == '\n'){
+
+			/*
+			 * Receive commands
+			 *
+			 * If first character then motor command
+			 * M+000,+000 for stop
+			 * M+255,+255 forward
+			 * M-255,-255 reverse
+			 * M-255,+255 right
+			 */
+			if( ble_buffer[0] == 'M' && ble_buffer_position == 11 ){
+
+				int16_t left = 1;
+				int16_t right = 1;
+
+				// Deal with negatives
+				if(ble_buffer[1] == '-'){
+					left = -1;
+				}
+				if(ble_buffer[6] == '-'){
+					right = -1;
+				}
+
+				// Convert text to magnitude
+				left *=   ( ( ble_buffer[2] - '0' ) * 100 )
+						+ ( ( ble_buffer[3] - '0' ) *  10 )
+						+ ( ( ble_buffer[4] - '0' )       );
+
+				right *=   ( ( ble_buffer[7] - '0' ) * 100 )
+						 + ( ( ble_buffer[8] - '0' ) *  10 )
+						 + ( ( ble_buffer[9] - '0' )       );
+
+				set_motors(left, right);
+
+			}
+
+			// Echo back
+			/*
+			uint8_t i;
+			for(i = 0; i < ble_buffer_position; i++){
+				while( ! ( (*BLE_UART_STATUS) & 0x0040 ) );
+				*BLE_UART_TX_DATA = ble_buffer[i];
+			}
+			 */
+
+			ble_buffer_position = 0;
+
+		}
+
+	}
+
+}
+
 bool packet_ready = false;
 uint16_t packet_length = 0;
 
@@ -733,15 +812,38 @@ int main()
 	jtag_kiss.rx_buffer 		 = jtag_kiss_rx_buffer;
 	jtag_kiss.rx_buffer_position = 0;
 
+	//alt_ic_isr_register(JTAG_UART_IRQ, JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID, jtag_uart_handler, NULL, NULL);
+
 	*JTAG_UART_CONTROL = 0; // Disable interrupts
-	alt_ic_isr_register(JTAG_UART_IRQ, JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID, jtag_uart_handler, NULL, NULL);
+	alt_irq_register(JTAG_UART_IRQ, NULL,  jtag_uart_handler);
 	*JTAG_UART_CONTROL = 0x00000001; // Read interrupt
+
+	*BLE_UART_CONTROL = 0; // Disable interrupts
+	alt_irq_register(BLE_UART_IRQ, NULL,  ble_uart_handler);
+	*BLE_UART_CONTROL = 0x0000080; // Read interrupt
+
+/*
+	while(1){
+		volatile uint32_t control = *BLE_UART_CONTROL;
+		uint32_t data = *BLE_UART_DATA;
+		if( (data & JTAG_UART__MASK__RVALID ) != 0){
+			volatile int x = 0;
+		}
+	}*/
+
 
 	// Send startup message
 	const char hello_world[] = "\x81Hello from Nios II!";
 	kiss_send_packet(&jtag_kiss, (const uint8_t *) hello_world, sizeof(hello_world) - 1);
 
 	usleep(1000000);
+
+	/*while(1){
+		*BLE_UART_TX_DATA = 'A';
+		usleep(100000);
+		*BLE_UART_TX_DATA = '\n';
+		usleep(100000);
+	}*/
 
 	while(1){
 		wait_button_press();

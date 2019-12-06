@@ -223,6 +223,17 @@ altera_avalon_jtag_uart_driver_C_LIB_SRCS := \
 altera_avalon_pio_driver_SRCS_ROOT := drivers
 
 # altera_avalon_pio_driver sources 
+# altera_avalon_uart_driver sources root 
+altera_avalon_uart_driver_SRCS_ROOT := drivers
+
+# altera_avalon_uart_driver sources 
+altera_avalon_uart_driver_C_LIB_SRCS := \
+	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_fd.c \
+	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_init.c \
+	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_ioctl.c \
+	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_read.c \
+	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_write.c
+
 # altera_nios2_gen2_hal_driver sources root 
 altera_nios2_gen2_hal_driver_SRCS_ROOT := HAL
 
@@ -330,6 +341,7 @@ hal_C_LIB_SRCS := \
 # Assemble all component C source files 
 COMPONENT_C_LIB_SRCS += \
 	$(altera_avalon_jtag_uart_driver_C_LIB_SRCS) \
+	$(altera_avalon_uart_driver_C_LIB_SRCS) \
 	$(altera_nios2_gen2_hal_driver_C_LIB_SRCS) \
 	$(altera_up_avalon_video_dma_controller_driver_C_LIB_SRCS) \
 	$(hal_C_LIB_SRCS)

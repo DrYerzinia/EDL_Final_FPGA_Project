@@ -4,6 +4,8 @@
 
 `timescale 1 ps / 1 ps
 module EDL_Final (
+		input  wire        ble_uart_rxd,                      //                   ble_uart.rxd
+		output wire        ble_uart_txd,                      //                           .txd
 		input  wire [1:0]  button_external_connection_export, // button_external_connection.export
 		input  wire        clk_clk,                           //                        clk.clk
 		input  wire [31:0] encoder_left_export,               //               encoder_left.export
@@ -109,10 +111,33 @@ module EDL_Final (
 	wire   [1:0] mm_interconnect_0_uptime_s1_address;                                        // mm_interconnect_0:uptime_s1_address -> uptime:address
 	wire  [31:0] mm_interconnect_0_line_detect_s1_readdata;                                  // line_detect:readdata -> mm_interconnect_0:line_detect_s1_readdata
 	wire   [1:0] mm_interconnect_0_line_detect_s1_address;                                   // mm_interconnect_0:line_detect_s1_address -> line_detect:address
+	wire         mm_interconnect_0_ble_uart_s1_chipselect;                                   // mm_interconnect_0:ble_uart_s1_chipselect -> ble_uart:chipselect
+	wire  [15:0] mm_interconnect_0_ble_uart_s1_readdata;                                     // ble_uart:readdata -> mm_interconnect_0:ble_uart_s1_readdata
+	wire   [2:0] mm_interconnect_0_ble_uart_s1_address;                                      // mm_interconnect_0:ble_uart_s1_address -> ble_uart:address
+	wire         mm_interconnect_0_ble_uart_s1_read;                                         // mm_interconnect_0:ble_uart_s1_read -> ble_uart:read_n
+	wire         mm_interconnect_0_ble_uart_s1_begintransfer;                                // mm_interconnect_0:ble_uart_s1_begintransfer -> ble_uart:begintransfer
+	wire         mm_interconnect_0_ble_uart_s1_write;                                        // mm_interconnect_0:ble_uart_s1_write -> ble_uart:write_n
+	wire  [15:0] mm_interconnect_0_ble_uart_s1_writedata;                                    // mm_interconnect_0:ble_uart_s1_writedata -> ble_uart:writedata
 	wire         irq_mapper_receiver0_irq;                                                   // jtag_uart:av_irq -> irq_mapper:receiver0_irq
+	wire         irq_mapper_receiver1_irq;                                                   // ble_uart:irq -> irq_mapper:receiver1_irq
 	wire  [31:0] cpu_irq_irq;                                                                // irq_mapper:sender_irq -> cpu:irq
 	wire         rst_controller_reset_out_reset_req;                                         // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
 	wire         clk_reset_source_reset;                                                     // clk:reset_source_reset -> rst_controller:reset_in0
+
+	EDL_Final_ble_uart ble_uart (
+		.clk           (sysclk_clk),                                  //                 clk.clk
+		.reset_n       (~reset_bridge_reset),                         //               reset.reset_n
+		.address       (mm_interconnect_0_ble_uart_s1_address),       //                  s1.address
+		.begintransfer (mm_interconnect_0_ble_uart_s1_begintransfer), //                    .begintransfer
+		.chipselect    (mm_interconnect_0_ble_uart_s1_chipselect),    //                    .chipselect
+		.read_n        (~mm_interconnect_0_ble_uart_s1_read),         //                    .read_n
+		.write_n       (~mm_interconnect_0_ble_uart_s1_write),        //                    .write_n
+		.writedata     (mm_interconnect_0_ble_uart_s1_writedata),     //                    .writedata
+		.readdata      (mm_interconnect_0_ble_uart_s1_readdata),      //                    .readdata
+		.rxd           (ble_uart_rxd),                                // external_connection.export
+		.txd           (ble_uart_txd),                                //                    .export
+		.irq           (irq_mapper_receiver1_irq)                     //                 irq.irq
+	);
 
 	EDL_Final_button button (
 		.clk      (sysclk_clk),                           //                 clk.clk
@@ -307,6 +332,13 @@ module EDL_Final (
 		.video_dma_controller_avalon_dma_master_waitrequest       (video_dma_controller_avalon_dma_master_waitrequest),                         //                                                 .waitrequest
 		.video_dma_controller_avalon_dma_master_write             (video_dma_controller_avalon_dma_master_write),                               //                                                 .write
 		.video_dma_controller_avalon_dma_master_writedata         (video_dma_controller_avalon_dma_master_writedata),                           //                                                 .writedata
+		.ble_uart_s1_address                                      (mm_interconnect_0_ble_uart_s1_address),                                      //                                      ble_uart_s1.address
+		.ble_uart_s1_write                                        (mm_interconnect_0_ble_uart_s1_write),                                        //                                                 .write
+		.ble_uart_s1_read                                         (mm_interconnect_0_ble_uart_s1_read),                                         //                                                 .read
+		.ble_uart_s1_readdata                                     (mm_interconnect_0_ble_uart_s1_readdata),                                     //                                                 .readdata
+		.ble_uart_s1_writedata                                    (mm_interconnect_0_ble_uart_s1_writedata),                                    //                                                 .writedata
+		.ble_uart_s1_begintransfer                                (mm_interconnect_0_ble_uart_s1_begintransfer),                                //                                                 .begintransfer
+		.ble_uart_s1_chipselect                                   (mm_interconnect_0_ble_uart_s1_chipselect),                                   //                                                 .chipselect
 		.button_s1_address                                        (mm_interconnect_0_button_s1_address),                                        //                                        button_s1.address
 		.button_s1_readdata                                       (mm_interconnect_0_button_s1_readdata),                                       //                                                 .readdata
 		.cpu_debug_mem_slave_address                              (mm_interconnect_0_cpu_debug_mem_slave_address),                              //                              cpu_debug_mem_slave.address
@@ -370,6 +402,7 @@ module EDL_Final (
 		.clk           (sysclk_clk),               //       clk.clk
 		.reset         (reset_bridge_reset),       // clk_reset.reset
 		.receiver0_irq (irq_mapper_receiver0_irq), // receiver0.irq
+		.receiver1_irq (irq_mapper_receiver1_irq), // receiver1.irq
 		.sender_irq    (cpu_irq_irq)               //    sender.irq
 	);
 

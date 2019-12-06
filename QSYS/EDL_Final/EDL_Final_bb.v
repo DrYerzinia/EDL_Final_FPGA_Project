@@ -5,6 +5,7 @@ module EDL_Final (
 	encoder_left_export,
 	encoder_right_export,
 	led_external_connection_export,
+	line_detect_export,
 	motor_direction_export,
 	on_button_export,
 	pixel_clk_clk,
@@ -29,13 +30,15 @@ module EDL_Final (
 	video_dma_sink_endofpacket,
 	video_dma_sink_valid,
 	video_dma_sink_ready,
-	line_detect_export);	
+	ble_uart_rxd,
+	ble_uart_txd);	
 
 	input	[1:0]	button_external_connection_export;
 	input		clk_clk;
 	input	[31:0]	encoder_left_export;
 	input	[31:0]	encoder_right_export;
 	output	[9:0]	led_external_connection_export;
+	input	[3:0]	line_detect_export;
 	output	[3:0]	motor_direction_export;
 	input		on_button_export;
 	input		pixel_clk_clk;
@@ -60,5 +63,6 @@ module EDL_Final (
 	input		video_dma_sink_endofpacket;
 	input		video_dma_sink_valid;
 	output		video_dma_sink_ready;
-	input	[3:0]	line_detect_export;
+	input		ble_uart_rxd;
+	output		ble_uart_txd;
 endmodule

@@ -28,10 +28,10 @@ output reg [3:0]    line_position;
 reg [3:0]		biggest_bin_index;
 
 // States for YUYV data from camera
-localparam Y1 = 2'b00, U = 2'b01, Y2 = 2'b10, V = 2'b11;
+localparam Y = 1'b0, OTHER = 1'b1;
 
 // Which data is the camera output
-reg 			[2:0]  	state;
+reg 			      	state;
 
 reg						line_start;
 
@@ -49,7 +49,7 @@ reg			[4:0] 	vsync_state;
 initial
 begin
 
-	state = Y1;
+	state = Y;
 	line_counter = 10'b0;
 
 end
@@ -186,7 +186,7 @@ begin
 
 		// Start of line
 		line_counter <= 0;
-		state <= Y1;
+		state <= Y;
 
 		vsync_state <= 0;
 		
@@ -199,20 +199,8 @@ begin
 		case (state)
 
 			// First element is Y
-			Y1: begin
-				state <= U;
-			end
+			Y: begin
 
-			U: begin
-				state <= Y2;
-			end
-			
-			Y2: begin
-				state <= V;
-			end
-
-			V: begin
-			
 				// Cascade Y values
 				/*
 				for(index = 0; index < 6; index = index + 1)
@@ -227,7 +215,7 @@ begin
 				y[5] <= y[6];
 				y[6] <= camera_data;
 
-				state <= Y1;
+				state <= OTHER;
 
 				line_counter <= line_counter + 10'b1;
 	
@@ -239,63 +227,63 @@ begin
 					begin
 
 						// If the delta is greater than 10 add to the bin
-						if(line_counter < 20)
+						if(line_counter < 40)
 						begin
 							b[0] <= b[0] + 16'b1;
 						end
-						else if(line_counter < 40)
+						else if(line_counter < 80)
 						begin
 							b[1] <= b[1] + 16'b1;
 						end
-						else if(line_counter < 60)
+						else if(line_counter < 120)
 						begin
 							b[2] <= b[2] + 16'b1;
 						end
-						else if(line_counter < 80)
+						else if(line_counter < 160)
 						begin
 							b[3] <= b[3] + 16'b1;
 						end
-						else if(line_counter < 100)
+						else if(line_counter < 200)
 						begin
 							b[4] <= b[4] + 16'b1;
 						end
-						else if(line_counter < 120)
+						else if(line_counter < 240)
 						begin
 							b[5] <= b[5] + 16'b1;
 						end
-						else if(line_counter < 140)
+						else if(line_counter < 280)
 						begin
 							b[6] <= b[6] + 16'b1;
 						end
-						else if(line_counter < 160)
+						else if(line_counter < 320)
 						begin
 							b[7] <= b[7] + 16'b1;
 						end
-						else if(line_counter < 180)
+						else if(line_counter < 360)
 						begin
 							b[8] <= b[8] + 16'b1;
 						end
-						else if(line_counter < 200)
+						else if(line_counter < 400)
 						begin
 							b[9] <= b[9] + 16'b1;
 						end
-						else if(line_counter < 220)
+						else if(line_counter < 440)
 						begin
 							b[10] <= b[10] + 16'b1;
 						end
-						else if(line_counter < 240)
+						else if(line_counter < 480)
 						begin
 							b[11] <= b[11] + 16'b1;
 						end
-						else if(line_counter < 260)
+						else if(line_counter < 520)
 						begin
 							b[12] <= b[12] + 16'b1;
 						end
-						else if(line_counter < 280)
+						else if(line_counter < 560)
 						begin
 							b[13] <= b[13] + 16'b1;
 						end
-						else if(line_counter < 300)
+						else if(line_counter < 600)
 						begin
 							b[14] <= b[14] + 16'b1;
 						end
@@ -308,6 +296,13 @@ begin
 
 				end
 	
+			end
+
+			// next element is U or V
+			OTHER: begin
+
+				state <= Y;
+
 			end
 
 		endcase 

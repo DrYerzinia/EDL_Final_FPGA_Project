@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Sat Nov 30 00:11:32 MST 2019
+ * Generated: Thu Dec 05 16:13:58 MST 2019
  */
 
 /*
@@ -136,6 +136,7 @@
 #define __ALTERA_AVALON_JTAG_UART
 #define __ALTERA_AVALON_NEW_SDRAM_CONTROLLER
 #define __ALTERA_AVALON_PIO
+#define __ALTERA_AVALON_UART
 #define __ALTERA_NIOS2_GEN2
 #define __ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER
 
@@ -174,6 +175,31 @@
 #define ALT_STDOUT_PRESENT
 #define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
 #define ALT_SYSTEM_NAME "EDL_Final"
+
+
+/*
+ * ble_uart configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_ble_uart altera_avalon_uart
+#define BLE_UART_BASE 0x80000c0
+#define BLE_UART_BAUD 9600
+#define BLE_UART_DATA_BITS 8
+#define BLE_UART_FIXED_BAUD 1
+#define BLE_UART_FREQ 100000000
+#define BLE_UART_IRQ 1
+#define BLE_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define BLE_UART_NAME "/dev/ble_uart"
+#define BLE_UART_PARITY 'N'
+#define BLE_UART_SIM_CHAR_STREAM ""
+#define BLE_UART_SIM_TRUE_BAUD 0
+#define BLE_UART_SPAN 32
+#define BLE_UART_STOP_BITS 1
+#define BLE_UART_SYNC_REG_DEPTH 2
+#define BLE_UART_TYPE "altera_avalon_uart"
+#define BLE_UART_USE_CTS_RTS 0
+#define BLE_UART_USE_EOP_REGISTER 0
 
 
 /*

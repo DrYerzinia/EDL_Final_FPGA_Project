@@ -154,9 +154,15 @@ wire [31:0] UPTIME;
 
 wire [3:0] LINE_DETECT;
 
-//encoder counters
+// encoder counters
 wire signed [31:0] LEFT_ENC;
 wire signed [31:0] RIGHT_ENC;
+
+wire PDM_CLK;
+wire PDM_DATA;
+
+wire BLE_TXD;
+wire BLE_RXD;
 
 // Camera external connections
 
@@ -195,6 +201,15 @@ assign ENC_B_2 = ARDUINO_IO[9];
 
 assign ON_OFF = ARDUINO_IO[10];
 
+assign ARDUINO_IO[11] = PDM_CLK;
+assign PDM_DATA_1 = ARDUINO_IO[12];
+
+assign ARDUINO_IO[13] = PDM_CLK;
+assign PDM_DATA_2 = ARDUINO_IO[14];
+
+assign GPIO[34] = BLE_TXD;
+assign BLE_RXD = GPIO[35];
+
 Uptime uptime(
 
     .clk				(PWM_CLOCK),
@@ -218,7 +233,28 @@ PWM pwm_2(
 CameraClockGenerator cam_clk (
 	.inclk0			(MAX10_CLK1_50),
 	.c0				(CAMERA_CLOCK),
-	.c1				(PWM_CLOCK)
+	.c1				(PWM_CLOCK),
+	.c2				(PDM_CLK)
+);
+
+PDM_to_PCM pdm_to_pcm_1 (
+
+	.pdm_clk				(PDM_CLK),
+	.pdm					(PDM_DATA_1),
+
+	.pcm_clk				(),
+	.pcm					()
+
+);
+
+PDM_to_PCM pdm_to_pcm_2 (
+
+	.pdm_clk				(PDM_CLK),
+	.pdm					(PDM_DATA_2),
+
+	.pcm_clk				(),
+	.pcm					()
+
 );
 
 Edge_Detecting_Line_Follower edlf (
@@ -292,11 +328,11 @@ EDL_Final cpu (
 
 		.pixel_clk_clk								(PIXEL_CLK),              //       pixel_clk.clk
 		.pixel_reset_reset						(1'b1),                   //     pixel_reset.reset
-		
+
 		.button_external_connection_export  (KEY),
 
 		.led_external_connection_export		(LEDR),
-		
+
 		.pwm_export									({PWM_1, PWM_2}),         //             pwm.export
 
 		.encoder_left_export						(LEFT_ENC),               //    encoder_left.export
@@ -306,8 +342,11 @@ EDL_Final cpu (
 		.on_button_export							(ON_OFF),                 //       on_button.export
 
 		.uptime_export								(UPTIME),                 //          uptime.export
-		
+
 		.line_detect_export						(LINE_DETECT),            //     line_detect.export
+
+      .ble_uart_rxd								(BLE_RXD),                //         ble_uart.rxd
+		.ble_uart_txd								(BLE_TXD),                //                 .txd
 		
 		.sdram_clk_clk								(DRAM_CLK), 			     //       sdram_clk.clk
 		.sdram_wire_addr							(DRAM_ADDR),				  //      sdram_wire.addr
