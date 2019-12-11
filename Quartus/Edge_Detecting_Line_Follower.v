@@ -200,7 +200,9 @@ begin
 
 			// First element is Y
 			Y1: begin
+
 				state <= U;
+				
 			end
 
 			U: begin
@@ -213,6 +215,8 @@ begin
 
 			V: begin
 			
+				state <= Y1;
+
 				// Cascade Y values
 				/*
 				for(index = 0; index < 6; index = index + 1)
@@ -226,8 +230,6 @@ begin
 				y[4] <= y[5];
 				y[5] <= y[6];
 				y[6] <= camera_data;
-
-				state <= Y1;
 
 				line_counter <= line_counter + 10'b1;
 	
@@ -307,6 +309,7 @@ begin
 					end
 
 				end
+				
 	
 			end
 

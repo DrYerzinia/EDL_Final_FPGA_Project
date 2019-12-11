@@ -7,7 +7,7 @@
 
 `timescale 1 ps / 1 ps
 module EDL_Final_mm_interconnect_0 (
-		input  wire        clk_sys_clk_clk,                                          //                                      clk_sys_clk.clk
+		input  wire        clk_clk_clk,                                              //                                          clk_clk.clk
 		input  wire        video_dma_controller_reset_reset_bridge_in_reset_reset,   // video_dma_controller_reset_reset_bridge_in_reset.reset
 		input  wire [27:0] cpu_data_master_address,                                  //                                  cpu_data_master.address
 		output wire        cpu_data_master_waitrequest,                              //                                                 .waitrequest
@@ -1056,7 +1056,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_LINEWRAPBURSTS           (0),
 		.AV_REGISTERINCOMINGSIGNALS  (0)
 	) video_dma_controller_avalon_dma_master_translator (
-		.clk                    (clk_sys_clk_clk),                                                                           //                       clk.clk
+		.clk                    (clk_clk_clk),                                                                               //                       clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset),                                    //                     reset.reset
 		.uav_address            (video_dma_controller_avalon_dma_master_translator_avalon_universal_master_0_address),       // avalon_universal_master_0.address
 		.uav_burstcount         (video_dma_controller_avalon_dma_master_translator_avalon_universal_master_0_burstcount),    //                          .burstcount
@@ -1116,7 +1116,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_LINEWRAPBURSTS           (0),
 		.AV_REGISTERINCOMINGSIGNALS  (1)
 	) cpu_data_master_translator (
-		.clk                    (clk_sys_clk_clk),                                                    //                       clk.clk
+		.clk                    (clk_clk_clk),                                                        //                       clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset),             //                     reset.reset
 		.uav_address            (cpu_data_master_translator_avalon_universal_master_0_address),       // avalon_universal_master_0.address
 		.uav_burstcount         (cpu_data_master_translator_avalon_universal_master_0_burstcount),    //                          .burstcount
@@ -1176,7 +1176,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_LINEWRAPBURSTS           (1),
 		.AV_REGISTERINCOMINGSIGNALS  (0)
 	) cpu_instruction_master_translator (
-		.clk                    (clk_sys_clk_clk),                                                           //                       clk.clk
+		.clk                    (clk_clk_clk),                                                               //                       clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset),                    //                     reset.reset
 		.uav_address            (cpu_instruction_master_translator_avalon_universal_master_0_address),       // avalon_universal_master_0.address
 		.uav_burstcount         (cpu_instruction_master_translator_avalon_universal_master_0_burstcount),    //                          .burstcount
@@ -1238,7 +1238,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) sdram_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (sdram_s1_agent_m0_address),                              // avalon_universal_slave_0.address
 		.uav_burstcount         (sdram_s1_agent_m0_burstcount),                           //                         .burstcount
@@ -1302,7 +1302,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) cpu_debug_mem_slave_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (cpu_debug_mem_slave_agent_m0_address),                   // avalon_universal_slave_0.address
 		.uav_burstcount         (cpu_debug_mem_slave_agent_m0_burstcount),                //                         .burstcount
@@ -1366,7 +1366,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) video_dma_controller_avalon_dma_control_slave_translator (
-		.clk                    (clk_sys_clk_clk),                                                      //                      clk.clk
+		.clk                    (clk_clk_clk),                                                          //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset),               //                    reset.reset
 		.uav_address            (video_dma_controller_avalon_dma_control_slave_agent_m0_address),       // avalon_universal_slave_0.address
 		.uav_burstcount         (video_dma_controller_avalon_dma_control_slave_agent_m0_burstcount),    //                         .burstcount
@@ -1430,7 +1430,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) jtag_uart_avalon_jtag_slave_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (jtag_uart_avalon_jtag_slave_agent_m0_address),           // avalon_universal_slave_0.address
 		.uav_burstcount         (jtag_uart_avalon_jtag_slave_agent_m0_burstcount),        //                         .burstcount
@@ -1494,7 +1494,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) button_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (button_s1_agent_m0_address),                             // avalon_universal_slave_0.address
 		.uav_burstcount         (button_s1_agent_m0_burstcount),                          //                         .burstcount
@@ -1558,7 +1558,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) led_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (led_s1_agent_m0_address),                                // avalon_universal_slave_0.address
 		.uav_burstcount         (led_s1_agent_m0_burstcount),                             //                         .burstcount
@@ -1622,7 +1622,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) pwm_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (pwm_s1_agent_m0_address),                                // avalon_universal_slave_0.address
 		.uav_burstcount         (pwm_s1_agent_m0_burstcount),                             //                         .burstcount
@@ -1686,7 +1686,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) encoder_right_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (encoder_right_s1_agent_m0_address),                      // avalon_universal_slave_0.address
 		.uav_burstcount         (encoder_right_s1_agent_m0_burstcount),                   //                         .burstcount
@@ -1750,7 +1750,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) encoder_left_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (encoder_left_s1_agent_m0_address),                       // avalon_universal_slave_0.address
 		.uav_burstcount         (encoder_left_s1_agent_m0_burstcount),                    //                         .burstcount
@@ -1814,7 +1814,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) motor_direction_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (motor_direction_s1_agent_m0_address),                    // avalon_universal_slave_0.address
 		.uav_burstcount         (motor_direction_s1_agent_m0_burstcount),                 //                         .burstcount
@@ -1878,7 +1878,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) on_button_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (on_button_s1_agent_m0_address),                          // avalon_universal_slave_0.address
 		.uav_burstcount         (on_button_s1_agent_m0_burstcount),                       //                         .burstcount
@@ -1942,7 +1942,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) uptime_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (uptime_s1_agent_m0_address),                             // avalon_universal_slave_0.address
 		.uav_burstcount         (uptime_s1_agent_m0_burstcount),                          //                         .burstcount
@@ -2006,7 +2006,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) line_detect_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (line_detect_s1_agent_m0_address),                        // avalon_universal_slave_0.address
 		.uav_burstcount         (line_detect_s1_agent_m0_burstcount),                     //                         .burstcount
@@ -2070,7 +2070,7 @@ module EDL_Final_mm_interconnect_0 (
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
 	) ble_uart_s1_translator (
-		.clk                    (clk_sys_clk_clk),                                        //                      clk.clk
+		.clk                    (clk_clk_clk),                                            //                      clk.clk
 		.reset                  (video_dma_controller_reset_reset_bridge_in_reset_reset), //                    reset.reset
 		.uav_address            (ble_uart_s1_agent_m0_address),                           // avalon_universal_slave_0.address
 		.uav_burstcount         (ble_uart_s1_agent_m0_burstcount),                        //                         .burstcount
@@ -2160,7 +2160,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_READRESPONSE          (0),
 		.USE_WRITERESPONSE         (0)
 	) video_dma_controller_avalon_dma_master_agent (
-		.clk                   (clk_sys_clk_clk),                                                                           //       clk.clk
+		.clk                   (clk_clk_clk),                                                                               //       clk.clk
 		.reset                 (video_dma_controller_reset_reset_bridge_in_reset_reset),                                    // clk_reset.reset
 		.av_address            (video_dma_controller_avalon_dma_master_translator_avalon_universal_master_0_address),       //        av.address
 		.av_write              (video_dma_controller_avalon_dma_master_translator_avalon_universal_master_0_write),         //          .write
@@ -2241,7 +2241,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_READRESPONSE          (0),
 		.USE_WRITERESPONSE         (0)
 	) cpu_data_master_agent (
-		.clk                   (clk_sys_clk_clk),                                                    //       clk.clk
+		.clk                   (clk_clk_clk),                                                        //       clk.clk
 		.reset                 (video_dma_controller_reset_reset_bridge_in_reset_reset),             // clk_reset.reset
 		.av_address            (cpu_data_master_translator_avalon_universal_master_0_address),       //        av.address
 		.av_write              (cpu_data_master_translator_avalon_universal_master_0_write),         //          .write
@@ -2322,7 +2322,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_READRESPONSE          (0),
 		.USE_WRITERESPONSE         (0)
 	) cpu_instruction_master_agent (
-		.clk                   (clk_sys_clk_clk),                                                           //       clk.clk
+		.clk                   (clk_clk_clk),                                                               //       clk.clk
 		.reset                 (video_dma_controller_reset_reset_bridge_in_reset_reset),                    // clk_reset.reset
 		.av_address            (cpu_instruction_master_translator_avalon_universal_master_0_address),       //        av.address
 		.av_write              (cpu_instruction_master_translator_avalon_universal_master_0_write),         //          .write
@@ -2389,7 +2389,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) sdram_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (sdram_s1_agent_m0_address),                              //              m0.address
 		.m0_burstcount           (sdram_s1_agent_m0_burstcount),                           //                .burstcount
@@ -2448,7 +2448,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) sdram_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (sdram_s1_agent_rf_source_data),                          //        in.data
 		.in_valid          (sdram_s1_agent_rf_source_valid),                         //          .valid
@@ -2489,7 +2489,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) sdram_s1_agent_rdata_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (sdram_s1_agent_rdata_fifo_src_data),                     //        in.data
 		.in_valid          (sdram_s1_agent_rdata_fifo_src_valid),                    //          .valid
@@ -2555,7 +2555,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) cpu_debug_mem_slave_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (cpu_debug_mem_slave_agent_m0_address),                   //              m0.address
 		.m0_burstcount           (cpu_debug_mem_slave_agent_m0_burstcount),                //                .burstcount
@@ -2614,7 +2614,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) cpu_debug_mem_slave_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (cpu_debug_mem_slave_agent_rf_source_data),               //        in.data
 		.in_valid          (cpu_debug_mem_slave_agent_rf_source_valid),              //          .valid
@@ -2680,7 +2680,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) video_dma_controller_avalon_dma_control_slave_agent (
-		.clk                     (clk_sys_clk_clk),                                                                //             clk.clk
+		.clk                     (clk_clk_clk),                                                                    //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset),                         //       clk_reset.reset
 		.m0_address              (video_dma_controller_avalon_dma_control_slave_agent_m0_address),                 //              m0.address
 		.m0_burstcount           (video_dma_controller_avalon_dma_control_slave_agent_m0_burstcount),              //                .burstcount
@@ -2739,7 +2739,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) video_dma_controller_avalon_dma_control_slave_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                                                //       clk.clk
+		.clk               (clk_clk_clk),                                                                    //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset),                         // clk_reset.reset
 		.in_data           (video_dma_controller_avalon_dma_control_slave_agent_rf_source_data),             //        in.data
 		.in_valid          (video_dma_controller_avalon_dma_control_slave_agent_rf_source_valid),            //          .valid
@@ -2805,7 +2805,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) jtag_uart_avalon_jtag_slave_agent (
-		.clk                     (clk_sys_clk_clk),                                              //             clk.clk
+		.clk                     (clk_clk_clk),                                                  //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset),       //       clk_reset.reset
 		.m0_address              (jtag_uart_avalon_jtag_slave_agent_m0_address),                 //              m0.address
 		.m0_burstcount           (jtag_uart_avalon_jtag_slave_agent_m0_burstcount),              //                .burstcount
@@ -2864,7 +2864,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) jtag_uart_avalon_jtag_slave_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                              //       clk.clk
+		.clk               (clk_clk_clk),                                                  //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset),       // clk_reset.reset
 		.in_data           (jtag_uart_avalon_jtag_slave_agent_rf_source_data),             //        in.data
 		.in_valid          (jtag_uart_avalon_jtag_slave_agent_rf_source_valid),            //          .valid
@@ -2930,7 +2930,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) button_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (button_s1_agent_m0_address),                             //              m0.address
 		.m0_burstcount           (button_s1_agent_m0_burstcount),                          //                .burstcount
@@ -2989,7 +2989,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) button_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (button_s1_agent_rf_source_data),                         //        in.data
 		.in_valid          (button_s1_agent_rf_source_valid),                        //          .valid
@@ -3055,7 +3055,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) led_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (led_s1_agent_m0_address),                                //              m0.address
 		.m0_burstcount           (led_s1_agent_m0_burstcount),                             //                .burstcount
@@ -3114,7 +3114,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) led_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (led_s1_agent_rf_source_data),                            //        in.data
 		.in_valid          (led_s1_agent_rf_source_valid),                           //          .valid
@@ -3180,7 +3180,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) pwm_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (pwm_s1_agent_m0_address),                                //              m0.address
 		.m0_burstcount           (pwm_s1_agent_m0_burstcount),                             //                .burstcount
@@ -3239,7 +3239,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) pwm_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (pwm_s1_agent_rf_source_data),                            //        in.data
 		.in_valid          (pwm_s1_agent_rf_source_valid),                           //          .valid
@@ -3305,7 +3305,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) encoder_right_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (encoder_right_s1_agent_m0_address),                      //              m0.address
 		.m0_burstcount           (encoder_right_s1_agent_m0_burstcount),                   //                .burstcount
@@ -3364,7 +3364,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) encoder_right_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (encoder_right_s1_agent_rf_source_data),                  //        in.data
 		.in_valid          (encoder_right_s1_agent_rf_source_valid),                 //          .valid
@@ -3430,7 +3430,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) encoder_left_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (encoder_left_s1_agent_m0_address),                       //              m0.address
 		.m0_burstcount           (encoder_left_s1_agent_m0_burstcount),                    //                .burstcount
@@ -3489,7 +3489,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) encoder_left_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (encoder_left_s1_agent_rf_source_data),                   //        in.data
 		.in_valid          (encoder_left_s1_agent_rf_source_valid),                  //          .valid
@@ -3555,7 +3555,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) motor_direction_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (motor_direction_s1_agent_m0_address),                    //              m0.address
 		.m0_burstcount           (motor_direction_s1_agent_m0_burstcount),                 //                .burstcount
@@ -3614,7 +3614,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) motor_direction_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (motor_direction_s1_agent_rf_source_data),                //        in.data
 		.in_valid          (motor_direction_s1_agent_rf_source_valid),               //          .valid
@@ -3680,7 +3680,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) on_button_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (on_button_s1_agent_m0_address),                          //              m0.address
 		.m0_burstcount           (on_button_s1_agent_m0_burstcount),                       //                .burstcount
@@ -3739,7 +3739,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) on_button_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (on_button_s1_agent_rf_source_data),                      //        in.data
 		.in_valid          (on_button_s1_agent_rf_source_valid),                     //          .valid
@@ -3805,7 +3805,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) uptime_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (uptime_s1_agent_m0_address),                             //              m0.address
 		.m0_burstcount           (uptime_s1_agent_m0_burstcount),                          //                .burstcount
@@ -3864,7 +3864,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) uptime_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (uptime_s1_agent_rf_source_data),                         //        in.data
 		.in_valid          (uptime_s1_agent_rf_source_valid),                        //          .valid
@@ -3930,7 +3930,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) line_detect_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (line_detect_s1_agent_m0_address),                        //              m0.address
 		.m0_burstcount           (line_detect_s1_agent_m0_burstcount),                     //                .burstcount
@@ -3989,7 +3989,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) line_detect_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (line_detect_s1_agent_rf_source_data),                    //        in.data
 		.in_valid          (line_detect_s1_agent_rf_source_valid),                   //          .valid
@@ -4055,7 +4055,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
 	) ble_uart_s1_agent (
-		.clk                     (clk_sys_clk_clk),                                        //             clk.clk
+		.clk                     (clk_clk_clk),                                            //             clk.clk
 		.reset                   (video_dma_controller_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
 		.m0_address              (ble_uart_s1_agent_m0_address),                           //              m0.address
 		.m0_burstcount           (ble_uart_s1_agent_m0_burstcount),                        //                .burstcount
@@ -4114,7 +4114,7 @@ module EDL_Final_mm_interconnect_0 (
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
 	) ble_uart_s1_agent_rsp_fifo (
-		.clk               (clk_sys_clk_clk),                                        //       clk.clk
+		.clk               (clk_clk_clk),                                            //       clk.clk
 		.reset             (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_data           (ble_uart_s1_agent_rf_source_data),                       //        in.data
 		.in_valid          (ble_uart_s1_agent_rf_source_valid),                      //          .valid
@@ -4147,7 +4147,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (video_dma_controller_avalon_dma_master_agent_cp_data),          //          .data
 		.sink_startofpacket (video_dma_controller_avalon_dma_master_agent_cp_startofpacket), //          .startofpacket
 		.sink_endofpacket   (video_dma_controller_avalon_dma_master_agent_cp_endofpacket),   //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                               //       clk.clk
+		.clk                (clk_clk_clk),                                                   //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset),        // clk_reset.reset
 		.src_ready          (router_src_ready),                                              //       src.ready
 		.src_valid          (router_src_valid),                                              //          .valid
@@ -4163,7 +4163,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (cpu_data_master_agent_cp_data),                          //          .data
 		.sink_startofpacket (cpu_data_master_agent_cp_startofpacket),                 //          .startofpacket
 		.sink_endofpacket   (cpu_data_master_agent_cp_endofpacket),                   //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_001_src_ready),                                   //       src.ready
 		.src_valid          (router_001_src_valid),                                   //          .valid
@@ -4179,7 +4179,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (cpu_instruction_master_agent_cp_data),                   //          .data
 		.sink_startofpacket (cpu_instruction_master_agent_cp_startofpacket),          //          .startofpacket
 		.sink_endofpacket   (cpu_instruction_master_agent_cp_endofpacket),            //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_002_src_ready),                                   //       src.ready
 		.src_valid          (router_002_src_valid),                                   //          .valid
@@ -4195,7 +4195,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (sdram_s1_agent_rp_data),                                 //          .data
 		.sink_startofpacket (sdram_s1_agent_rp_startofpacket),                        //          .startofpacket
 		.sink_endofpacket   (sdram_s1_agent_rp_endofpacket),                          //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_003_src_ready),                                   //       src.ready
 		.src_valid          (router_003_src_valid),                                   //          .valid
@@ -4211,7 +4211,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (cpu_debug_mem_slave_agent_rp_data),                      //          .data
 		.sink_startofpacket (cpu_debug_mem_slave_agent_rp_startofpacket),             //          .startofpacket
 		.sink_endofpacket   (cpu_debug_mem_slave_agent_rp_endofpacket),               //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_004_src_ready),                                   //       src.ready
 		.src_valid          (router_004_src_valid),                                   //          .valid
@@ -4227,7 +4227,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (video_dma_controller_avalon_dma_control_slave_agent_rp_data),          //          .data
 		.sink_startofpacket (video_dma_controller_avalon_dma_control_slave_agent_rp_startofpacket), //          .startofpacket
 		.sink_endofpacket   (video_dma_controller_avalon_dma_control_slave_agent_rp_endofpacket),   //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                                      //       clk.clk
+		.clk                (clk_clk_clk),                                                          //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset),               // clk_reset.reset
 		.src_ready          (router_005_src_ready),                                                 //       src.ready
 		.src_valid          (router_005_src_valid),                                                 //          .valid
@@ -4243,7 +4243,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (jtag_uart_avalon_jtag_slave_agent_rp_data),              //          .data
 		.sink_startofpacket (jtag_uart_avalon_jtag_slave_agent_rp_startofpacket),     //          .startofpacket
 		.sink_endofpacket   (jtag_uart_avalon_jtag_slave_agent_rp_endofpacket),       //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_006_src_ready),                                   //       src.ready
 		.src_valid          (router_006_src_valid),                                   //          .valid
@@ -4259,7 +4259,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (button_s1_agent_rp_data),                                //          .data
 		.sink_startofpacket (button_s1_agent_rp_startofpacket),                       //          .startofpacket
 		.sink_endofpacket   (button_s1_agent_rp_endofpacket),                         //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_007_src_ready),                                   //       src.ready
 		.src_valid          (router_007_src_valid),                                   //          .valid
@@ -4275,7 +4275,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (led_s1_agent_rp_data),                                   //          .data
 		.sink_startofpacket (led_s1_agent_rp_startofpacket),                          //          .startofpacket
 		.sink_endofpacket   (led_s1_agent_rp_endofpacket),                            //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_008_src_ready),                                   //       src.ready
 		.src_valid          (router_008_src_valid),                                   //          .valid
@@ -4291,7 +4291,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (pwm_s1_agent_rp_data),                                   //          .data
 		.sink_startofpacket (pwm_s1_agent_rp_startofpacket),                          //          .startofpacket
 		.sink_endofpacket   (pwm_s1_agent_rp_endofpacket),                            //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_009_src_ready),                                   //       src.ready
 		.src_valid          (router_009_src_valid),                                   //          .valid
@@ -4307,7 +4307,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (encoder_right_s1_agent_rp_data),                         //          .data
 		.sink_startofpacket (encoder_right_s1_agent_rp_startofpacket),                //          .startofpacket
 		.sink_endofpacket   (encoder_right_s1_agent_rp_endofpacket),                  //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_010_src_ready),                                   //       src.ready
 		.src_valid          (router_010_src_valid),                                   //          .valid
@@ -4323,7 +4323,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (encoder_left_s1_agent_rp_data),                          //          .data
 		.sink_startofpacket (encoder_left_s1_agent_rp_startofpacket),                 //          .startofpacket
 		.sink_endofpacket   (encoder_left_s1_agent_rp_endofpacket),                   //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_011_src_ready),                                   //       src.ready
 		.src_valid          (router_011_src_valid),                                   //          .valid
@@ -4339,7 +4339,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (motor_direction_s1_agent_rp_data),                       //          .data
 		.sink_startofpacket (motor_direction_s1_agent_rp_startofpacket),              //          .startofpacket
 		.sink_endofpacket   (motor_direction_s1_agent_rp_endofpacket),                //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_012_src_ready),                                   //       src.ready
 		.src_valid          (router_012_src_valid),                                   //          .valid
@@ -4355,7 +4355,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (on_button_s1_agent_rp_data),                             //          .data
 		.sink_startofpacket (on_button_s1_agent_rp_startofpacket),                    //          .startofpacket
 		.sink_endofpacket   (on_button_s1_agent_rp_endofpacket),                      //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_013_src_ready),                                   //       src.ready
 		.src_valid          (router_013_src_valid),                                   //          .valid
@@ -4371,7 +4371,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (uptime_s1_agent_rp_data),                                //          .data
 		.sink_startofpacket (uptime_s1_agent_rp_startofpacket),                       //          .startofpacket
 		.sink_endofpacket   (uptime_s1_agent_rp_endofpacket),                         //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_014_src_ready),                                   //       src.ready
 		.src_valid          (router_014_src_valid),                                   //          .valid
@@ -4387,7 +4387,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (line_detect_s1_agent_rp_data),                           //          .data
 		.sink_startofpacket (line_detect_s1_agent_rp_startofpacket),                  //          .startofpacket
 		.sink_endofpacket   (line_detect_s1_agent_rp_endofpacket),                    //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_015_src_ready),                                   //       src.ready
 		.src_valid          (router_015_src_valid),                                   //          .valid
@@ -4403,7 +4403,7 @@ module EDL_Final_mm_interconnect_0 (
 		.sink_data          (ble_uart_s1_agent_rp_data),                              //          .data
 		.sink_startofpacket (ble_uart_s1_agent_rp_startofpacket),                     //          .startofpacket
 		.sink_endofpacket   (ble_uart_s1_agent_rp_endofpacket),                       //          .endofpacket
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_016_src_ready),                                   //       src.ready
 		.src_valid          (router_016_src_valid),                                   //          .valid
@@ -4447,7 +4447,7 @@ module EDL_Final_mm_interconnect_0 (
 		.BURSTWRAP_CONST_VALUE     (3),
 		.ADAPTER_VERSION           ("13.1")
 	) sdram_s1_burst_adapter (
-		.clk                   (clk_sys_clk_clk),                                        //       cr0.clk
+		.clk                   (clk_clk_clk),                                            //       cr0.clk
 		.reset                 (video_dma_controller_reset_reset_bridge_in_reset_reset), // cr0_reset.reset
 		.sink0_valid           (sdram_s1_cmd_width_adapter_src_valid),                   //     sink0.valid
 		.sink0_data            (sdram_s1_cmd_width_adapter_src_data),                    //          .data
@@ -4464,7 +4464,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux cmd_demux (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_src_ready),                                       //      sink.ready
 		.sink_channel       (router_src_channel),                                     //          .channel
@@ -4481,7 +4481,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux_001 cmd_demux_001 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready          (router_001_src_ready),                                   //      sink.ready
 		.sink_channel        (router_001_src_channel),                                 //          .channel
@@ -4576,7 +4576,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux_002 cmd_demux_002 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_002_src_ready),                                   //      sink.ready
 		.sink_channel       (router_002_src_channel),                                 //          .channel
@@ -4599,7 +4599,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux cmd_mux (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_src_ready),                                      //       src.ready
 		.src_valid           (cmd_mux_src_valid),                                      //          .valid
@@ -4628,7 +4628,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_001 cmd_mux_001 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_001_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_001_src_valid),                                  //          .valid
@@ -4651,7 +4651,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_002 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_002_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_002_src_valid),                                  //          .valid
@@ -4668,7 +4668,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_003 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_003_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_003_src_valid),                                  //          .valid
@@ -4685,7 +4685,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_004 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_004_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_004_src_valid),                                  //          .valid
@@ -4702,7 +4702,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_005 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_005_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_005_src_valid),                                  //          .valid
@@ -4719,7 +4719,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_006 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_006_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_006_src_valid),                                  //          .valid
@@ -4736,7 +4736,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_007 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_007_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_007_src_valid),                                  //          .valid
@@ -4753,7 +4753,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_008 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_008_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_008_src_valid),                                  //          .valid
@@ -4770,7 +4770,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_009 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_009_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_009_src_valid),                                  //          .valid
@@ -4787,7 +4787,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_010 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_010_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_010_src_valid),                                  //          .valid
@@ -4804,7 +4804,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_011 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_011_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_011_src_valid),                                  //          .valid
@@ -4821,7 +4821,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_012 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_012_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_012_src_valid),                                  //          .valid
@@ -4838,7 +4838,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_mux_002 cmd_mux_013 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (cmd_mux_013_src_ready),                                  //       src.ready
 		.src_valid           (cmd_mux_013_src_valid),                                  //          .valid
@@ -4855,7 +4855,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_rsp_demux rsp_demux (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (sdram_s1_rsp_width_adapter_src_ready),                   //      sink.ready
 		.sink_channel       (sdram_s1_rsp_width_adapter_src_channel),                 //          .channel
@@ -4884,7 +4884,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux_002 rsp_demux_001 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_004_src_ready),                                   //      sink.ready
 		.sink_channel       (router_004_src_channel),                                 //          .channel
@@ -4907,7 +4907,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_002 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_005_src_ready),                                   //      sink.ready
 		.sink_channel       (router_005_src_channel),                                 //          .channel
@@ -4924,7 +4924,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_003 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_006_src_ready),                                   //      sink.ready
 		.sink_channel       (router_006_src_channel),                                 //          .channel
@@ -4941,7 +4941,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_004 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_007_src_ready),                                   //      sink.ready
 		.sink_channel       (router_007_src_channel),                                 //          .channel
@@ -4958,7 +4958,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_005 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_008_src_ready),                                   //      sink.ready
 		.sink_channel       (router_008_src_channel),                                 //          .channel
@@ -4975,7 +4975,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_006 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_009_src_ready),                                   //      sink.ready
 		.sink_channel       (router_009_src_channel),                                 //          .channel
@@ -4992,7 +4992,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_007 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_010_src_ready),                                   //      sink.ready
 		.sink_channel       (router_010_src_channel),                                 //          .channel
@@ -5009,7 +5009,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_008 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_011_src_ready),                                   //      sink.ready
 		.sink_channel       (router_011_src_channel),                                 //          .channel
@@ -5026,7 +5026,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_009 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_012_src_ready),                                   //      sink.ready
 		.sink_channel       (router_012_src_channel),                                 //          .channel
@@ -5043,7 +5043,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_010 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_013_src_ready),                                   //      sink.ready
 		.sink_channel       (router_013_src_channel),                                 //          .channel
@@ -5060,7 +5060,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_011 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_014_src_ready),                                   //      sink.ready
 		.sink_channel       (router_014_src_channel),                                 //          .channel
@@ -5077,7 +5077,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_012 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_015_src_ready),                                   //      sink.ready
 		.sink_channel       (router_015_src_channel),                                 //          .channel
@@ -5094,7 +5094,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_cmd_demux rsp_demux_013 (
-		.clk                (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                (clk_clk_clk),                                            //       clk.clk
 		.reset              (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.sink_ready         (router_016_src_ready),                                   //      sink.ready
 		.sink_channel       (router_016_src_channel),                                 //          .channel
@@ -5111,7 +5111,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_rsp_mux rsp_mux (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (rsp_mux_src_ready),                                      //       src.ready
 		.src_valid           (rsp_mux_src_valid),                                      //          .valid
@@ -5128,7 +5128,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_rsp_mux_001 rsp_mux_001 (
-		.clk                  (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                  (clk_clk_clk),                                            //       clk.clk
 		.reset                (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready            (rsp_mux_001_src_ready),                                  //       src.ready
 		.src_valid            (rsp_mux_001_src_valid),                                  //          .valid
@@ -5223,7 +5223,7 @@ module EDL_Final_mm_interconnect_0 (
 	);
 
 	EDL_Final_mm_interconnect_0_rsp_mux_002 rsp_mux_002 (
-		.clk                 (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                 (clk_clk_clk),                                            //       clk.clk
 		.reset               (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready           (rsp_mux_002_src_ready),                                  //       src.ready
 		.src_valid           (rsp_mux_002_src_valid),                                  //          .valid
@@ -5294,7 +5294,7 @@ module EDL_Final_mm_interconnect_0 (
 		.PACKING                       (1),
 		.ENABLE_ADDRESS_ALIGNMENT      (0)
 	) sdram_s1_rsp_width_adapter (
-		.clk                  (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                  (clk_clk_clk),                                            //       clk.clk
 		.reset                (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_valid             (router_003_src_valid),                                   //      sink.valid
 		.in_channel           (router_003_src_channel),                                 //          .channel
@@ -5360,7 +5360,7 @@ module EDL_Final_mm_interconnect_0 (
 		.PACKING                       (1),
 		.ENABLE_ADDRESS_ALIGNMENT      (0)
 	) sdram_s1_cmd_width_adapter (
-		.clk                  (clk_sys_clk_clk),                                        //       clk.clk
+		.clk                  (clk_clk_clk),                                            //       clk.clk
 		.reset                (video_dma_controller_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.in_valid             (cmd_mux_src_valid),                                      //      sink.valid
 		.in_channel           (cmd_mux_src_channel),                                    //          .channel
@@ -5395,7 +5395,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (sdram_s1_agent_rdata_fifo_out_data),                     //     in_0.data
 		.in_0_valid     (sdram_s1_agent_rdata_fifo_out_valid),                    //         .valid
@@ -5424,7 +5424,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_001 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (cpu_debug_mem_slave_agent_rdata_fifo_src_data),          //     in_0.data
 		.in_0_valid     (cpu_debug_mem_slave_agent_rdata_fifo_src_valid),         //         .valid
@@ -5453,7 +5453,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_002 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                                          // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                                              // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset),                   // in_rst_0.reset
 		.in_0_data      (video_dma_controller_avalon_dma_control_slave_agent_rdata_fifo_src_data),  //     in_0.data
 		.in_0_valid     (video_dma_controller_avalon_dma_control_slave_agent_rdata_fifo_src_valid), //         .valid
@@ -5482,7 +5482,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_003 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (jtag_uart_avalon_jtag_slave_agent_rdata_fifo_src_data),  //     in_0.data
 		.in_0_valid     (jtag_uart_avalon_jtag_slave_agent_rdata_fifo_src_valid), //         .valid
@@ -5511,7 +5511,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_004 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (button_s1_agent_rdata_fifo_src_data),                    //     in_0.data
 		.in_0_valid     (button_s1_agent_rdata_fifo_src_valid),                   //         .valid
@@ -5540,7 +5540,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_005 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (led_s1_agent_rdata_fifo_src_data),                       //     in_0.data
 		.in_0_valid     (led_s1_agent_rdata_fifo_src_valid),                      //         .valid
@@ -5569,7 +5569,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_006 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (pwm_s1_agent_rdata_fifo_src_data),                       //     in_0.data
 		.in_0_valid     (pwm_s1_agent_rdata_fifo_src_valid),                      //         .valid
@@ -5598,7 +5598,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_007 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (encoder_right_s1_agent_rdata_fifo_src_data),             //     in_0.data
 		.in_0_valid     (encoder_right_s1_agent_rdata_fifo_src_valid),            //         .valid
@@ -5627,7 +5627,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_008 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (encoder_left_s1_agent_rdata_fifo_src_data),              //     in_0.data
 		.in_0_valid     (encoder_left_s1_agent_rdata_fifo_src_valid),             //         .valid
@@ -5656,7 +5656,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_009 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (motor_direction_s1_agent_rdata_fifo_src_data),           //     in_0.data
 		.in_0_valid     (motor_direction_s1_agent_rdata_fifo_src_valid),          //         .valid
@@ -5685,7 +5685,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_010 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (on_button_s1_agent_rdata_fifo_src_data),                 //     in_0.data
 		.in_0_valid     (on_button_s1_agent_rdata_fifo_src_valid),                //         .valid
@@ -5714,7 +5714,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_011 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (uptime_s1_agent_rdata_fifo_src_data),                    //     in_0.data
 		.in_0_valid     (uptime_s1_agent_rdata_fifo_src_valid),                   //         .valid
@@ -5743,7 +5743,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_012 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (line_detect_s1_agent_rdata_fifo_src_data),               //     in_0.data
 		.in_0_valid     (line_detect_s1_agent_rdata_fifo_src_valid),              //         .valid
@@ -5772,7 +5772,7 @@ module EDL_Final_mm_interconnect_0 (
 		.outUseReady     (1),
 		.outReadyLatency (0)
 	) avalon_st_adapter_013 (
-		.in_clk_0_clk   (clk_sys_clk_clk),                                        // in_clk_0.clk
+		.in_clk_0_clk   (clk_clk_clk),                                            // in_clk_0.clk
 		.in_rst_0_reset (video_dma_controller_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
 		.in_0_data      (ble_uart_s1_agent_rdata_fifo_src_data),                  //     in_0.data
 		.in_0_valid     (ble_uart_s1_agent_rdata_fifo_src_valid),                 //         .valid

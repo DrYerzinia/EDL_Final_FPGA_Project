@@ -14,12 +14,8 @@ module EDL_Final (
 		input  wire [3:0]  line_detect_export,                //                line_detect.export
 		output wire [3:0]  motor_direction_export,            //            motor_direction.export
 		input  wire        on_button_export,                  //                  on_button.export
-		input  wire        pixel_clk_clk,                     //                  pixel_clk.clk
-		input  wire        pixel_reset_reset,                 //                pixel_reset.reset
 		output wire [15:0] pwm_export,                        //                        pwm.export
-		input  wire        reset_reset,                       //                      reset.reset
-		output wire        reset_bridge_reset,                //               reset_bridge.reset
-		output wire        sdram_clk_clk,                     //                  sdram_clk.clk
+		input  wire        reset_reset_n,                     //                      reset.reset_n
 		output wire [12:0] sdram_wire_addr,                   //                 sdram_wire.addr
 		output wire [1:0]  sdram_wire_ba,                     //                           .ba
 		output wire        sdram_wire_cas_n,                  //                           .cas_n
@@ -29,7 +25,6 @@ module EDL_Final (
 		output wire [1:0]  sdram_wire_dqm,                    //                           .dqm
 		output wire        sdram_wire_ras_n,                  //                           .ras_n
 		output wire        sdram_wire_we_n,                   //                           .we_n
-		output wire        sysclk_clk,                        //                     sysclk.clk
 		input  wire [31:0] uptime_export,                     //                     uptime.export
 		input  wire [23:0] video_dma_sink_data,               //             video_dma_sink.data
 		input  wire        video_dma_sink_startofpacket,      //                           .startofpacket
@@ -121,12 +116,12 @@ module EDL_Final (
 	wire         irq_mapper_receiver0_irq;                                                   // jtag_uart:av_irq -> irq_mapper:receiver0_irq
 	wire         irq_mapper_receiver1_irq;                                                   // ble_uart:irq -> irq_mapper:receiver1_irq
 	wire  [31:0] cpu_irq_irq;                                                                // irq_mapper:sender_irq -> cpu:irq
+	wire         rst_controller_reset_out_reset;                                             // rst_controller:reset_out -> [ble_uart:reset_n, button:reset_n, cpu:reset_n, encoder_left:reset_n, encoder_right:reset_n, irq_mapper:reset, jtag_uart:rst_n, led:reset_n, line_detect:reset_n, mm_interconnect_0:video_dma_controller_reset_reset_bridge_in_reset_reset, motor_direction:reset_n, on_button:reset_n, pwm:reset_n, rst_translator:in_reset, sdram:reset_n, uptime:reset_n, video_dma_controller:reset]
 	wire         rst_controller_reset_out_reset_req;                                         // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
-	wire         clk_reset_source_reset;                                                     // clk:reset_source_reset -> rst_controller:reset_in0
 
 	EDL_Final_ble_uart ble_uart (
-		.clk           (sysclk_clk),                                  //                 clk.clk
-		.reset_n       (~reset_bridge_reset),                         //               reset.reset_n
+		.clk           (clk_clk),                                     //                 clk.clk
+		.reset_n       (~rst_controller_reset_out_reset),             //               reset.reset_n
 		.address       (mm_interconnect_0_ble_uart_s1_address),       //                  s1.address
 		.begintransfer (mm_interconnect_0_ble_uart_s1_begintransfer), //                    .begintransfer
 		.chipselect    (mm_interconnect_0_ble_uart_s1_chipselect),    //                    .chipselect
@@ -140,24 +135,16 @@ module EDL_Final (
 	);
 
 	EDL_Final_button button (
-		.clk      (sysclk_clk),                           //                 clk.clk
-		.reset_n  (~reset_bridge_reset),                  //               reset.reset_n
+		.clk      (clk_clk),                              //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),      //               reset.reset_n
 		.address  (mm_interconnect_0_button_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_button_s1_readdata), //                    .readdata
 		.in_port  (button_external_connection_export)     // external_connection.export
 	);
 
-	EDL_Final_clk clk (
-		.ref_clk_clk        (clk_clk),                //      ref_clk.clk
-		.ref_reset_reset    (reset_reset),            //    ref_reset.reset
-		.sys_clk_clk        (sysclk_clk),             //      sys_clk.clk
-		.sdram_clk_clk      (sdram_clk_clk),          //    sdram_clk.clk
-		.reset_source_reset (clk_reset_source_reset)  // reset_source.reset
-	);
-
 	EDL_Final_cpu cpu (
-		.clk                                 (sysclk_clk),                                        //                       clk.clk
-		.reset_n                             (~reset_bridge_reset),                               //                     reset.reset_n
+		.clk                                 (clk_clk),                                           //                       clk.clk
+		.reset_n                             (~rst_controller_reset_out_reset),                   //                     reset.reset_n
 		.reset_req                           (rst_controller_reset_out_reset_req),                //                          .reset_req
 		.d_address                           (cpu_data_master_address),                           //               data_master.address
 		.d_byteenable                        (cpu_data_master_byteenable),                        //                          .byteenable
@@ -185,24 +172,24 @@ module EDL_Final (
 	);
 
 	EDL_Final_encoder_left encoder_left (
-		.clk      (sysclk_clk),                                 //                 clk.clk
-		.reset_n  (~reset_bridge_reset),                        //               reset.reset_n
+		.clk      (clk_clk),                                    //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),            //               reset.reset_n
 		.address  (mm_interconnect_0_encoder_left_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_encoder_left_s1_readdata), //                    .readdata
 		.in_port  (encoder_left_export)                         // external_connection.export
 	);
 
 	EDL_Final_encoder_left encoder_right (
-		.clk      (sysclk_clk),                                  //                 clk.clk
-		.reset_n  (~reset_bridge_reset),                         //               reset.reset_n
+		.clk      (clk_clk),                                     //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),             //               reset.reset_n
 		.address  (mm_interconnect_0_encoder_right_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_encoder_right_s1_readdata), //                    .readdata
 		.in_port  (encoder_right_export)                         // external_connection.export
 	);
 
 	EDL_Final_jtag_uart jtag_uart (
-		.clk            (sysclk_clk),                                                //               clk.clk
-		.rst_n          (~reset_bridge_reset),                                       //             reset.reset_n
+		.clk            (clk_clk),                                                   //               clk.clk
+		.rst_n          (~rst_controller_reset_out_reset),                           //             reset.reset_n
 		.av_chipselect  (mm_interconnect_0_jtag_uart_avalon_jtag_slave_chipselect),  // avalon_jtag_slave.chipselect
 		.av_address     (mm_interconnect_0_jtag_uart_avalon_jtag_slave_address),     //                  .address
 		.av_read_n      (~mm_interconnect_0_jtag_uart_avalon_jtag_slave_read),       //                  .read_n
@@ -214,8 +201,8 @@ module EDL_Final (
 	);
 
 	EDL_Final_led led (
-		.clk        (sysclk_clk),                          //                 clk.clk
-		.reset_n    (~reset_bridge_reset),                 //               reset.reset_n
+		.clk        (clk_clk),                             //                 clk.clk
+		.reset_n    (~rst_controller_reset_out_reset),     //               reset.reset_n
 		.address    (mm_interconnect_0_led_s1_address),    //                  s1.address
 		.write_n    (~mm_interconnect_0_led_s1_write),     //                    .write_n
 		.writedata  (mm_interconnect_0_led_s1_writedata),  //                    .writedata
@@ -225,16 +212,16 @@ module EDL_Final (
 	);
 
 	EDL_Final_line_detect line_detect (
-		.clk      (sysclk_clk),                                //                 clk.clk
-		.reset_n  (~reset_bridge_reset),                       //               reset.reset_n
+		.clk      (clk_clk),                                   //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),           //               reset.reset_n
 		.address  (mm_interconnect_0_line_detect_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_line_detect_s1_readdata), //                    .readdata
 		.in_port  (line_detect_export)                         // external_connection.export
 	);
 
 	EDL_Final_motor_direction motor_direction (
-		.clk        (sysclk_clk),                                      //                 clk.clk
-		.reset_n    (~reset_bridge_reset),                             //               reset.reset_n
+		.clk        (clk_clk),                                         //                 clk.clk
+		.reset_n    (~rst_controller_reset_out_reset),                 //               reset.reset_n
 		.address    (mm_interconnect_0_motor_direction_s1_address),    //                  s1.address
 		.write_n    (~mm_interconnect_0_motor_direction_s1_write),     //                    .write_n
 		.writedata  (mm_interconnect_0_motor_direction_s1_writedata),  //                    .writedata
@@ -244,16 +231,16 @@ module EDL_Final (
 	);
 
 	EDL_Final_on_button on_button (
-		.clk      (sysclk_clk),                              //                 clk.clk
-		.reset_n  (~reset_bridge_reset),                     //               reset.reset_n
+		.clk      (clk_clk),                                 //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),         //               reset.reset_n
 		.address  (mm_interconnect_0_on_button_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_on_button_s1_readdata), //                    .readdata
 		.in_port  (on_button_export)                         // external_connection.export
 	);
 
 	EDL_Final_pwm pwm (
-		.clk        (sysclk_clk),                          //                 clk.clk
-		.reset_n    (~reset_bridge_reset),                 //               reset.reset_n
+		.clk        (clk_clk),                             //                 clk.clk
+		.reset_n    (~rst_controller_reset_out_reset),     //               reset.reset_n
 		.address    (mm_interconnect_0_pwm_s1_address),    //                  s1.address
 		.write_n    (~mm_interconnect_0_pwm_s1_write),     //                    .write_n
 		.writedata  (mm_interconnect_0_pwm_s1_writedata),  //                    .writedata
@@ -263,8 +250,8 @@ module EDL_Final (
 	);
 
 	EDL_Final_sdram sdram (
-		.clk            (sysclk_clk),                               //   clk.clk
-		.reset_n        (~reset_bridge_reset),                      // reset.reset_n
+		.clk            (clk_clk),                                  //   clk.clk
+		.reset_n        (~rst_controller_reset_out_reset),          // reset.reset_n
 		.az_addr        (mm_interconnect_0_sdram_s1_address),       //    s1.address
 		.az_be_n        (~mm_interconnect_0_sdram_s1_byteenable),   //      .byteenable_n
 		.az_cs          (mm_interconnect_0_sdram_s1_chipselect),    //      .chipselect
@@ -286,16 +273,16 @@ module EDL_Final (
 	);
 
 	EDL_Final_encoder_left uptime (
-		.clk      (sysclk_clk),                           //                 clk.clk
-		.reset_n  (~reset_bridge_reset),                  //               reset.reset_n
+		.clk      (clk_clk),                              //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),      //               reset.reset_n
 		.address  (mm_interconnect_0_uptime_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_uptime_s1_readdata), //                    .readdata
 		.in_port  (uptime_export)                         // external_connection.export
 	);
 
 	EDL_Final_video_dma_controller video_dma_controller (
-		.clk                  (sysclk_clk),                                                                 //                      clk.clk
-		.reset                (reset_bridge_reset),                                                         //                    reset.reset
+		.clk                  (clk_clk),                                                                    //                      clk.clk
+		.reset                (rst_controller_reset_out_reset),                                             //                    reset.reset
 		.stream_data          (video_dma_sink_data),                                                        //          avalon_dma_sink.data
 		.stream_startofpacket (video_dma_sink_startofpacket),                                               //                         .startofpacket
 		.stream_endofpacket   (video_dma_sink_endofpacket),                                                 //                         .endofpacket
@@ -314,8 +301,8 @@ module EDL_Final (
 	);
 
 	EDL_Final_mm_interconnect_0 mm_interconnect_0 (
-		.clk_sys_clk_clk                                          (sysclk_clk),                                                                 //                                      clk_sys_clk.clk
-		.video_dma_controller_reset_reset_bridge_in_reset_reset   (reset_bridge_reset),                                                         // video_dma_controller_reset_reset_bridge_in_reset.reset
+		.clk_clk_clk                                              (clk_clk),                                                                    //                                          clk_clk.clk
+		.video_dma_controller_reset_reset_bridge_in_reset_reset   (rst_controller_reset_out_reset),                                             // video_dma_controller_reset_reset_bridge_in_reset.reset
 		.cpu_data_master_address                                  (cpu_data_master_address),                                                    //                                  cpu_data_master.address
 		.cpu_data_master_waitrequest                              (cpu_data_master_waitrequest),                                                //                                                 .waitrequest
 		.cpu_data_master_byteenable                               (cpu_data_master_byteenable),                                                 //                                                 .byteenable
@@ -399,11 +386,11 @@ module EDL_Final (
 	);
 
 	EDL_Final_irq_mapper irq_mapper (
-		.clk           (sysclk_clk),               //       clk.clk
-		.reset         (reset_bridge_reset),       // clk_reset.reset
-		.receiver0_irq (irq_mapper_receiver0_irq), // receiver0.irq
-		.receiver1_irq (irq_mapper_receiver1_irq), // receiver1.irq
-		.sender_irq    (cpu_irq_irq)               //    sender.irq
+		.clk           (clk_clk),                        //       clk.clk
+		.reset         (rst_controller_reset_out_reset), // clk_reset.reset
+		.receiver0_irq (irq_mapper_receiver0_irq),       // receiver0.irq
+		.receiver1_irq (irq_mapper_receiver1_irq),       // receiver1.irq
+		.sender_irq    (cpu_irq_irq)                     //    sender.irq
 	);
 
 	altera_reset_controller #(
@@ -432,9 +419,9 @@ module EDL_Final (
 		.USE_RESET_REQUEST_IN15    (0),
 		.ADAPT_RESET_REQUEST       (0)
 	) rst_controller (
-		.reset_in0      (clk_reset_source_reset),             // reset_in0.reset
-		.clk            (sysclk_clk),                         //       clk.clk
-		.reset_out      (reset_bridge_reset),                 // reset_out.reset
+		.reset_in0      (~reset_reset_n),                     // reset_in0.reset
+		.clk            (clk_clk),                            //       clk.clk
+		.reset_out      (rst_controller_reset_out_reset),     // reset_out.reset
 		.reset_req      (rst_controller_reset_out_reset_req), //          .reset_req
 		.reset_req_in0  (1'b0),                               // (terminated)
 		.reset_in1      (1'b0),                               // (terminated)

@@ -2,7 +2,7 @@ module CameraStreamer (
 
 	// Inputs
 	clk,
-	reset,
+	n_reset,
 	ready,
 	
 	camera_data,
@@ -35,7 +35,7 @@ localparam  HEIGHT					= 480;
 
 // Inputs from streaming interface
 input				clk;
-input				reset;
+input				n_reset;
 input				ready;
 
 // Inputs from camera
@@ -45,7 +45,7 @@ input				href;
 input				vsync;
 
 // Outputs to streaming interface
-output		[DW:0]	data;
+output		[DW-1:0]	data;
 output reg				startofpacket;
 output reg				endofpacket;
 output					empty;
@@ -100,6 +100,10 @@ Pixel_FIFO (
 
 
 // STREAM SIDE ////////////////////////////////////////////////////////////////////////
+
+wire reset;
+
+assign reset = ~n_reset;
 
 always @(negedge clk)
 begin

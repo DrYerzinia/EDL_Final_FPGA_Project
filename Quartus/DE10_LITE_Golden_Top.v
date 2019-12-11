@@ -164,6 +164,8 @@ wire PDM_DATA;
 wire BLE_TXD;
 wire BLE_RXD;
 
+wire LOCKED;
+
 // Camera external connections
 
 assign GPIO[0] = CAMERA_CLOCK;
@@ -230,11 +232,18 @@ PWM pwm_2(
     .PWM_out		(PWM_2_OUT)
 );
 
-CameraClockGenerator cam_clk (
+system_clocks sys_clks (
+
 	.inclk0			(MAX10_CLK1_50),
+
 	.c0				(CAMERA_CLOCK),
 	.c1				(PWM_CLOCK),
-	.c2				(PDM_CLK)
+	.c2				(PDM_CLK),
+	.c3				(SYS_CLK),
+	.c4				(DRAM_CLK),
+
+	.locked        (LOCKED)
+	
 );
 
 PDM_to_PCM pdm_to_pcm_1 (
@@ -301,33 +310,11 @@ quadrature right_wheel(
 	.count				(RIGHT_ENC)
 );
 
-/*
-ColorBarTest color_bar_generator (
-
-	.clk					(SYSCLK),
-	.reset				(RST_BRIDGE),
-	.ready				(READY),
-	
-	.data					(RGB_DATA),
-	.startofpacket		(SOP),
-	.endofpacket		(EOP),
-	.empty				(),
-	.valid				(VALID)
-
-);
-*/
 	
 EDL_Final cpu (
 
-		.clk_clk							  		   (MAX10_CLK1_50),          //             clk.clk
-
-		.sysclk_clk									(SYSCLK),                 //          sysclk.clk
-		
-		.reset_reset								(1'b1), 					     //           reset.reset_n
-		.reset_bridge_reset                 (RST_BRIDGE),             //    reset_bridge.reset
-
-		.pixel_clk_clk								(PIXEL_CLK),              //       pixel_clk.clk
-		.pixel_reset_reset						(1'b1),                   //     pixel_reset.reset
+		.clk_clk                            (SYS_CLK),                //             clk.clk
+		.reset_reset_n								(LOCKED), 				     //           reset.reset_n
 
 		.button_external_connection_export  (KEY),
 
@@ -348,7 +335,6 @@ EDL_Final cpu (
       .ble_uart_rxd								(BLE_RXD),                //         ble_uart.rxd
 		.ble_uart_txd								(BLE_TXD),                //                 .txd
 		
-		.sdram_clk_clk								(DRAM_CLK), 			     //       sdram_clk.clk
 		.sdram_wire_addr							(DRAM_ADDR),				  //      sdram_wire.addr
 		.sdram_wire_ba								(DRAM_BA),				     //                .ba
 		.sdram_wire_cas_n							(DRAM_CAS_N),				  //                .cas_n

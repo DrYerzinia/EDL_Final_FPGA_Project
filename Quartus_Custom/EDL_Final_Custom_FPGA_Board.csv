@@ -1,0 +1,53 @@
+# Copyright (C) 2018  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details.
+
+# Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+# File: C:\Users\DrYerzinia\Documents\EDL_Final_FPGA_Project\Quartus_Custom\EDL_Final_Custom_FPGA_Board.csv
+# Generated on: Sun Dec 08 15:03:32 2019
+
+# Note: The column header names should not be changed if you wish to import this .csv file into the Quartus Prime software.
+
+To,Direction,Location,I/O Bank,VREF Group,I/O Standard,Reserved,Current Strength,Slew Rate,Differential Pair,Strict Preservation
+BLUETOOTH_FPGA_RX,Input,PIN_14,1A,B1_N0,3.3-V LVTTL,as input tri-stated,,,,
+BLUETOOTH_FPGA_TX,Output,PIN_13,1A,B1_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+CAM_D[0],Input,PIN_38,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_D[1],Input,PIN_39,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_D[2],Input,PIN_40,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_D[3],Input,PIN_41,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_D[4],Input,PIN_42,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_D[5],Input,PIN_43,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_D[6],Input,PIN_46,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_D[7],Input,PIN_49,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_HSYNC,Input,PIN_33,2,B2_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_PCLK,Input,PIN_52,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_VSYNC,Input,PIN_53,3,B3_N0,3.3-V LVTTL,as input tri-stated,,,,
+CAM_XVCLK,Output,PIN_51,3,B3_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+CLK_50MHZ,Input,PIN_28,2,B2_N0,3.3-V LVTTL,as input tri-stated,,,,
+DRAM_A[4],Output,PIN_55,3,B3_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+DRAM_A[5],Output,PIN_60,4,B4_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+DRAM_A[6],Output,PIN_61,4,B4_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+DRAM_A[7],Output,PIN_63,4,B4_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+GPIO[0],Bidir,PIN_50,3,B3_N0,3.3-V LVTTL,as bidirectional,,,,
+I2C_0_SCL,Bidir,PIN_126,8,B8_N0,3.3-V LVTTL,as bidirectional,,,,
+I2C_0_SDA,Bidir,PIN_44,3,B3_N0,3.3-V LVTTL,as bidirectional,,,,
+M1_C,Output,PIN_20,1B,B1_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+M1_CW,Output,PIN_21,1B,B1_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+M2_C,Output,PIN_22,1B,B1_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+M2_CW,Output,PIN_23,1B,B1_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+SD_CLK,Output,PIN_29,2,B2_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+SD_CMD,Output,PIN_27,2,B2_N0,3.3-V LVTTL,as output driving an unspecified signal,,,,
+SD_DATA[0],Bidir,PIN_30,2,B2_N0,3.3-V LVTTL,as bidirectional,,,,
+SD_DATA[1],Bidir,PIN_32,2,B2_N0,3.3-V LVTTL,as bidirectional,,,,
+SD_DATA[2],Bidir,PIN_25,2,B2_N0,3.3-V LVTTL,as bidirectional,,,,
+SD_DATA[3],Bidir,PIN_26,2,B2_N0,3.3-V LVTTL,as bidirectional,,,,

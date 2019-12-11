@@ -21,8 +21,8 @@
 #include "pid.h"
 
 // Tiny JPEG library to shrink image for transmission
-#define TJE_IMPLEMENTATION
-#include "tiny_jpeg.h"
+//#define TJE_IMPLEMENTATION
+//#include "tiny_jpeg.h"
 
 #define JTAG_UART_BASE					0x8001090
 
@@ -118,8 +118,6 @@ static void jtag_kiss_send(uint8_t byte){
 
 }
 
-uint8_t jpeg_image_buffer[IMAGE_SIZE];
-
 static void camera_dma_enable(bool enable){
 
 	volatile uint32_t * control = (uint32_t *)(VIDEO_DMA_CONTROLLER_BASE + VIDEO_DMA_CONTROLLER__STATUS_CONTROL_OFFSET);
@@ -198,6 +196,9 @@ static void jpeg_jtag_send(void* context, void* data, int size) {
 
 };
 
+/*
+uint8_t jpeg_image_buffer[IMAGE_SIZE];
+
 static void take_jpeg_picture_and_send_to_jtag(void) {
 
 	volatile uint32_t * current_image_buffer = swap_buffer();
@@ -217,7 +218,7 @@ static void take_jpeg_picture_and_send_to_jtag(void) {
 	kiss_send_data(&jtag_kiss, &packet_type, 1);
 
 	// Convert image to JPEG and send over JTAG
-	tje_encode_with_func(
+ 	tje_encode_with_func(
 		jpeg_jtag_send,
 		NULL, // Context is null TODO should it be?
 		1,
@@ -229,7 +230,7 @@ static void take_jpeg_picture_and_send_to_jtag(void) {
 
 	kiss_end(&jtag_kiss);
 
-}
+}*/
 
 /**
  * Gets system uptime in ms
@@ -319,10 +320,10 @@ static void set_motors(int16_t speed_left, int16_t speed_right){
 	if(speed_right == 0){              // Stop right motor if input 0
 		motor_direction |= 0b0000;
 	} else if(speed_right < 0){
-		motor_direction |= 0b0100;
+		motor_direction |= 0b1000;
 		speed_right *= -1;
 	} else {
-		motor_direction |= 0b1000;
+		motor_direction |= 0b0100;
 	}
 
 	// Set motor directions
@@ -693,7 +694,7 @@ static void image_download_test(){
 	// Send image
 	const static bool jpeg_transfer = false;
 	if(jpeg_transfer){
-		take_jpeg_picture_and_send_to_jtag();
+		//take_jpeg_picture_and_send_to_jtag();
 	} else {
 		// Naive Slow Transfer
 		take_raw_picture_and_send_to_jtag();
@@ -806,6 +807,8 @@ void jtag_uart_handler(void * context){
 int main()
 {
 
+	set_motors(0, 0);
+
 	// Setup JTAG kiss interface
 	jtag_kiss.send 				 = jtag_kiss_send;
 	jtag_kiss.rx_state 			 = KISS_STATE__NORMAL;
@@ -822,33 +825,16 @@ int main()
 	alt_irq_register(BLE_UART_IRQ, NULL,  ble_uart_handler);
 	*BLE_UART_CONTROL = 0x0000080; // Read interrupt
 
-/*
-	while(1){
-		volatile uint32_t control = *BLE_UART_CONTROL;
-		uint32_t data = *BLE_UART_DATA;
-		if( (data & JTAG_UART__MASK__RVALID ) != 0){
-			volatile int x = 0;
-		}
-	}*/
-
-
 	// Send startup message
 	const char hello_world[] = "\x81Hello from Nios II!";
 	kiss_send_packet(&jtag_kiss, (const uint8_t *) hello_world, sizeof(hello_world) - 1);
 
 	usleep(1000000);
 
-	/*while(1){
-		*BLE_UART_TX_DATA = 'A';
-		usleep(100000);
-		*BLE_UART_TX_DATA = '\n';
-		usleep(100000);
-	}*/
-
-	while(1){
-		wait_button_press();
-		follow_line();
-	}
+	//while(1){
+	//	wait_button_press();
+	//	follow_line();
+	//}
 
 	while(1){
 

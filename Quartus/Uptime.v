@@ -5,7 +5,7 @@ module Uptime(
 
 );
 
-	reg [6:0] cnt;
+	reg [9:0] cnt;
 
 	initial
 	begin
@@ -16,7 +16,7 @@ module Uptime(
 	always @(posedge clk)
 	begin
 
-		if(cnt >= 125)
+		if(cnt >= 1000)
 		begin
 
 			uptime <= uptime + 1;

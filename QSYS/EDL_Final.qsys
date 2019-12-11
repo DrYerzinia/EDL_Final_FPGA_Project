@@ -13,7 +13,7 @@
    {
       datum _sortIndex
       {
-         value = "19";
+         value = "14";
          type = "int";
       }
    }
@@ -29,7 +29,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "5";
          type = "int";
       }
    }
@@ -53,7 +53,7 @@
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "1";
          type = "int";
       }
    }
@@ -69,7 +69,7 @@
    {
       datum _sortIndex
       {
-         value = "13";
+         value = "8";
          type = "int";
       }
    }
@@ -85,7 +85,7 @@
    {
       datum _sortIndex
       {
-         value = "14";
+         value = "9";
          type = "int";
       }
    }
@@ -101,7 +101,7 @@
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "2";
          type = "int";
       }
    }
@@ -117,7 +117,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "6";
          type = "int";
       }
    }
@@ -133,7 +133,7 @@
    {
       datum _sortIndex
       {
-         value = "18";
+         value = "13";
          type = "int";
       }
    }
@@ -141,7 +141,7 @@
    {
       datum _sortIndex
       {
-         value = "15";
+         value = "10";
          type = "int";
       }
    }
@@ -157,7 +157,7 @@
    {
       datum _sortIndex
       {
-         value = "16";
+         value = "11";
          type = "int";
       }
    }
@@ -169,27 +169,11 @@
          type = "String";
       }
    }
-   element pixel_clk
-   {
-      datum _sortIndex
-      {
-         value = "6";
-         type = "int";
-      }
-   }
-   element pixel_reset
-   {
-      datum _sortIndex
-      {
-         value = "7";
-         type = "int";
-      }
-   }
    element pwm
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "7";
          type = "int";
       }
    }
@@ -201,19 +185,11 @@
          type = "String";
       }
    }
-   element reset_bridge
-   {
-      datum _sortIndex
-      {
-         value = "3";
-         type = "int";
-      }
-   }
    element sdram
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "4";
          type = "int";
       }
    }
@@ -225,27 +201,11 @@
          type = "String";
       }
    }
-   element sdram_clk
-   {
-      datum _sortIndex
-      {
-         value = "2";
-         type = "int";
-      }
-   }
-   element sysclk_bridge
-   {
-      datum _sortIndex
-      {
-         value = "1";
-         type = "int";
-      }
-   }
    element uptime
    {
       datum _sortIndex
       {
-         value = "17";
+         value = "12";
          type = "int";
       }
    }
@@ -261,7 +221,7 @@
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "3";
          type = "int";
       }
    }
@@ -276,9 +236,9 @@
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
- <parameter name="device" value="10M50DAF484C6GES" />
+ <parameter name="device" value="10M50SAE144I7G" />
  <parameter name="deviceFamily" value="MAX 10" />
- <parameter name="deviceSpeedGrade" value="6" />
+ <parameter name="deviceSpeedGrade" value="7" />
  <parameter name="fabricMode" value="QSYS" />
  <parameter name="generateLegacySim" value="false" />
  <parameter name="generationId" value="0" />
@@ -304,7 +264,7 @@
    internal="button.external_connection"
    type="conduit"
    dir="end" />
- <interface name="clk" internal="clk.ref_clk" type="clock" dir="end" />
+ <interface name="clk" internal="clk.clk_in" type="clock" dir="end" />
  <interface
    name="encoder_left"
    internal="encoder_left.external_connection"
@@ -335,34 +295,13 @@
    internal="on_button.external_connection"
    type="conduit"
    dir="end" />
- <interface name="pixel_clk" internal="pixel_clk.in_clk" type="clock" dir="end" />
- <interface
-   name="pixel_reset"
-   internal="pixel_reset.in_reset"
-   type="reset"
-   dir="end" />
  <interface
    name="pwm"
    internal="pwm.external_connection"
    type="conduit"
    dir="end" />
- <interface name="reset" internal="clk.ref_reset" type="reset" dir="end" />
- <interface
-   name="reset_bridge"
-   internal="reset_bridge.out_reset"
-   type="reset"
-   dir="start" />
- <interface
-   name="sdram_clk"
-   internal="sdram_clk.out_clk"
-   type="clock"
-   dir="start" />
+ <interface name="reset" internal="clk.clk_in_reset" type="reset" dir="end" />
  <interface name="sdram_wire" internal="sdram.wire" type="conduit" dir="end" />
- <interface
-   name="sysclk"
-   internal="sysclk_bridge.out_clk"
-   type="clock"
-   dir="start" />
  <interface
    name="uptime"
    internal="uptime.external_connection"
@@ -403,27 +342,17 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="2" />
  </module>
- <module
-   name="clk"
-   kind="altera_up_avalon_sys_sdram_pll"
-   version="18.0"
-   enabled="1">
-  <parameter name="AUTO_DEVICE" value="10M50DAF484C6GES" />
-  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
-  <parameter name="CIII_boards" value="DE0" />
-  <parameter name="CIV_boards" value="DE2-115" />
-  <parameter name="CV_boards" value="DE10-Standard" />
-  <parameter name="MAX10_boards" value="DE10-Lite" />
-  <parameter name="device_family" value="MAX 10" />
-  <parameter name="gui_outclk" value="50.0" />
-  <parameter name="gui_refclk" value="50.0" />
-  <parameter name="other_boards" value="None" />
+ <module name="clk" kind="clock_source" version="18.1" enabled="1">
+  <parameter name="clockFrequency" value="100000000" />
+  <parameter name="clockFrequencyKnown" value="true" />
+  <parameter name="inputClockFrequency" value="0" />
+  <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
  <module name="cpu" kind="altera_nios2_gen2" version="18.1" enabled="1">
-  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="10" />
-  <parameter name="AUTO_CLK_RESET_DOMAIN" value="10" />
-  <parameter name="AUTO_DEVICE" value="10M50DAF484C6GES" />
-  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
+  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="1" />
+  <parameter name="AUTO_CLK_RESET_DOMAIN" value="1" />
+  <parameter name="AUTO_DEVICE" value="10M50SAE144I7G" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
   <parameter name="bht_ramBlockType" value="Automatic" />
   <parameter name="breakOffset" value="32" />
   <parameter name="breakSlave" value="None" />
@@ -716,26 +645,6 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="1" />
  </module>
- <module
-   name="pixel_clk"
-   kind="altera_clock_bridge"
-   version="18.1"
-   enabled="1">
-  <parameter name="DERIVED_CLOCK_RATE" value="0" />
-  <parameter name="EXPLICIT_CLOCK_RATE" value="6000000" />
-  <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
- </module>
- <module
-   name="pixel_reset"
-   kind="altera_reset_bridge"
-   version="18.1"
-   enabled="1">
-  <parameter name="ACTIVE_LOW_RESET" value="0" />
-  <parameter name="AUTO_CLK_CLOCK_RATE" value="6000000" />
-  <parameter name="NUM_RESET_OUTPUTS" value="1" />
-  <parameter name="SYNCHRONOUS_EDGES" value="deassert" />
-  <parameter name="USE_RESET_REQUEST" value="0" />
- </module>
  <module name="pwm" kind="altera_avalon_pio" version="18.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -749,17 +658,6 @@
   <parameter name="simDoTestBenchWiring" value="false" />
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="16" />
- </module>
- <module
-   name="reset_bridge"
-   kind="altera_reset_bridge"
-   version="18.1"
-   enabled="1">
-  <parameter name="ACTIVE_LOW_RESET" value="0" />
-  <parameter name="AUTO_CLK_CLOCK_RATE" value="100000000" />
-  <parameter name="NUM_RESET_OUTPUTS" value="1" />
-  <parameter name="SYNCHRONOUS_EDGES" value="deassert" />
-  <parameter name="USE_RESET_REQUEST" value="0" />
  </module>
  <module
    name="sdram"
@@ -789,24 +687,6 @@
   <parameter name="refreshPeriod" value="15.625" />
   <parameter name="registerDataIn" value="true" />
   <parameter name="rowWidth" value="13" />
- </module>
- <module
-   name="sdram_clk"
-   kind="altera_clock_bridge"
-   version="18.1"
-   enabled="1">
-  <parameter name="DERIVED_CLOCK_RATE" value="100000000" />
-  <parameter name="EXPLICIT_CLOCK_RATE" value="100000000" />
-  <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
- </module>
- <module
-   name="sysclk_bridge"
-   kind="altera_clock_bridge"
-   version="18.1"
-   enabled="1">
-  <parameter name="DERIVED_CLOCK_RATE" value="100000000" />
-  <parameter name="EXPLICIT_CLOCK_RATE" value="100000000" />
-  <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
  </module>
  <module name="uptime" kind="altera_avalon_pio" version="18.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
@@ -873,11 +753,6 @@
    end="cpu.debug_mem_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x08000800" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection kind="avalon" version="18.1" start="cpu.data_master" end="sdram.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x04000000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="avalon" version="18.1" start="cpu.data_master" end="button.s1">
@@ -954,6 +829,11 @@
   <parameter name="baseAddress" value="0x080000c0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
+ <connection kind="avalon" version="18.1" start="cpu.data_master" end="sdram.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x04000000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
  <connection
    kind="avalon"
    version="18.1"
@@ -972,56 +852,24 @@
   <parameter name="baseAddress" value="0x04000000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
+ <connection kind="clock" version="18.1" start="clk.clk" end="cpu.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="jtag_uart.clk" />
  <connection
    kind="clock"
    version="18.1"
-   start="pixel_clk.out_clk"
-   end="pixel_reset.clk" />
- <connection
-   kind="clock"
-   version="18.1"
-   start="clk.sdram_clk"
-   end="sdram_clk.in_clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="cpu.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="jtag_uart.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="sdram.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="button.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="led.clk" />
- <connection
-   kind="clock"
-   version="18.1"
-   start="clk.sys_clk"
+   start="clk.clk"
    end="video_dma_controller.clk" />
- <connection
-   kind="clock"
-   version="18.1"
-   start="clk.sys_clk"
-   end="reset_bridge.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="pwm.clk" />
- <connection
-   kind="clock"
-   version="18.1"
-   start="clk.sys_clk"
-   end="encoder_right.clk" />
- <connection
-   kind="clock"
-   version="18.1"
-   start="clk.sys_clk"
-   end="encoder_left.clk" />
- <connection
-   kind="clock"
-   version="18.1"
-   start="clk.sys_clk"
-   end="motor_direction.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="on_button.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="line_detect.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="uptime.clk" />
- <connection kind="clock" version="18.1" start="clk.sys_clk" end="ble_uart.clk" />
- <connection
-   kind="clock"
-   version="18.1"
-   start="clk.sys_clk"
-   end="sysclk_bridge.in_clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="sdram.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="button.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="led.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="pwm.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="encoder_left.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="encoder_right.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="motor_direction.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="on_button.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="uptime.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="line_detect.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="ble_uart.clk" />
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -1031,66 +879,49 @@
  <connection
    kind="reset"
    version="18.1"
-   start="clk.reset_source"
-   end="reset_bridge.in_reset" />
- <connection kind="reset" version="18.1" start="clk.reset_source" end="cpu.reset" />
+   start="clk.clk_reset"
+   end="ble_uart.reset" />
  <connection
    kind="reset"
    version="18.1"
-   start="clk.reset_source"
-   end="sdram.reset" />
+   start="clk.clk_reset"
+   end="line_detect.reset" />
+ <connection kind="reset" version="18.1" start="clk.clk_reset" end="uptime.reset" />
  <connection
    kind="reset"
    version="18.1"
-   start="clk.reset_source"
-   end="jtag_uart.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk.reset_source"
-   end="button.reset" />
- <connection kind="reset" version="18.1" start="clk.reset_source" end="led.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk.reset_source"
-   end="video_dma_controller.reset" />
- <connection kind="reset" version="18.1" start="clk.reset_source" end="pwm.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk.reset_source"
-   end="encoder_left.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk.reset_source"
-   end="encoder_right.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk.reset_source"
-   end="motor_direction.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk.reset_source"
+   start="clk.clk_reset"
    end="on_button.reset" />
  <connection
    kind="reset"
    version="18.1"
-   start="clk.reset_source"
-   end="uptime.reset" />
+   start="clk.clk_reset"
+   end="motor_direction.reset" />
  <connection
    kind="reset"
    version="18.1"
-   start="clk.reset_source"
-   end="line_detect.reset" />
+   start="clk.clk_reset"
+   end="encoder_right.reset" />
  <connection
    kind="reset"
    version="18.1"
-   start="clk.reset_source"
-   end="ble_uart.reset" />
+   start="clk.clk_reset"
+   end="encoder_left.reset" />
+ <connection kind="reset" version="18.1" start="clk.clk_reset" end="pwm.reset" />
+ <connection kind="reset" version="18.1" start="clk.clk_reset" end="led.reset" />
+ <connection kind="reset" version="18.1" start="clk.clk_reset" end="button.reset" />
+ <connection kind="reset" version="18.1" start="clk.clk_reset" end="sdram.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.clk_reset"
+   end="video_dma_controller.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.clk_reset"
+   end="jtag_uart.reset" />
+ <connection kind="reset" version="18.1" start="clk.clk_reset" end="cpu.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

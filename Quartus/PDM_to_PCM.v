@@ -11,28 +11,27 @@ module PDM_to_PCM (
 );
 
 
-	input pdm_clk;
-	input pdm;
+	input											pdm_clk;
+	input											pdm;
 
-	output reg 			pcm_clk;
-	output reg [15:0] pcm;
+	output reg									pcm_clk;
+	output reg signed [15:0]				pcm;
+
+	reg					[6:0]					decimation_counter;
+
+	reg signed			[15:0]				average;
+	reg signed			[15:0]				sample_sum;
+
+	reg 					[FILTER_LEN-1:0]	filter_bank;
 
 	localparam FILTER_LEN = 64;
 	localparam DECIMATION = 64;
 
-	reg [6:0] 					decimation_counter;
-
-	reg [15:0]					average;
-	reg [31:0] 		 			sample_sum;
-
-	reg [FILTER_LEN-1:0]		filter_bank;
-
-	
 	initial
 	begin
 
 		filter_bank <= 0;
-		average <= 0;
+		average <= -32;
 
 	end
 	
@@ -43,7 +42,32 @@ module PDM_to_PCM (
 		filter_bank <= (filter_bank << 1 ) | pdm;
 
 		// Adjust counter
-		average <= average + pdm - filter_bank[FILTER_LEN-1];
+		//average <= average + pdm - filter_bank[FILTER_LEN-1];
+		
+		if(pdm)
+		begin
+			if(filter_bank[FILTER_LEN-1])
+			begin
+				average <= average;
+			end
+			else
+			begin
+				average <= average + 1;
+
+			end
+		end
+		else
+		begin
+			if(filter_bank[FILTER_LEN-1])
+			begin
+				average <= average - 1;
+			end
+			else
+			begin
+				average <= average;
+
+			end
+		end
 
 		if(decimation_counter == (DECIMATION - 1))
 		begin

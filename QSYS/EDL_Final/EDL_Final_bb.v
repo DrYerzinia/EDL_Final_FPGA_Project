@@ -1,5 +1,7 @@
 
 module EDL_Final (
+	ble_uart_rxd,
+	ble_uart_txd,
 	button_external_connection_export,
 	clk_clk,
 	encoder_left_export,
@@ -8,12 +10,8 @@ module EDL_Final (
 	line_detect_export,
 	motor_direction_export,
 	on_button_export,
-	pixel_clk_clk,
-	pixel_reset_reset,
 	pwm_export,
-	reset_reset,
-	reset_bridge_reset,
-	sdram_clk_clk,
+	reset_reset_n,
 	sdram_wire_addr,
 	sdram_wire_ba,
 	sdram_wire_cas_n,
@@ -23,16 +21,15 @@ module EDL_Final (
 	sdram_wire_dqm,
 	sdram_wire_ras_n,
 	sdram_wire_we_n,
-	sysclk_clk,
 	uptime_export,
 	video_dma_sink_data,
 	video_dma_sink_startofpacket,
 	video_dma_sink_endofpacket,
 	video_dma_sink_valid,
-	video_dma_sink_ready,
-	ble_uart_rxd,
-	ble_uart_txd);	
+	video_dma_sink_ready);	
 
+	input		ble_uart_rxd;
+	output		ble_uart_txd;
 	input	[1:0]	button_external_connection_export;
 	input		clk_clk;
 	input	[31:0]	encoder_left_export;
@@ -41,12 +38,8 @@ module EDL_Final (
 	input	[3:0]	line_detect_export;
 	output	[3:0]	motor_direction_export;
 	input		on_button_export;
-	input		pixel_clk_clk;
-	input		pixel_reset_reset;
 	output	[15:0]	pwm_export;
-	input		reset_reset;
-	output		reset_bridge_reset;
-	output		sdram_clk_clk;
+	input		reset_reset_n;
 	output	[12:0]	sdram_wire_addr;
 	output	[1:0]	sdram_wire_ba;
 	output		sdram_wire_cas_n;
@@ -56,13 +49,10 @@ module EDL_Final (
 	output	[1:0]	sdram_wire_dqm;
 	output		sdram_wire_ras_n;
 	output		sdram_wire_we_n;
-	output		sysclk_clk;
 	input	[31:0]	uptime_export;
 	input	[23:0]	video_dma_sink_data;
 	input		video_dma_sink_startofpacket;
 	input		video_dma_sink_endofpacket;
 	input		video_dma_sink_valid;
 	output		video_dma_sink_ready;
-	input		ble_uart_rxd;
-	output		ble_uart_txd;
 endmodule
