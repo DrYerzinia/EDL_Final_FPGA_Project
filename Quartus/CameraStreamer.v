@@ -15,8 +15,8 @@ module CameraStreamer (
 	startofpacket,
 	endofpacket,
 	empty,
-	valid,
-	
+	valid
+
 );
 
 /*****************************************************************************

@@ -11,9 +11,16 @@ module EDL_Final (
 		input  wire [31:0] encoder_left_export,               //               encoder_left.export
 		input  wire [31:0] encoder_right_export,              //              encoder_right.export
 		output wire [9:0]  led_external_connection_export,    //    led_external_connection.export
+		output wire        lidar_motor_en_export,             //             lidar_motor_en.export
+		input  wire        lidar_uart_rxd,                    //                 lidar_uart.rxd
+		output wire        lidar_uart_txd,                    //                           .txd
 		input  wire [3:0]  line_detect_export,                //                line_detect.export
 		output wire [3:0]  motor_direction_export,            //            motor_direction.export
 		input  wire        on_button_export,                  //                  on_button.export
+		input  wire [31:0] peak_1_export,                     //                     peak_1.export
+		input  wire [31:0] peak_2_export,                     //                     peak_2.export
+		input  wire [31:0] peak_3_export,                     //                     peak_3.export
+		output wire        peak_reset_export,                 //                 peak_reset.export
 		output wire [15:0] pwm_export,                        //                        pwm.export
 		input  wire        reset_reset_n,                     //                      reset.reset_n
 		output wire [12:0] sdram_wire_addr,                   //                 sdram_wire.addr
@@ -113,10 +120,38 @@ module EDL_Final (
 	wire         mm_interconnect_0_ble_uart_s1_begintransfer;                                // mm_interconnect_0:ble_uart_s1_begintransfer -> ble_uart:begintransfer
 	wire         mm_interconnect_0_ble_uart_s1_write;                                        // mm_interconnect_0:ble_uart_s1_write -> ble_uart:write_n
 	wire  [15:0] mm_interconnect_0_ble_uart_s1_writedata;                                    // mm_interconnect_0:ble_uart_s1_writedata -> ble_uart:writedata
+	wire         mm_interconnect_0_lidar_uart_s1_chipselect;                                 // mm_interconnect_0:lidar_uart_s1_chipselect -> lidar_uart:chipselect
+	wire  [15:0] mm_interconnect_0_lidar_uart_s1_readdata;                                   // lidar_uart:readdata -> mm_interconnect_0:lidar_uart_s1_readdata
+	wire   [2:0] mm_interconnect_0_lidar_uart_s1_address;                                    // mm_interconnect_0:lidar_uart_s1_address -> lidar_uart:address
+	wire         mm_interconnect_0_lidar_uart_s1_read;                                       // mm_interconnect_0:lidar_uart_s1_read -> lidar_uart:read_n
+	wire         mm_interconnect_0_lidar_uart_s1_begintransfer;                              // mm_interconnect_0:lidar_uart_s1_begintransfer -> lidar_uart:begintransfer
+	wire         mm_interconnect_0_lidar_uart_s1_write;                                      // mm_interconnect_0:lidar_uart_s1_write -> lidar_uart:write_n
+	wire  [15:0] mm_interconnect_0_lidar_uart_s1_writedata;                                  // mm_interconnect_0:lidar_uart_s1_writedata -> lidar_uart:writedata
+	wire         mm_interconnect_0_peak_1_s1_chipselect;                                     // mm_interconnect_0:peak_1_s1_chipselect -> peak_1:chipselect
+	wire  [31:0] mm_interconnect_0_peak_1_s1_readdata;                                       // peak_1:readdata -> mm_interconnect_0:peak_1_s1_readdata
+	wire   [1:0] mm_interconnect_0_peak_1_s1_address;                                        // mm_interconnect_0:peak_1_s1_address -> peak_1:address
+	wire         mm_interconnect_0_peak_1_s1_write;                                          // mm_interconnect_0:peak_1_s1_write -> peak_1:write_n
+	wire  [31:0] mm_interconnect_0_peak_1_s1_writedata;                                      // mm_interconnect_0:peak_1_s1_writedata -> peak_1:writedata
+	wire  [31:0] mm_interconnect_0_peak_2_s1_readdata;                                       // peak_2:readdata -> mm_interconnect_0:peak_2_s1_readdata
+	wire   [1:0] mm_interconnect_0_peak_2_s1_address;                                        // mm_interconnect_0:peak_2_s1_address -> peak_2:address
+	wire  [31:0] mm_interconnect_0_peak_3_s1_readdata;                                       // peak_3:readdata -> mm_interconnect_0:peak_3_s1_readdata
+	wire   [1:0] mm_interconnect_0_peak_3_s1_address;                                        // mm_interconnect_0:peak_3_s1_address -> peak_3:address
+	wire         mm_interconnect_0_peak_reset_s1_chipselect;                                 // mm_interconnect_0:peak_reset_s1_chipselect -> peak_reset:chipselect
+	wire  [31:0] mm_interconnect_0_peak_reset_s1_readdata;                                   // peak_reset:readdata -> mm_interconnect_0:peak_reset_s1_readdata
+	wire   [1:0] mm_interconnect_0_peak_reset_s1_address;                                    // mm_interconnect_0:peak_reset_s1_address -> peak_reset:address
+	wire         mm_interconnect_0_peak_reset_s1_write;                                      // mm_interconnect_0:peak_reset_s1_write -> peak_reset:write_n
+	wire  [31:0] mm_interconnect_0_peak_reset_s1_writedata;                                  // mm_interconnect_0:peak_reset_s1_writedata -> peak_reset:writedata
+	wire         mm_interconnect_0_lidar_motor_en_s1_chipselect;                             // mm_interconnect_0:lidar_motor_en_s1_chipselect -> lidar_motor_en:chipselect
+	wire  [31:0] mm_interconnect_0_lidar_motor_en_s1_readdata;                               // lidar_motor_en:readdata -> mm_interconnect_0:lidar_motor_en_s1_readdata
+	wire   [1:0] mm_interconnect_0_lidar_motor_en_s1_address;                                // mm_interconnect_0:lidar_motor_en_s1_address -> lidar_motor_en:address
+	wire         mm_interconnect_0_lidar_motor_en_s1_write;                                  // mm_interconnect_0:lidar_motor_en_s1_write -> lidar_motor_en:write_n
+	wire  [31:0] mm_interconnect_0_lidar_motor_en_s1_writedata;                              // mm_interconnect_0:lidar_motor_en_s1_writedata -> lidar_motor_en:writedata
 	wire         irq_mapper_receiver0_irq;                                                   // jtag_uart:av_irq -> irq_mapper:receiver0_irq
 	wire         irq_mapper_receiver1_irq;                                                   // ble_uart:irq -> irq_mapper:receiver1_irq
+	wire         irq_mapper_receiver2_irq;                                                   // lidar_uart:irq -> irq_mapper:receiver2_irq
+	wire         irq_mapper_receiver3_irq;                                                   // peak_1:irq -> irq_mapper:receiver3_irq
 	wire  [31:0] cpu_irq_irq;                                                                // irq_mapper:sender_irq -> cpu:irq
-	wire         rst_controller_reset_out_reset;                                             // rst_controller:reset_out -> [ble_uart:reset_n, button:reset_n, cpu:reset_n, encoder_left:reset_n, encoder_right:reset_n, irq_mapper:reset, jtag_uart:rst_n, led:reset_n, line_detect:reset_n, mm_interconnect_0:video_dma_controller_reset_reset_bridge_in_reset_reset, motor_direction:reset_n, on_button:reset_n, pwm:reset_n, rst_translator:in_reset, sdram:reset_n, uptime:reset_n, video_dma_controller:reset]
+	wire         rst_controller_reset_out_reset;                                             // rst_controller:reset_out -> [ble_uart:reset_n, button:reset_n, cpu:reset_n, encoder_left:reset_n, encoder_right:reset_n, irq_mapper:reset, jtag_uart:rst_n, led:reset_n, lidar_motor_en:reset_n, lidar_uart:reset_n, line_detect:reset_n, mm_interconnect_0:video_dma_controller_reset_reset_bridge_in_reset_reset, motor_direction:reset_n, on_button:reset_n, peak_1:reset_n, peak_2:reset_n, peak_3:reset_n, peak_reset:reset_n, pwm:reset_n, rst_translator:in_reset, sdram:reset_n, uptime:reset_n, video_dma_controller:reset]
 	wire         rst_controller_reset_out_reset_req;                                         // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
 
 	EDL_Final_ble_uart ble_uart (
@@ -211,6 +246,32 @@ module EDL_Final (
 		.out_port   (led_external_connection_export)       // external_connection.export
 	);
 
+	EDL_Final_lidar_motor_en lidar_motor_en (
+		.clk        (clk_clk),                                        //                 clk.clk
+		.reset_n    (~rst_controller_reset_out_reset),                //               reset.reset_n
+		.address    (mm_interconnect_0_lidar_motor_en_s1_address),    //                  s1.address
+		.write_n    (~mm_interconnect_0_lidar_motor_en_s1_write),     //                    .write_n
+		.writedata  (mm_interconnect_0_lidar_motor_en_s1_writedata),  //                    .writedata
+		.chipselect (mm_interconnect_0_lidar_motor_en_s1_chipselect), //                    .chipselect
+		.readdata   (mm_interconnect_0_lidar_motor_en_s1_readdata),   //                    .readdata
+		.out_port   (lidar_motor_en_export)                           // external_connection.export
+	);
+
+	EDL_Final_lidar_uart lidar_uart (
+		.clk           (clk_clk),                                       //                 clk.clk
+		.reset_n       (~rst_controller_reset_out_reset),               //               reset.reset_n
+		.address       (mm_interconnect_0_lidar_uart_s1_address),       //                  s1.address
+		.begintransfer (mm_interconnect_0_lidar_uart_s1_begintransfer), //                    .begintransfer
+		.chipselect    (mm_interconnect_0_lidar_uart_s1_chipselect),    //                    .chipselect
+		.read_n        (~mm_interconnect_0_lidar_uart_s1_read),         //                    .read_n
+		.write_n       (~mm_interconnect_0_lidar_uart_s1_write),        //                    .write_n
+		.writedata     (mm_interconnect_0_lidar_uart_s1_writedata),     //                    .writedata
+		.readdata      (mm_interconnect_0_lidar_uart_s1_readdata),      //                    .readdata
+		.rxd           (lidar_uart_rxd),                                // external_connection.export
+		.txd           (lidar_uart_txd),                                //                    .export
+		.irq           (irq_mapper_receiver2_irq)                       //                 irq.irq
+	);
+
 	EDL_Final_line_detect line_detect (
 		.clk      (clk_clk),                                   //                 clk.clk
 		.reset_n  (~rst_controller_reset_out_reset),           //               reset.reset_n
@@ -236,6 +297,45 @@ module EDL_Final (
 		.address  (mm_interconnect_0_on_button_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_on_button_s1_readdata), //                    .readdata
 		.in_port  (on_button_export)                         // external_connection.export
+	);
+
+	EDL_Final_peak_1 peak_1 (
+		.clk        (clk_clk),                                //                 clk.clk
+		.reset_n    (~rst_controller_reset_out_reset),        //               reset.reset_n
+		.address    (mm_interconnect_0_peak_1_s1_address),    //                  s1.address
+		.write_n    (~mm_interconnect_0_peak_1_s1_write),     //                    .write_n
+		.writedata  (mm_interconnect_0_peak_1_s1_writedata),  //                    .writedata
+		.chipselect (mm_interconnect_0_peak_1_s1_chipselect), //                    .chipselect
+		.readdata   (mm_interconnect_0_peak_1_s1_readdata),   //                    .readdata
+		.in_port    (peak_1_export),                          // external_connection.export
+		.irq        (irq_mapper_receiver3_irq)                //                 irq.irq
+	);
+
+	EDL_Final_encoder_left peak_2 (
+		.clk      (clk_clk),                              //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),      //               reset.reset_n
+		.address  (mm_interconnect_0_peak_2_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_0_peak_2_s1_readdata), //                    .readdata
+		.in_port  (peak_2_export)                         // external_connection.export
+	);
+
+	EDL_Final_encoder_left peak_3 (
+		.clk      (clk_clk),                              //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),      //               reset.reset_n
+		.address  (mm_interconnect_0_peak_3_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_0_peak_3_s1_readdata), //                    .readdata
+		.in_port  (peak_3_export)                         // external_connection.export
+	);
+
+	EDL_Final_lidar_motor_en peak_reset (
+		.clk        (clk_clk),                                    //                 clk.clk
+		.reset_n    (~rst_controller_reset_out_reset),            //               reset.reset_n
+		.address    (mm_interconnect_0_peak_reset_s1_address),    //                  s1.address
+		.write_n    (~mm_interconnect_0_peak_reset_s1_write),     //                    .write_n
+		.writedata  (mm_interconnect_0_peak_reset_s1_writedata),  //                    .writedata
+		.chipselect (mm_interconnect_0_peak_reset_s1_chipselect), //                    .chipselect
+		.readdata   (mm_interconnect_0_peak_reset_s1_readdata),   //                    .readdata
+		.out_port   (peak_reset_export)                           // external_connection.export
 	);
 
 	EDL_Final_pwm pwm (
@@ -352,6 +452,18 @@ module EDL_Final (
 		.led_s1_readdata                                          (mm_interconnect_0_led_s1_readdata),                                          //                                                 .readdata
 		.led_s1_writedata                                         (mm_interconnect_0_led_s1_writedata),                                         //                                                 .writedata
 		.led_s1_chipselect                                        (mm_interconnect_0_led_s1_chipselect),                                        //                                                 .chipselect
+		.lidar_motor_en_s1_address                                (mm_interconnect_0_lidar_motor_en_s1_address),                                //                                lidar_motor_en_s1.address
+		.lidar_motor_en_s1_write                                  (mm_interconnect_0_lidar_motor_en_s1_write),                                  //                                                 .write
+		.lidar_motor_en_s1_readdata                               (mm_interconnect_0_lidar_motor_en_s1_readdata),                               //                                                 .readdata
+		.lidar_motor_en_s1_writedata                              (mm_interconnect_0_lidar_motor_en_s1_writedata),                              //                                                 .writedata
+		.lidar_motor_en_s1_chipselect                             (mm_interconnect_0_lidar_motor_en_s1_chipselect),                             //                                                 .chipselect
+		.lidar_uart_s1_address                                    (mm_interconnect_0_lidar_uart_s1_address),                                    //                                    lidar_uart_s1.address
+		.lidar_uart_s1_write                                      (mm_interconnect_0_lidar_uart_s1_write),                                      //                                                 .write
+		.lidar_uart_s1_read                                       (mm_interconnect_0_lidar_uart_s1_read),                                       //                                                 .read
+		.lidar_uart_s1_readdata                                   (mm_interconnect_0_lidar_uart_s1_readdata),                                   //                                                 .readdata
+		.lidar_uart_s1_writedata                                  (mm_interconnect_0_lidar_uart_s1_writedata),                                  //                                                 .writedata
+		.lidar_uart_s1_begintransfer                              (mm_interconnect_0_lidar_uart_s1_begintransfer),                              //                                                 .begintransfer
+		.lidar_uart_s1_chipselect                                 (mm_interconnect_0_lidar_uart_s1_chipselect),                                 //                                                 .chipselect
 		.line_detect_s1_address                                   (mm_interconnect_0_line_detect_s1_address),                                   //                                   line_detect_s1.address
 		.line_detect_s1_readdata                                  (mm_interconnect_0_line_detect_s1_readdata),                                  //                                                 .readdata
 		.motor_direction_s1_address                               (mm_interconnect_0_motor_direction_s1_address),                               //                               motor_direction_s1.address
@@ -361,6 +473,20 @@ module EDL_Final (
 		.motor_direction_s1_chipselect                            (mm_interconnect_0_motor_direction_s1_chipselect),                            //                                                 .chipselect
 		.on_button_s1_address                                     (mm_interconnect_0_on_button_s1_address),                                     //                                     on_button_s1.address
 		.on_button_s1_readdata                                    (mm_interconnect_0_on_button_s1_readdata),                                    //                                                 .readdata
+		.peak_1_s1_address                                        (mm_interconnect_0_peak_1_s1_address),                                        //                                        peak_1_s1.address
+		.peak_1_s1_write                                          (mm_interconnect_0_peak_1_s1_write),                                          //                                                 .write
+		.peak_1_s1_readdata                                       (mm_interconnect_0_peak_1_s1_readdata),                                       //                                                 .readdata
+		.peak_1_s1_writedata                                      (mm_interconnect_0_peak_1_s1_writedata),                                      //                                                 .writedata
+		.peak_1_s1_chipselect                                     (mm_interconnect_0_peak_1_s1_chipselect),                                     //                                                 .chipselect
+		.peak_2_s1_address                                        (mm_interconnect_0_peak_2_s1_address),                                        //                                        peak_2_s1.address
+		.peak_2_s1_readdata                                       (mm_interconnect_0_peak_2_s1_readdata),                                       //                                                 .readdata
+		.peak_3_s1_address                                        (mm_interconnect_0_peak_3_s1_address),                                        //                                        peak_3_s1.address
+		.peak_3_s1_readdata                                       (mm_interconnect_0_peak_3_s1_readdata),                                       //                                                 .readdata
+		.peak_reset_s1_address                                    (mm_interconnect_0_peak_reset_s1_address),                                    //                                    peak_reset_s1.address
+		.peak_reset_s1_write                                      (mm_interconnect_0_peak_reset_s1_write),                                      //                                                 .write
+		.peak_reset_s1_readdata                                   (mm_interconnect_0_peak_reset_s1_readdata),                                   //                                                 .readdata
+		.peak_reset_s1_writedata                                  (mm_interconnect_0_peak_reset_s1_writedata),                                  //                                                 .writedata
+		.peak_reset_s1_chipselect                                 (mm_interconnect_0_peak_reset_s1_chipselect),                                 //                                                 .chipselect
 		.pwm_s1_address                                           (mm_interconnect_0_pwm_s1_address),                                           //                                           pwm_s1.address
 		.pwm_s1_write                                             (mm_interconnect_0_pwm_s1_write),                                             //                                                 .write
 		.pwm_s1_readdata                                          (mm_interconnect_0_pwm_s1_readdata),                                          //                                                 .readdata
@@ -390,6 +516,8 @@ module EDL_Final (
 		.reset         (rst_controller_reset_out_reset), // clk_reset.reset
 		.receiver0_irq (irq_mapper_receiver0_irq),       // receiver0.irq
 		.receiver1_irq (irq_mapper_receiver1_irq),       // receiver1.irq
+		.receiver2_irq (irq_mapper_receiver2_irq),       // receiver2.irq
+		.receiver3_irq (irq_mapper_receiver3_irq),       // receiver3.irq
 		.sender_irq    (cpu_irq_irq)                     //    sender.irq
 	);
 

@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Dec 10, 2019 10:02:13 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1576040533633</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Dec 11, 2019 4:49:15 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1576108155051</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\DrYerzinia\Documents\EDL_Final_FPGA_Project\QSYS\software\FinalProject_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\EDL_Final.sopcinfo</SopcDesignFile>
@@ -997,6 +997,42 @@
         <MemoryMap>
                 <slaveDescriptor>line_detect</slaveDescriptor>
                 <addressRange>0x080010A0 - 0x080010AF</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>lidar_uart</slaveDescriptor>
+                <addressRange>0x080010E0 - 0x080010FF</addressRange>
+                <addressSpan>32</addressSpan>
+                <attributes>printable</attributes>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>peak_1</slaveDescriptor>
+                <addressRange>0x08002000 - 0x0800200F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>peak_2</slaveDescriptor>
+                <addressRange>0x08002010 - 0x0800201F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>peak_3</slaveDescriptor>
+                <addressRange>0x08002020 - 0x0800202F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>peak_reset</slaveDescriptor>
+                <addressRange>0x08002030 - 0x0800203F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>lidar_motor_en</slaveDescriptor>
+                <addressRange>0x08002040 - 0x0800204F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>

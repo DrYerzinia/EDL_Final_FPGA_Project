@@ -41,6 +41,15 @@
 
 #define LINE_DETECT_BASE				0x80010a0
 
+#define LIDAR_MOTOR_EN_BASE				0x8002040
+
+#define PEAK_1_BASE						0x8002000
+#define PEAK_2_BASE						0x8002010
+#define PEAK_3_BASE						0x8002020
+#define PEAK_RESET_BASE					0x8002030
+
+#define PEAK_1_IRQ						3
+
 // VIDEO DMA CONTROLLER defines
 #define VIDEO_DMA_CONTROLLER__BUFFER_OFFSET					0
 #define VIDEO_DMA_CONTROLLER__BACK_BUFFER_OFFSET			4
@@ -54,6 +63,8 @@
 
 // KISS Interface defines
 typedef enum {
+
+	KISS_PACKET_OPCODES__LIDAR_TEST		= 0x40,
 
 	KISS_PACKET_OPCODES__DO_LOOP		= 0x50,
 	KISS_PACKET_OPCODES__DO_SPIN_5		= 0x51,
@@ -91,6 +102,7 @@ uint8_t jtag_kiss_rx_buffer[100];
 #define JTAG_UART_DATA ((volatile int*) JTAG_UART_BASE)
 #define JTAG_UART_CONTROL ((volatile int*) (JTAG_UART_BASE+4))
 
+#define PEAK_1_INTERRUPT ((volatile uint32_t*) (PEAK_1_BASE + 8))
 
 #define BLE_UART_BASE 0x80000c0
 #define BLE_UART_IRQ 1
@@ -102,6 +114,18 @@ uint8_t jtag_kiss_rx_buffer[100];
 #define BLE_UART_CONTROL ((volatile int*) (BLE_UART_BASE+12))
 #define BLE_UART_DIVISOR ((volatile int*) (BLE_UART_BASE+16))
 #define BLE_UART_EOP     ((volatile int*) (BLE_UART_BASE+20))
+
+#define LIDAR_UART_BASE 0x80010e0
+#define LIDAR_UART_IRQ 2
+#define LIDAR_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
+
+#define LIDAR_UART_RX_DATA ((volatile int*) LIDAR_UART_BASE)
+#define LIDAR_UART_TX_DATA ((volatile int*) (LIDAR_UART_BASE+4))
+#define LIDAR_UART_STATUS  ((volatile int*) (LIDAR_UART_BASE+8))
+#define LIDAR_UART_CONTROL ((volatile int*) (LIDAR_UART_BASE+12))
+#define LIDAR_UART_DIVISOR ((volatile int*) (LIDAR_UART_BASE+16))
+#define LIDAR_UART_EOP     ((volatile int*) (LIDAR_UART_BASE+20))
+
 
 #define JTAG_UART__MASK__RVALID		0x00008000
 
@@ -506,7 +530,7 @@ control_t right_ctrl = {
 static void wait_button_press(void){
 
 	// wait for ON switch
-	while ( ( IORD_ALTERA_AVALON_PIO_DATA(ON_BUTTON_BASE) & 1 )  == 0){
+	while ( ( IORD_ALTERA_AVALON_PIO_DATA(ON_BUTTON_BASE) & 1 )  == 1){
 		usleep(1000);
 	}
 
@@ -704,10 +728,136 @@ static void image_download_test(){
 
 // MAIN ///////////////////////////////////////////////////////////////////////
 
+#define LIDAR_SYNC_1 0xA5
+#define LIDAR_SYNC_2 0x5A
+
+typedef enum {
+
+	LIDAR_STATE_WAIT_SYNC	= 0,
+
+	LIDAR_STATE_SYNC_1,
+	LIDAR_STATE_SYNC_2,
+	LIDAR_STATE_SYNC_3,
+	LIDAR_STATE_SYNC_4,
+	LIDAR_STATE_SYNC_5,
+	LIDAR_STATE_SYNC_6,
+	//LIDAR_STATE_SYNC_7,
+
+	LIDAR_STATE_DATA_0,
+	LIDAR_STATE_DATA_1,
+	LIDAR_STATE_DATA_2,
+	LIDAR_STATE_DATA_3,
+	LIDAR_STATE_DATA_4
+
+} lidar_state_e;
+
+lidar_state_e lidar_state = LIDAR_STATE_WAIT_SYNC;
+
+bool lidar_error = false;
+
+uint8_t lidar_data_point[5];
+
+uint16_t smallest_distance = 40000;
+uint16_t smallest_distance_angle = 0;
+
+bool new_nearest = false;
+
+uint16_t nearest_distance = 0;
+uint16_t nearest_direction = 0;
+
+bool running = true;
+
+void lidar_test(){
+
+	lidar_error = false;
+
+	IOWR_ALTERA_AVALON_PIO_DATA(LIDAR_MOTOR_EN_BASE, 1);
+
+	usleep(1000000);
+
+	lidar_state = LIDAR_STATE_WAIT_SYNC;
+
+	// Start LIDAR scan
+	{
+		*LIDAR_UART_TX_DATA = 0xA5;
+		*LIDAR_UART_TX_DATA = 0x20;
+	}
+
+	uint32_t i;
+	for(i = 0; i < 210;){
+
+		if(!running | lidar_error){
+			break;
+		}
+
+		if(new_nearest){
+
+			new_nearest = false;
+
+			/*
+			char buffer[32];
+			int len = snprintf(buffer, 32, "\x81%0d %d", nearest_direction, nearest_distance);
+			kiss_send_packet(&jtag_kiss, (const uint8_t *) buffer, len);
+			*/
+
+			int16_t drive = 0;
+			int16_t yaw = 0;
+
+			// LIDAR driving
+			drive = ( nearest_distance - 2000 ) / 10; // stay 0.25meters away from nearest object
+
+			if(drive > 128){
+				drive = 128;
+			} else if(drive < -128){
+				drive = -128;
+			}
+
+			// LIDAR steering
+			if(nearest_direction > 11520){	// LEFT
+
+				yaw = ( 23040 - nearest_direction )  / -32;
+
+			} else {						// RIGHT
+
+				yaw = ( nearest_direction )  / 32;
+
+			}
+
+			if(yaw > 128){
+				yaw = 128;
+			} else if(yaw < -128){
+				yaw = -128;
+			}
+
+			set_motors(drive + yaw, drive - yaw);
+
+			i++;
+
+		}
+
+	}
+
+	set_motors(0, 0);
+
+	// Stop LIDAR scan
+	{
+		*LIDAR_UART_TX_DATA = 0xA5;
+		*LIDAR_UART_TX_DATA = 0x25;
+	}
+
+	IOWR_ALTERA_AVALON_PIO_DATA(LIDAR_MOTOR_EN_BASE, 0);
+
+}
+
 #define BLE_BUFFER_LEN 20
 
 uint8_t ble_buffer[BLE_BUFFER_LEN] = {0};
 uint8_t ble_buffer_position = 0;
+
+bool stop_event = false;
+bool line_event = false;
+bool follow_event = false;
+bool tdoa_event = false;
 
 void ble_uart_handler(void * context){
 
@@ -752,6 +902,14 @@ void ble_uart_handler(void * context){
 
 				set_motors(left, right);
 
+			} else if(ble_buffer[0] == 'S') {
+				stop_event = true;
+			} else if(ble_buffer[0] == 'F'){
+				follow_event = true;
+			} else if(ble_buffer[0] == 'L'){
+				line_event = true;
+			} else if(ble_buffer[0] == 'T'){
+				tdoa_event = true;
 			}
 
 			// Echo back
@@ -764,6 +922,115 @@ void ble_uart_handler(void * context){
 			 */
 
 			ble_buffer_position = 0;
+
+		}
+
+	}
+
+}
+
+// Lidar code simply gets direction of nearest obstacle
+
+void lidar_uart_handler(void * context){
+
+	uint16_t status = *LIDAR_UART_STATUS;
+
+	if( (status & 0x0008) != 0){
+		volatile uint8_t dummy = *LIDAR_UART_RX_DATA;
+		lidar_error = true;
+		return;
+	}
+
+	if( (status & 0x0080 ) != 0){
+
+		uint8_t byte = *LIDAR_UART_RX_DATA;
+
+		if(lidar_state == LIDAR_STATE_WAIT_SYNC){
+
+			if(byte == LIDAR_SYNC_1){
+
+				lidar_state = LIDAR_STATE_SYNC_1;
+
+			}
+
+		}
+
+		else if(lidar_state == LIDAR_STATE_SYNC_1){
+
+			if(byte == LIDAR_SYNC_2){
+				lidar_state = LIDAR_STATE_SYNC_2;
+			} else {
+				lidar_state = LIDAR_STATE_WAIT_SYNC;
+			}
+
+		}
+
+		else if(lidar_state >= LIDAR_STATE_SYNC_2 && lidar_state <= LIDAR_STATE_SYNC_6){
+
+			lidar_state++;
+
+		}
+
+		else if(lidar_state >= LIDAR_STATE_DATA_0 && lidar_state <= LIDAR_STATE_DATA_3){
+
+			lidar_data_point[lidar_state - LIDAR_STATE_DATA_0] = byte;
+
+			lidar_state++;
+
+		}
+
+		else if(lidar_state == LIDAR_STATE_DATA_4){
+
+			lidar_data_point[4] = byte;
+
+			/*
+			char buffer[20];
+			int len = snprintf(buffer, 20, "\x81%02X%02X%02X%02X%02X", lidar_data_point[0], lidar_data_point[1], lidar_data_point[2], lidar_data_point[3], lidar_data_point[4]);
+			kiss_send_packet(&jtag_kiss, (const uint8_t *) buffer, len);
+			*/
+
+			uint8_t start = lidar_data_point[0] & 0x3;
+
+			if(start == 0x01){
+
+				// beginning of scan, report nearest and restart
+
+				if(smallest_distance != 10000){
+
+					nearest_distance = smallest_distance;
+					nearest_direction = smallest_distance_angle;
+
+					new_nearest = true;
+
+				}
+
+				smallest_distance = 10000;
+				smallest_distance_angle = 0;
+
+			}
+
+			uint8_t quality = lidar_data_point[0] >> 2;
+
+			// Ignore data with quality below 3
+			if(quality > 3){
+
+				uint16_t distance = ( lidar_data_point[3] + ( lidar_data_point[4] << 8 ) );
+
+				// Ignore invalid distances
+				if (distance > 4){
+
+					if (distance < smallest_distance){
+
+						smallest_distance = distance;
+						smallest_distance_angle = ( ( lidar_data_point[1] >> 1 ) + ( lidar_data_point[2] << 7 ) );
+
+					}
+
+				}
+
+			}
+
+			lidar_state = LIDAR_STATE_DATA_0;
 
 		}
 
@@ -803,6 +1070,77 @@ void jtag_uart_handler(void * context){
 
 }
 
+bool peak_detected = false;
+
+uint32_t peak[3];
+
+void peak_detect_handler(void * context){
+
+	peak_detected = true;
+
+	peak[0] = IORD_ALTERA_AVALON_PIO_DATA(PEAK_1_BASE);
+	peak[1] = IORD_ALTERA_AVALON_PIO_DATA(PEAK_2_BASE);
+	peak[2] = IORD_ALTERA_AVALON_PIO_DATA(PEAK_3_BASE);
+
+	// Disable interrupts
+	*PEAK_1_INTERRUPT = 0;
+
+}
+
+void arm_peak_detector(){
+
+	peak_detected = false;
+
+	// Arm peak detector
+	IOWR_ALTERA_AVALON_PIO_DATA(PEAK_RESET_BASE, 1);
+	usleep(1);
+	IOWR_ALTERA_AVALON_PIO_DATA(PEAK_RESET_BASE, 0);
+
+	*PEAK_1_INTERRUPT = 0xFFFFFFFF; // Interrupt on any signal high
+
+}
+
+void peak_detect(){
+
+	arm_peak_detector();
+
+	int i = 0;
+	while(1){
+
+		if(peak_detected){
+
+			int j;
+			uint32_t smallest_value = peak[0];
+			uint8_t smallest_index = 0;
+			for(j = 1; j < 3; j++){
+				if(smallest_value > peak[j]){
+					smallest_value = peak[j];
+					smallest_index = j;
+				}
+			}
+
+			for(j = 0; j < 3; j++){
+				peak[j] -= smallest_value;
+			}
+
+			char buffer[32];
+			int len = snprintf(buffer, 32, "\x81%lu %lu %lu", peak[0], peak[1], peak[2]);
+			kiss_send_packet(&jtag_kiss, (const uint8_t *) buffer, len);
+
+			usleep(100000);
+
+			if(i == 10){
+				break;
+			}
+
+			arm_peak_detector();
+
+			i++;
+
+		}
+
+	}
+}
 
 int main()
 {
@@ -825,24 +1163,65 @@ int main()
 	alt_irq_register(BLE_UART_IRQ, NULL,  ble_uart_handler);
 	*BLE_UART_CONTROL = 0x0000080; // Read interrupt
 
+	// Stop LIDAR scan
+	{
+		*LIDAR_UART_TX_DATA = 0xA5;
+		*LIDAR_UART_TX_DATA = 0x25;
+	}
+
+	// Disable lidar motor
+	IOWR_ALTERA_AVALON_PIO_DATA(LIDAR_MOTOR_EN_BASE, 0);
+
+	*LIDAR_UART_CONTROL = 0; // Disable interrupts
+	alt_irq_register(LIDAR_UART_IRQ, NULL,  lidar_uart_handler);
+	*LIDAR_UART_CONTROL = 0x0000080; // Read interrupt
+
+	// Reset peak detectors
+	IOWR_ALTERA_AVALON_PIO_DATA(PEAK_RESET_BASE, 1);
+	usleep(1);
+	IOWR_ALTERA_AVALON_PIO_DATA(PEAK_RESET_BASE, 0);
+
+	*PEAK_1_INTERRUPT = 0;
+	alt_irq_register(PEAK_1_IRQ, NULL, peak_detect_handler);
+
 	// Send startup message
 	const char hello_world[] = "\x81Hello from Nios II!";
 	kiss_send_packet(&jtag_kiss, (const uint8_t *) hello_world, sizeof(hello_world) - 1);
 
 	usleep(1000000);
 
-	//while(1){
-	//	wait_button_press();
-	//	follow_line();
-	//}
+	peak_detect();
 
 	while(1){
+		wait_button_press();
+		lidar_test();
+	}
+
+	while(1){
+
+		if(line_event){
+			follow_line();
+			line_event = false;
+		}
+		if(follow_event){
+			lidar_test();
+			follow_event = false;
+		}
+		if(stop_event){
+			running = false;
+			stop_event = false;
+		}
 
 		if(packet_ready){
 
 			packet_ready = false;
 
 			switch(jtag_kiss.rx_buffer[0]){
+
+				case KISS_PACKET_OPCODES__LIDAR_TEST:
+					lidar_test();
+					break;
+
 
 				case KISS_PACKET_OPCODES__DO_LOOP:
 					motor_control_loop(&figure_8_ctrl, false);

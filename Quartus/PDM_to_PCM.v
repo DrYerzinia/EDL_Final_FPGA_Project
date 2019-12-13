@@ -24,14 +24,14 @@ module PDM_to_PCM (
 
 	reg 					[FILTER_LEN-1:0]	filter_bank;
 
-	localparam FILTER_LEN = 64;
+	localparam FILTER_LEN = 256;
 	localparam DECIMATION = 64;
 
 	initial
 	begin
 
 		filter_bank <= 0;
-		average <= -32;
+		average <= -128;
 
 	end
 	

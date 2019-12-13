@@ -136,6 +136,13 @@ wire [31:0] UPTIME;
 
 wire [3:0] LINE_DETECT;
 
+wire PCM_CLK;
+
+wire [15:0] PCM_1, PCM_2, PCM_3;
+
+wire [31:0] PEAK_1, PEAK_2, PEAK_3;
+wire 			PEAK_RESET;
+
 system_clocks sys_clks (
 
 	.inclk0			(CLK_50MHZ),
@@ -194,13 +201,17 @@ Edge_Detecting_Line_Follower edlf (
 
 );
 
+// Because these are all started at the same time
+// they will have syncronized clocks, but better
+// to structure it differently at some point
+
 PDM_to_PCM pdm_to_pcm_1 (
 
 	.pdm_clk				(PDM_CLK),
 	.pdm					(PDM[0]),
 
-	.pcm_clk				(),
-	.pcm					()
+	.pcm_clk				(PCM_CLK),
+	.pcm					(PCM_1)
 
 );
 
@@ -210,9 +221,36 @@ PDM_to_PCM pdm_to_pcm_2 (
 	.pdm					(PDM[1]),
 
 	.pcm_clk				(),
-	.pcm					()
+	.pcm					(PCM_2)
 
 );
+
+PDM_to_PCM pdm_to_pcm_3 (
+
+	.pdm_clk				(PDM_CLK),
+	.pdm					(PDM[2]),
+
+	.pcm_clk				(),
+	.pcm					(PCM_3)
+
+);
+
+TDoA tdoa (
+
+	.reset				(PEAK_RESET),
+
+	.pcm_clk				(PCM_CLK),
+	
+	.pcm_data_1			(PCM_1),
+	.pcm_data_2			(PCM_2),
+	.pcm_data_3			(PCM_3),
+
+	.trigger_time_1	(PEAK_1),
+	.trigger_time_2	(PEAK_2),
+	.trigger_time_3	(PEAK_3)
+	
+);
+
 
 CameraStreamer streamer (
 
@@ -248,7 +286,7 @@ EDL_Final cpu (
 		.encoder_right_export					(RIGHT_ENC),                  //   encoder_right.export
 
 		.motor_direction_export					({M1_C, M1_CW, M2_C, M2_CW}), // motor_direction.export
-		.on_button_export							(ON_OFF),                     //       on_button.export
+		.on_button_export							(ON_BUTTON),                  //       on_button.export
 
 		.uptime_export								(UPTIME),                     //          uptime.export
 
@@ -257,7 +295,11 @@ EDL_Final cpu (
       .ble_uart_rxd								(BLUETOOTH_FPGA_RX),          //         ble_uart.rxd
 		.ble_uart_txd								(BLUETOOTH_FPGA_TX),          //                 .txd
 
-		.sdram_wire_addr							(DRAM_A),				     	  //      sdram_wire.addr
+		.lidar_uart_rxd                     (LIDAR_FPGA_RX),              //       lidar_uart.rxd
+		.lidar_uart_txd                     (LIDAR_FPGA_TX),              //                 .txd
+		.lidar_motor_en_export              (LIDAR_MOTOR_EN),             //   lidar_motor_en.export
+		
+		.sdram_wire_addr							(DRAM_A),				      	//      sdram_wire.addr
 		.sdram_wire_ba								(DRAM_BA),				         //                .ba
 		.sdram_wire_cas_n							(DRAM_CAS_N),				      //                .cas_n
 		.sdram_wire_cke 							(DRAM_CKE),					      //                .cke
@@ -271,7 +313,12 @@ EDL_Final cpu (
 		.video_dma_sink_startofpacket			(SOP),      				      //                .startofpacket
 		.video_dma_sink_endofpacket			(EOP),        				      //                .endofpacket
 		.video_dma_sink_valid					(VALID),              	      //                .valid
-		.video_dma_sink_ready               (READY) 						      //                .ready
+		.video_dma_sink_ready               (READY), 				         //                .ready
+
+		.peak_1_export								(PEAK_1),                     //          peak_1.export
+		.peak_2_export								(PEAK_2),                     //          peak_2.export
+		.peak_3_export								(PEAK_3),                     //          peak_3.export
+		.peak_reset_export						(PEAK_RESET)                  //      peak_reset.export
 
 	);
 

@@ -6,9 +6,15 @@
 		.encoder_left_export               (<connected-to-encoder_left_export>),               //               encoder_left.export
 		.encoder_right_export              (<connected-to-encoder_right_export>),              //              encoder_right.export
 		.led_external_connection_export    (<connected-to-led_external_connection_export>),    //    led_external_connection.export
+		.lidar_uart_rxd                    (<connected-to-lidar_uart_rxd>),                    //                 lidar_uart.rxd
+		.lidar_uart_txd                    (<connected-to-lidar_uart_txd>),                    //                           .txd
 		.line_detect_export                (<connected-to-line_detect_export>),                //                line_detect.export
 		.motor_direction_export            (<connected-to-motor_direction_export>),            //            motor_direction.export
 		.on_button_export                  (<connected-to-on_button_export>),                  //                  on_button.export
+		.peak_1_export                     (<connected-to-peak_1_export>),                     //                     peak_1.export
+		.peak_2_export                     (<connected-to-peak_2_export>),                     //                     peak_2.export
+		.peak_3_export                     (<connected-to-peak_3_export>),                     //                     peak_3.export
+		.peak_reset_export                 (<connected-to-peak_reset_export>),                 //                 peak_reset.export
 		.pwm_export                        (<connected-to-pwm_export>),                        //                        pwm.export
 		.reset_reset_n                     (<connected-to-reset_reset_n>),                     //                      reset.reset_n
 		.sdram_wire_addr                   (<connected-to-sdram_wire_addr>),                   //                 sdram_wire.addr
@@ -25,6 +31,7 @@
 		.video_dma_sink_startofpacket      (<connected-to-video_dma_sink_startofpacket>),      //                           .startofpacket
 		.video_dma_sink_endofpacket        (<connected-to-video_dma_sink_endofpacket>),        //                           .endofpacket
 		.video_dma_sink_valid              (<connected-to-video_dma_sink_valid>),              //                           .valid
-		.video_dma_sink_ready              (<connected-to-video_dma_sink_ready>)               //                           .ready
+		.video_dma_sink_ready              (<connected-to-video_dma_sink_ready>),              //                           .ready
+		.lidar_motor_en_export             (<connected-to-lidar_motor_en_export>)              //             lidar_motor_en.export
 	);
 

@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Tue Dec 10 22:02:14 MST 2019
+ * Generated: Wed Dec 11 16:49:15 MST 2019
  */
 
 /*
@@ -340,6 +340,58 @@
 
 
 /*
+ * lidar_motor_en configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_lidar_motor_en altera_avalon_pio
+#define LIDAR_MOTOR_EN_BASE 0x8002040
+#define LIDAR_MOTOR_EN_BIT_CLEARING_EDGE_REGISTER 0
+#define LIDAR_MOTOR_EN_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define LIDAR_MOTOR_EN_CAPTURE 0
+#define LIDAR_MOTOR_EN_DATA_WIDTH 1
+#define LIDAR_MOTOR_EN_DO_TEST_BENCH_WIRING 0
+#define LIDAR_MOTOR_EN_DRIVEN_SIM_VALUE 0
+#define LIDAR_MOTOR_EN_EDGE_TYPE "NONE"
+#define LIDAR_MOTOR_EN_FREQ 100000000
+#define LIDAR_MOTOR_EN_HAS_IN 0
+#define LIDAR_MOTOR_EN_HAS_OUT 1
+#define LIDAR_MOTOR_EN_HAS_TRI 0
+#define LIDAR_MOTOR_EN_IRQ -1
+#define LIDAR_MOTOR_EN_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define LIDAR_MOTOR_EN_IRQ_TYPE "NONE"
+#define LIDAR_MOTOR_EN_NAME "/dev/lidar_motor_en"
+#define LIDAR_MOTOR_EN_RESET_VALUE 0
+#define LIDAR_MOTOR_EN_SPAN 16
+#define LIDAR_MOTOR_EN_TYPE "altera_avalon_pio"
+
+
+/*
+ * lidar_uart configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_lidar_uart altera_avalon_uart
+#define LIDAR_UART_BASE 0x80010e0
+#define LIDAR_UART_BAUD 115200
+#define LIDAR_UART_DATA_BITS 8
+#define LIDAR_UART_FIXED_BAUD 1
+#define LIDAR_UART_FREQ 100000000
+#define LIDAR_UART_IRQ 2
+#define LIDAR_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define LIDAR_UART_NAME "/dev/lidar_uart"
+#define LIDAR_UART_PARITY 'N'
+#define LIDAR_UART_SIM_CHAR_STREAM ""
+#define LIDAR_UART_SIM_TRUE_BAUD 0
+#define LIDAR_UART_SPAN 32
+#define LIDAR_UART_STOP_BITS 1
+#define LIDAR_UART_SYNC_REG_DEPTH 2
+#define LIDAR_UART_TYPE "altera_avalon_uart"
+#define LIDAR_UART_USE_CTS_RTS 0
+#define LIDAR_UART_USE_EOP_REGISTER 0
+
+
+/*
  * line_detect configuration
  *
  */
@@ -418,6 +470,114 @@
 #define ON_BUTTON_RESET_VALUE 0
 #define ON_BUTTON_SPAN 16
 #define ON_BUTTON_TYPE "altera_avalon_pio"
+
+
+/*
+ * peak_1 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_peak_1 altera_avalon_pio
+#define PEAK_1_BASE 0x8002000
+#define PEAK_1_BIT_CLEARING_EDGE_REGISTER 0
+#define PEAK_1_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PEAK_1_CAPTURE 0
+#define PEAK_1_DATA_WIDTH 32
+#define PEAK_1_DO_TEST_BENCH_WIRING 0
+#define PEAK_1_DRIVEN_SIM_VALUE 0
+#define PEAK_1_EDGE_TYPE "NONE"
+#define PEAK_1_FREQ 100000000
+#define PEAK_1_HAS_IN 1
+#define PEAK_1_HAS_OUT 0
+#define PEAK_1_HAS_TRI 0
+#define PEAK_1_IRQ 3
+#define PEAK_1_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define PEAK_1_IRQ_TYPE "LEVEL"
+#define PEAK_1_NAME "/dev/peak_1"
+#define PEAK_1_RESET_VALUE 0
+#define PEAK_1_SPAN 16
+#define PEAK_1_TYPE "altera_avalon_pio"
+
+
+/*
+ * peak_2 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_peak_2 altera_avalon_pio
+#define PEAK_2_BASE 0x8002010
+#define PEAK_2_BIT_CLEARING_EDGE_REGISTER 0
+#define PEAK_2_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PEAK_2_CAPTURE 0
+#define PEAK_2_DATA_WIDTH 32
+#define PEAK_2_DO_TEST_BENCH_WIRING 0
+#define PEAK_2_DRIVEN_SIM_VALUE 0
+#define PEAK_2_EDGE_TYPE "NONE"
+#define PEAK_2_FREQ 100000000
+#define PEAK_2_HAS_IN 1
+#define PEAK_2_HAS_OUT 0
+#define PEAK_2_HAS_TRI 0
+#define PEAK_2_IRQ -1
+#define PEAK_2_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define PEAK_2_IRQ_TYPE "NONE"
+#define PEAK_2_NAME "/dev/peak_2"
+#define PEAK_2_RESET_VALUE 0
+#define PEAK_2_SPAN 16
+#define PEAK_2_TYPE "altera_avalon_pio"
+
+
+/*
+ * peak_3 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_peak_3 altera_avalon_pio
+#define PEAK_3_BASE 0x8002020
+#define PEAK_3_BIT_CLEARING_EDGE_REGISTER 0
+#define PEAK_3_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PEAK_3_CAPTURE 0
+#define PEAK_3_DATA_WIDTH 32
+#define PEAK_3_DO_TEST_BENCH_WIRING 0
+#define PEAK_3_DRIVEN_SIM_VALUE 0
+#define PEAK_3_EDGE_TYPE "NONE"
+#define PEAK_3_FREQ 100000000
+#define PEAK_3_HAS_IN 1
+#define PEAK_3_HAS_OUT 0
+#define PEAK_3_HAS_TRI 0
+#define PEAK_3_IRQ -1
+#define PEAK_3_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define PEAK_3_IRQ_TYPE "NONE"
+#define PEAK_3_NAME "/dev/peak_3"
+#define PEAK_3_RESET_VALUE 0
+#define PEAK_3_SPAN 16
+#define PEAK_3_TYPE "altera_avalon_pio"
+
+
+/*
+ * peak_reset configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_peak_reset altera_avalon_pio
+#define PEAK_RESET_BASE 0x8002030
+#define PEAK_RESET_BIT_CLEARING_EDGE_REGISTER 0
+#define PEAK_RESET_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PEAK_RESET_CAPTURE 0
+#define PEAK_RESET_DATA_WIDTH 1
+#define PEAK_RESET_DO_TEST_BENCH_WIRING 0
+#define PEAK_RESET_DRIVEN_SIM_VALUE 0
+#define PEAK_RESET_EDGE_TYPE "NONE"
+#define PEAK_RESET_FREQ 100000000
+#define PEAK_RESET_HAS_IN 0
+#define PEAK_RESET_HAS_OUT 1
+#define PEAK_RESET_HAS_TRI 0
+#define PEAK_RESET_IRQ -1
+#define PEAK_RESET_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define PEAK_RESET_IRQ_TYPE "NONE"
+#define PEAK_RESET_NAME "/dev/peak_reset"
+#define PEAK_RESET_RESET_VALUE 0
+#define PEAK_RESET_SPAN 16
+#define PEAK_RESET_TYPE "altera_avalon_pio"
 
 
 /*
