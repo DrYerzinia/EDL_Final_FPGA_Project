@@ -28,6 +28,8 @@ module TDoA (
 	
 	reg [31:0]				sample_counter;
 
+	reg [7:0]				max_detect_counter;
+	
 	wire [31:0]				triggered_time_1, triggered_time_2, triggered_time_3;
 	
 	wire peak_1_triggered;
@@ -81,6 +83,8 @@ module TDoA (
 			trigger_time_2 <= 0;
 			trigger_time_3 <= 0;
 
+			max_detect_counter <= 0;
+			
 		end
 		else
 		begin
@@ -88,22 +92,30 @@ module TDoA (
 					// Count samples for peak detector
 			sample_counter <= sample_counter + 1;
 
-			if(all_triggered)
+			if(max_detect_counter == 200)
+			begin
+
+				trigger_time_1 <= triggered_time_1;
+				trigger_time_2 <= triggered_time_2;
+				trigger_time_3 <= triggered_time_3;
+
+			end
+			else if(all_triggered)
 			begin
 
 				// When everything is triggered we report back to CPU
 				// We reset everythiing after the CPU has pulled the data
 
-				trigger_time_1 <= triggered_time_1;
-				trigger_time_2 <= triggered_time_2;
-				trigger_time_3 <= triggered_time_3;
+				max_detect_counter <= max_detect_counter + 1;
 				
 			end
 			else
 			begin
+
 				trigger_time_1 <= 0;
 				trigger_time_2 <= 0;
 				trigger_time_3 <= 0;
+
 			end
 
 			// If any is triggered for to long we need to reset

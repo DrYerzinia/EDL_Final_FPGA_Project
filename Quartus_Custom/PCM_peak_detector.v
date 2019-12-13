@@ -28,7 +28,9 @@ module PCM_peak_detector (
 	output reg				triggered;
 	output reg [31:0]		triggered_time;
 
-	localparam  THRESHOLD = 1000;
+	localparam  THRESHOLD = 150;
+
+	reg signed [15:0]    max_amplitude;
 
 	always @(posedge pcm_clk)
 	begin
@@ -40,13 +42,21 @@ module PCM_peak_detector (
 
 		end
 
-		else if( pcm_data > THRESHOLD && !triggered)
+		else if( ( pcm_data > THRESHOLD ) && !triggered)
 		begin
 
 			// Otherwise if we exceed the trigger threshold we lock in the time and mark as triggered
 
+			max_amplitude  <= pcm_data;			
 			triggered_time <= sample_counter;
-			triggered <= 1'b1;
+			triggered      <= 1'b1;
+
+		end
+		else if(triggered && ( pcm_data > max_amplitude ) )
+		begin
+
+			max_amplitude  <= pcm_data;
+			triggered_time <= sample_counter;
 
 		end
 
