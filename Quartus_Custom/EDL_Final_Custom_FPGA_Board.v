@@ -143,6 +143,11 @@ wire [15:0] PCM_1, PCM_2, PCM_3;
 wire [31:0] PEAK_1, PEAK_2, PEAK_3;
 wire 			PEAK_RESET;
 
+wire			CORRELATOR_DONE;
+wire [7:0]	CORRELATOR_OFFSET_1, CORRELATOR_OFFSET_2;
+
+assign PEAK_1 = {CORRELATOR_DONE, CORRELATOR_OFFSET_1, CORRELATOR_OFFSET_2};
+
 system_clocks sys_clks (
 
 	.inclk0			(CLK_50MHZ),
@@ -235,6 +240,7 @@ PDM_to_PCM pdm_to_pcm_3 (
 
 );
 
+/*
 TDoA tdoa (
 
 	.reset				(PEAK_RESET),
@@ -249,6 +255,20 @@ TDoA tdoa (
 	.trigger_time_2	(PEAK_2),
 	.trigger_time_3	(PEAK_3)
 	
+);*/
+
+
+	
+tdoa_correlator DUT(
+	.clk_1		(PCM_CLK),
+	.clk_2		(PDM_CLK),
+	.reset		(PEAK_RESET),
+	.pcm_1		(PCM_1),
+	.pcm_2		(PCM_2),
+	.pcm_3		(PCM_3),
+	.done			(CORRELATOR_DONE),
+	.offset_1	(CORRELATOR_OFFSET_1),
+	.offset_2	(CORRELATOR_OFFSET_2)
 );
 
 
@@ -322,4 +342,6 @@ EDL_Final cpu (
 
 	);
 
+circular_data_buffer_testbench();
+	
 endmodule

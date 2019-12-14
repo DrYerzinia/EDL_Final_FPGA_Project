@@ -1079,8 +1079,8 @@ void peak_detect_handler(void * context){
 	peak_detected = true;
 
 	peak[0] = IORD_ALTERA_AVALON_PIO_DATA(PEAK_1_BASE);
-	peak[1] = IORD_ALTERA_AVALON_PIO_DATA(PEAK_2_BASE);
-	peak[2] = IORD_ALTERA_AVALON_PIO_DATA(PEAK_3_BASE);
+	//peak[1] = IORD_ALTERA_AVALON_PIO_DATA(PEAK_2_BASE);
+	//peak[2] = IORD_ALTERA_AVALON_PIO_DATA(PEAK_3_BASE);
 
 	// Disable interrupts
 	*PEAK_1_INTERRUPT = 0;
@@ -1100,42 +1100,32 @@ void arm_peak_detector(){
 
 }
 
+#define MAX_DEVIATION 30
+
 void peak_detect(){
+
+	running = true;
 
 	arm_peak_detector();
 
-	int i = 0;
 	while(1){
 
 		if(peak_detected){
 
-			int j;
-			uint32_t smallest_value = peak[0];
-			uint8_t smallest_index = 0;
-			for(j = 1; j < 3; j++){
-				if(smallest_value > peak[j]){
-					smallest_value = peak[j];
-					smallest_index = j;
-				}
-			}
-
-			for(j = 0; j < 3; j++){
-				peak[j] -= smallest_value;
-			}
+			int16_t offset_1 = (peak[0] & 0xFF) - MAX_DEVIATION;
+			int16_t offset_2 = ((peak[0] >> 8) & 0xFF) - MAX_DEVIATION;
 
 			char buffer[32];
-			int len = snprintf(buffer, 32, "\x81%lu %lu %lu", peak[0], peak[1], peak[2]);
+			int len = snprintf(buffer, 32, "\x81 0 %d %d", offset_1, offset_2);
 			kiss_send_packet(&jtag_kiss, (const uint8_t *) buffer, len);
 
 			usleep(100000);
 
-			if(i == 10){
+			if(!running){
 				break;
 			}
 
 			arm_peak_detector();
-
-			i++;
 
 		}
 
