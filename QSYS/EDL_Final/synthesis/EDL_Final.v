@@ -65,6 +65,14 @@ module EDL_Final (
 	wire         mm_interconnect_0_sdram_s1_readdatavalid;                                   // sdram:za_valid -> mm_interconnect_0:sdram_s1_readdatavalid
 	wire         mm_interconnect_0_sdram_s1_write;                                           // mm_interconnect_0:sdram_s1_write -> sdram:az_wr_n
 	wire  [15:0] mm_interconnect_0_sdram_s1_writedata;                                       // mm_interconnect_0:sdram_s1_writedata -> sdram:az_data
+	wire  [31:0] mm_interconnect_0_onchip_flash_data_readdata;                               // onchip_flash:avmm_data_readdata -> mm_interconnect_0:onchip_flash_data_readdata
+	wire         mm_interconnect_0_onchip_flash_data_waitrequest;                            // onchip_flash:avmm_data_waitrequest -> mm_interconnect_0:onchip_flash_data_waitrequest
+	wire  [16:0] mm_interconnect_0_onchip_flash_data_address;                                // mm_interconnect_0:onchip_flash_data_address -> onchip_flash:avmm_data_addr
+	wire         mm_interconnect_0_onchip_flash_data_read;                                   // mm_interconnect_0:onchip_flash_data_read -> onchip_flash:avmm_data_read
+	wire         mm_interconnect_0_onchip_flash_data_readdatavalid;                          // onchip_flash:avmm_data_readdatavalid -> mm_interconnect_0:onchip_flash_data_readdatavalid
+	wire         mm_interconnect_0_onchip_flash_data_write;                                  // mm_interconnect_0:onchip_flash_data_write -> onchip_flash:avmm_data_write
+	wire  [31:0] mm_interconnect_0_onchip_flash_data_writedata;                              // mm_interconnect_0:onchip_flash_data_writedata -> onchip_flash:avmm_data_writedata
+	wire   [3:0] mm_interconnect_0_onchip_flash_data_burstcount;                             // mm_interconnect_0:onchip_flash_data_burstcount -> onchip_flash:avmm_data_burstcount
 	wire  [31:0] mm_interconnect_0_cpu_debug_mem_slave_readdata;                             // cpu:debug_mem_slave_readdata -> mm_interconnect_0:cpu_debug_mem_slave_readdata
 	wire         mm_interconnect_0_cpu_debug_mem_slave_waitrequest;                          // cpu:debug_mem_slave_waitrequest -> mm_interconnect_0:cpu_debug_mem_slave_waitrequest
 	wire         mm_interconnect_0_cpu_debug_mem_slave_debugaccess;                          // mm_interconnect_0:cpu_debug_mem_slave_debugaccess -> cpu:debug_mem_slave_debugaccess
@@ -86,6 +94,11 @@ module EDL_Final (
 	wire         mm_interconnect_0_jtag_uart_avalon_jtag_slave_read;                         // mm_interconnect_0:jtag_uart_avalon_jtag_slave_read -> jtag_uart:av_read_n
 	wire         mm_interconnect_0_jtag_uart_avalon_jtag_slave_write;                        // mm_interconnect_0:jtag_uart_avalon_jtag_slave_write -> jtag_uart:av_write_n
 	wire  [31:0] mm_interconnect_0_jtag_uart_avalon_jtag_slave_writedata;                    // mm_interconnect_0:jtag_uart_avalon_jtag_slave_writedata -> jtag_uart:av_writedata
+	wire  [31:0] mm_interconnect_0_onchip_flash_csr_readdata;                                // onchip_flash:avmm_csr_readdata -> mm_interconnect_0:onchip_flash_csr_readdata
+	wire   [0:0] mm_interconnect_0_onchip_flash_csr_address;                                 // mm_interconnect_0:onchip_flash_csr_address -> onchip_flash:avmm_csr_addr
+	wire         mm_interconnect_0_onchip_flash_csr_read;                                    // mm_interconnect_0:onchip_flash_csr_read -> onchip_flash:avmm_csr_read
+	wire         mm_interconnect_0_onchip_flash_csr_write;                                   // mm_interconnect_0:onchip_flash_csr_write -> onchip_flash:avmm_csr_write
+	wire  [31:0] mm_interconnect_0_onchip_flash_csr_writedata;                               // mm_interconnect_0:onchip_flash_csr_writedata -> onchip_flash:avmm_csr_writedata
 	wire  [31:0] mm_interconnect_0_button_s1_readdata;                                       // button:readdata -> mm_interconnect_0:button_s1_readdata
 	wire   [1:0] mm_interconnect_0_button_s1_address;                                        // mm_interconnect_0:button_s1_address -> button:address
 	wire         mm_interconnect_0_led_s1_chipselect;                                        // mm_interconnect_0:led_s1_chipselect -> led:chipselect
@@ -151,7 +164,7 @@ module EDL_Final (
 	wire         irq_mapper_receiver2_irq;                                                   // lidar_uart:irq -> irq_mapper:receiver2_irq
 	wire         irq_mapper_receiver3_irq;                                                   // peak_1:irq -> irq_mapper:receiver3_irq
 	wire  [31:0] cpu_irq_irq;                                                                // irq_mapper:sender_irq -> cpu:irq
-	wire         rst_controller_reset_out_reset;                                             // rst_controller:reset_out -> [ble_uart:reset_n, button:reset_n, cpu:reset_n, encoder_left:reset_n, encoder_right:reset_n, irq_mapper:reset, jtag_uart:rst_n, led:reset_n, lidar_motor_en:reset_n, lidar_uart:reset_n, line_detect:reset_n, mm_interconnect_0:video_dma_controller_reset_reset_bridge_in_reset_reset, motor_direction:reset_n, on_button:reset_n, peak_1:reset_n, peak_2:reset_n, peak_3:reset_n, peak_reset:reset_n, pwm:reset_n, rst_translator:in_reset, sdram:reset_n, uptime:reset_n, video_dma_controller:reset]
+	wire         rst_controller_reset_out_reset;                                             // rst_controller:reset_out -> [ble_uart:reset_n, button:reset_n, cpu:reset_n, encoder_left:reset_n, encoder_right:reset_n, irq_mapper:reset, jtag_uart:rst_n, led:reset_n, lidar_motor_en:reset_n, lidar_uart:reset_n, line_detect:reset_n, mm_interconnect_0:video_dma_controller_reset_reset_bridge_in_reset_reset, motor_direction:reset_n, on_button:reset_n, onchip_flash:reset_n, peak_1:reset_n, peak_2:reset_n, peak_3:reset_n, peak_reset:reset_n, pwm:reset_n, rst_translator:in_reset, sdram:reset_n, uptime:reset_n, video_dma_controller:reset]
 	wire         rst_controller_reset_out_reset_req;                                         // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
 
 	EDL_Final_ble_uart ble_uart (
@@ -297,6 +310,71 @@ module EDL_Final (
 		.address  (mm_interconnect_0_on_button_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_on_button_s1_readdata), //                    .readdata
 		.in_port  (on_button_export)                         // external_connection.export
+	);
+
+	altera_onchip_flash #(
+		.INIT_FILENAME                       (""),
+		.INIT_FILENAME_SIM                   (""),
+		.DEVICE_FAMILY                       ("MAX 10"),
+		.PART_NAME                           ("10M50SAE144I7G"),
+		.DEVICE_ID                           ("50"),
+		.SECTOR1_START_ADDR                  (0),
+		.SECTOR1_END_ADDR                    (8191),
+		.SECTOR2_START_ADDR                  (8192),
+		.SECTOR2_END_ADDR                    (16383),
+		.SECTOR3_START_ADDR                  (16384),
+		.SECTOR3_END_ADDR                    (114687),
+		.SECTOR4_START_ADDR                  (0),
+		.SECTOR4_END_ADDR                    (0),
+		.SECTOR5_START_ADDR                  (0),
+		.SECTOR5_END_ADDR                    (0),
+		.MIN_VALID_ADDR                      (0),
+		.MAX_VALID_ADDR                      (114687),
+		.MIN_UFM_VALID_ADDR                  (0),
+		.MAX_UFM_VALID_ADDR                  (114687),
+		.SECTOR1_MAP                         (1),
+		.SECTOR2_MAP                         (2),
+		.SECTOR3_MAP                         (3),
+		.SECTOR4_MAP                         (0),
+		.SECTOR5_MAP                         (0),
+		.ADDR_RANGE1_END_ADDR                (114687),
+		.ADDR_RANGE2_END_ADDR                (114687),
+		.ADDR_RANGE1_OFFSET                  (2048),
+		.ADDR_RANGE2_OFFSET                  (0),
+		.ADDR_RANGE3_OFFSET                  (0),
+		.AVMM_DATA_ADDR_WIDTH                (17),
+		.AVMM_DATA_DATA_WIDTH                (32),
+		.AVMM_DATA_BURSTCOUNT_WIDTH          (4),
+		.SECTOR_READ_PROTECTION_MODE         (28),
+		.FLASH_SEQ_READ_DATA_COUNT           (4),
+		.FLASH_ADDR_ALIGNMENT_BITS           (2),
+		.FLASH_READ_CYCLE_MAX_INDEX          (5),
+		.FLASH_RESET_CYCLE_MAX_INDEX         (25),
+		.FLASH_BUSY_TIMEOUT_CYCLE_MAX_INDEX  (120),
+		.FLASH_ERASE_TIMEOUT_CYCLE_MAX_INDEX (35000000),
+		.FLASH_WRITE_TIMEOUT_CYCLE_MAX_INDEX (30500),
+		.PARALLEL_MODE                       (1),
+		.READ_AND_WRITE_MODE                 (1),
+		.WRAPPING_BURST_MODE                 (0),
+		.IS_DUAL_BOOT                        ("False"),
+		.IS_ERAM_SKIP                        ("True"),
+		.IS_COMPRESSED_IMAGE                 ("False")
+	) onchip_flash (
+		.clock                   (clk_clk),                                           //    clk.clk
+		.reset_n                 (~rst_controller_reset_out_reset),                   // nreset.reset_n
+		.avmm_data_addr          (mm_interconnect_0_onchip_flash_data_address),       //   data.address
+		.avmm_data_read          (mm_interconnect_0_onchip_flash_data_read),          //       .read
+		.avmm_data_writedata     (mm_interconnect_0_onchip_flash_data_writedata),     //       .writedata
+		.avmm_data_write         (mm_interconnect_0_onchip_flash_data_write),         //       .write
+		.avmm_data_readdata      (mm_interconnect_0_onchip_flash_data_readdata),      //       .readdata
+		.avmm_data_waitrequest   (mm_interconnect_0_onchip_flash_data_waitrequest),   //       .waitrequest
+		.avmm_data_readdatavalid (mm_interconnect_0_onchip_flash_data_readdatavalid), //       .readdatavalid
+		.avmm_data_burstcount    (mm_interconnect_0_onchip_flash_data_burstcount),    //       .burstcount
+		.avmm_csr_addr           (mm_interconnect_0_onchip_flash_csr_address),        //    csr.address
+		.avmm_csr_read           (mm_interconnect_0_onchip_flash_csr_read),           //       .read
+		.avmm_csr_writedata      (mm_interconnect_0_onchip_flash_csr_writedata),      //       .writedata
+		.avmm_csr_write          (mm_interconnect_0_onchip_flash_csr_write),          //       .write
+		.avmm_csr_readdata       (mm_interconnect_0_onchip_flash_csr_readdata)        //       .readdata
 	);
 
 	EDL_Final_peak_1 peak_1 (
@@ -473,6 +551,19 @@ module EDL_Final (
 		.motor_direction_s1_chipselect                            (mm_interconnect_0_motor_direction_s1_chipselect),                            //                                                 .chipselect
 		.on_button_s1_address                                     (mm_interconnect_0_on_button_s1_address),                                     //                                     on_button_s1.address
 		.on_button_s1_readdata                                    (mm_interconnect_0_on_button_s1_readdata),                                    //                                                 .readdata
+		.onchip_flash_csr_address                                 (mm_interconnect_0_onchip_flash_csr_address),                                 //                                 onchip_flash_csr.address
+		.onchip_flash_csr_write                                   (mm_interconnect_0_onchip_flash_csr_write),                                   //                                                 .write
+		.onchip_flash_csr_read                                    (mm_interconnect_0_onchip_flash_csr_read),                                    //                                                 .read
+		.onchip_flash_csr_readdata                                (mm_interconnect_0_onchip_flash_csr_readdata),                                //                                                 .readdata
+		.onchip_flash_csr_writedata                               (mm_interconnect_0_onchip_flash_csr_writedata),                               //                                                 .writedata
+		.onchip_flash_data_address                                (mm_interconnect_0_onchip_flash_data_address),                                //                                onchip_flash_data.address
+		.onchip_flash_data_write                                  (mm_interconnect_0_onchip_flash_data_write),                                  //                                                 .write
+		.onchip_flash_data_read                                   (mm_interconnect_0_onchip_flash_data_read),                                   //                                                 .read
+		.onchip_flash_data_readdata                               (mm_interconnect_0_onchip_flash_data_readdata),                               //                                                 .readdata
+		.onchip_flash_data_writedata                              (mm_interconnect_0_onchip_flash_data_writedata),                              //                                                 .writedata
+		.onchip_flash_data_burstcount                             (mm_interconnect_0_onchip_flash_data_burstcount),                             //                                                 .burstcount
+		.onchip_flash_data_readdatavalid                          (mm_interconnect_0_onchip_flash_data_readdatavalid),                          //                                                 .readdatavalid
+		.onchip_flash_data_waitrequest                            (mm_interconnect_0_onchip_flash_data_waitrequest),                            //                                                 .waitrequest
 		.peak_1_s1_address                                        (mm_interconnect_0_peak_1_s1_address),                                        //                                        peak_1_s1.address
 		.peak_1_s1_write                                          (mm_interconnect_0_peak_1_s1_write),                                          //                                                 .write
 		.peak_1_s1_readdata                                       (mm_interconnect_0_peak_1_s1_readdata),                                       //                                                 .readdata

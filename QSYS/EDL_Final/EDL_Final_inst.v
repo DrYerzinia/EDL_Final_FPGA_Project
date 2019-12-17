@@ -6,6 +6,7 @@
 		.encoder_left_export               (<connected-to-encoder_left_export>),               //               encoder_left.export
 		.encoder_right_export              (<connected-to-encoder_right_export>),              //              encoder_right.export
 		.led_external_connection_export    (<connected-to-led_external_connection_export>),    //    led_external_connection.export
+		.lidar_motor_en_export             (<connected-to-lidar_motor_en_export>),             //             lidar_motor_en.export
 		.lidar_uart_rxd                    (<connected-to-lidar_uart_rxd>),                    //                 lidar_uart.rxd
 		.lidar_uart_txd                    (<connected-to-lidar_uart_txd>),                    //                           .txd
 		.line_detect_export                (<connected-to-line_detect_export>),                //                line_detect.export
@@ -31,7 +32,6 @@
 		.video_dma_sink_startofpacket      (<connected-to-video_dma_sink_startofpacket>),      //                           .startofpacket
 		.video_dma_sink_endofpacket        (<connected-to-video_dma_sink_endofpacket>),        //                           .endofpacket
 		.video_dma_sink_valid              (<connected-to-video_dma_sink_valid>),              //                           .valid
-		.video_dma_sink_ready              (<connected-to-video_dma_sink_ready>),              //                           .ready
-		.lidar_motor_en_export             (<connected-to-lidar_motor_en_export>)              //             lidar_motor_en.export
+		.video_dma_sink_ready              (<connected-to-video_dma_sink_ready>)               //                           .ready
 	);
 

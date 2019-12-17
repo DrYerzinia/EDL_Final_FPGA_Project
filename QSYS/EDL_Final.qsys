@@ -13,7 +13,7 @@
    {
       datum _sortIndex
       {
-         value = "14";
+         value = "15";
          type = "int";
       }
    }
@@ -29,7 +29,7 @@
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "6";
          type = "int";
       }
    }
@@ -69,7 +69,7 @@
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "9";
          type = "int";
       }
    }
@@ -85,7 +85,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "10";
          type = "int";
       }
    }
@@ -101,7 +101,7 @@
    {
       datum _sortIndex
       {
-         value = "2";
+         value = "3";
          type = "int";
       }
    }
@@ -117,7 +117,7 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "7";
          type = "int";
       }
    }
@@ -133,7 +133,7 @@
    {
       datum _sortIndex
       {
-         value = "20";
+         value = "21";
          type = "int";
       }
    }
@@ -149,7 +149,7 @@
    {
       datum _sortIndex
       {
-         value = "15";
+         value = "16";
          type = "int";
       }
    }
@@ -157,7 +157,7 @@
    {
       datum _sortIndex
       {
-         value = "13";
+         value = "14";
          type = "int";
       }
    }
@@ -165,7 +165,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "11";
          type = "int";
       }
    }
@@ -181,7 +181,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "12";
          type = "int";
       }
    }
@@ -193,11 +193,35 @@
          type = "String";
       }
    }
+   element onchip_flash
+   {
+      datum _sortIndex
+      {
+         value = "2";
+         type = "int";
+      }
+   }
+   element onchip_flash.csr
+   {
+      datum baseAddress
+      {
+         value = "134226000";
+         type = "String";
+      }
+   }
+   element onchip_flash.data
+   {
+      datum baseAddress
+      {
+         value = "33554432";
+         type = "String";
+      }
+   }
    element peak_1
    {
       datum _sortIndex
       {
-         value = "16";
+         value = "17";
          type = "int";
       }
    }
@@ -213,7 +237,7 @@
    {
       datum _sortIndex
       {
-         value = "17";
+         value = "18";
          type = "int";
       }
    }
@@ -234,7 +258,7 @@
    {
       datum _sortIndex
       {
-         value = "18";
+         value = "19";
          type = "int";
       }
    }
@@ -250,7 +274,7 @@
    {
       datum _sortIndex
       {
-         value = "19";
+         value = "20";
          type = "int";
       }
    }
@@ -266,7 +290,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "8";
          type = "int";
       }
    }
@@ -282,7 +306,7 @@
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "5";
          type = "int";
       }
    }
@@ -298,7 +322,7 @@
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "13";
          type = "int";
       }
    }
@@ -314,7 +338,7 @@
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "4";
          type = "int";
       }
    }
@@ -491,7 +515,7 @@
   <parameter name="dataAddrWidth" value="28" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='ble_uart.s1' start='0x80000C0' end='0x80000E0' type='altera_avalon_uart.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='uptime.s1' start='0x8001000' end='0x8001010' type='altera_avalon_pio.s1' /><slave name='on_button.s1' start='0x8001010' end='0x8001020' type='altera_avalon_pio.s1' /><slave name='motor_direction.s1' start='0x8001020' end='0x8001030' type='altera_avalon_pio.s1' /><slave name='encoder_left.s1' start='0x8001030' end='0x8001040' type='altera_avalon_pio.s1' /><slave name='encoder_right.s1' start='0x8001040' end='0x8001050' type='altera_avalon_pio.s1' /><slave name='pwm.s1' start='0x8001050' end='0x8001060' type='altera_avalon_pio.s1' /><slave name='led.s1' start='0x8001060' end='0x8001070' type='altera_avalon_pio.s1' /><slave name='button.s1' start='0x8001070' end='0x8001080' type='altera_avalon_pio.s1' /><slave name='video_dma_controller.avalon_dma_control_slave' start='0x8001080' end='0x8001090' type='altera_up_avalon_video_dma_controller.avalon_dma_control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8001090' end='0x8001098' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='line_detect.s1' start='0x80010A0' end='0x80010B0' type='altera_avalon_pio.s1' /><slave name='lidar_uart.s1' start='0x80010E0' end='0x8001100' type='altera_avalon_uart.s1' /><slave name='peak_1.s1' start='0x8002000' end='0x8002010' type='altera_avalon_pio.s1' /><slave name='peak_2.s1' start='0x8002010' end='0x8002020' type='altera_avalon_pio.s1' /><slave name='peak_3.s1' start='0x8002020' end='0x8002030' type='altera_avalon_pio.s1' /><slave name='peak_reset.s1' start='0x8002030' end='0x8002040' type='altera_avalon_pio.s1' /><slave name='lidar_motor_en.s1' start='0x8002040' end='0x8002050' type='altera_avalon_pio.s1' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_flash.data' start='0x2000000' end='0x2070000' type='altera_onchip_flash.data' /><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='ble_uart.s1' start='0x80000C0' end='0x80000E0' type='altera_avalon_uart.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='uptime.s1' start='0x8001000' end='0x8001010' type='altera_avalon_pio.s1' /><slave name='on_button.s1' start='0x8001010' end='0x8001020' type='altera_avalon_pio.s1' /><slave name='motor_direction.s1' start='0x8001020' end='0x8001030' type='altera_avalon_pio.s1' /><slave name='encoder_left.s1' start='0x8001030' end='0x8001040' type='altera_avalon_pio.s1' /><slave name='encoder_right.s1' start='0x8001040' end='0x8001050' type='altera_avalon_pio.s1' /><slave name='pwm.s1' start='0x8001050' end='0x8001060' type='altera_avalon_pio.s1' /><slave name='led.s1' start='0x8001060' end='0x8001070' type='altera_avalon_pio.s1' /><slave name='button.s1' start='0x8001070' end='0x8001080' type='altera_avalon_pio.s1' /><slave name='video_dma_controller.avalon_dma_control_slave' start='0x8001080' end='0x8001090' type='altera_up_avalon_video_dma_controller.avalon_dma_control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8001090' end='0x8001098' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='line_detect.s1' start='0x80010A0' end='0x80010B0' type='altera_avalon_pio.s1' /><slave name='lidar_uart.s1' start='0x80010E0' end='0x8001100' type='altera_avalon_uart.s1' /><slave name='peak_1.s1' start='0x8002000' end='0x8002010' type='altera_avalon_pio.s1' /><slave name='peak_2.s1' start='0x8002010' end='0x8002020' type='altera_avalon_pio.s1' /><slave name='peak_3.s1' start='0x8002020' end='0x8002030' type='altera_avalon_pio.s1' /><slave name='peak_reset.s1' start='0x8002030' end='0x8002040' type='altera_avalon_pio.s1' /><slave name='lidar_motor_en.s1' start='0x8002040' end='0x8002050' type='altera_avalon_pio.s1' /><slave name='onchip_flash.csr' start='0x8002050' end='0x8002058' type='altera_onchip_flash.csr' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -530,7 +554,7 @@
   <parameter name="icache_tagramBlockType" value="Automatic" />
   <parameter name="impl" value="Tiny" />
   <parameter name="instAddrWidth" value="28" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_flash.data' start='0x2000000' end='0x2070000' type='altera_onchip_flash.data' /><slave name='sdram.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='cpu.debug_mem_slave' start='0x8000800' end='0x8001000' type='altera_nios2_gen2.debug_mem_slave' /></address-map>]]></parameter>
   <parameter name="instructionMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="instructionMasterHighPerformanceMapParam" value="" />
   <parameter name="instruction_master_high_performance_paddr_base" value="0" />
@@ -566,7 +590,7 @@
   <parameter name="regfile_ramBlockType" value="Automatic" />
   <parameter name="register_file_por" value="false" />
   <parameter name="resetOffset" value="0" />
-  <parameter name="resetSlave" value="sdram.s1" />
+  <parameter name="resetSlave" value="onchip_flash.data" />
   <parameter name="resetrequest_enabled" value="true" />
   <parameter name="setting_HBreakTest" value="false" />
   <parameter name="setting_HDLSimCachesCleared" value="true" />
@@ -806,6 +830,27 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="1" />
  </module>
+ <module
+   name="onchip_flash"
+   kind="altera_onchip_flash"
+   version="18.1"
+   enabled="1">
+  <parameter name="AUTO_CLOCK_RATE" value="100000000" />
+  <parameter name="CLOCK_FREQUENCY" value="100.0" />
+  <parameter name="CONFIGURATION_MODE">Single Uncompressed Image</parameter>
+  <parameter name="CONFIGURATION_SCHEME">Internal Configuration</parameter>
+  <parameter name="DATA_INTERFACE" value="Parallel" />
+  <parameter name="DEVICE_FAMILY" value="MAX 10" />
+  <parameter name="PART_NAME" value="10M50SAE144I7G" />
+  <parameter name="READ_BURST_COUNT" value="8" />
+  <parameter name="READ_BURST_MODE" value="Incrementing" />
+  <parameter name="SECTOR_ACCESS_MODE">Read and write,Read and write,Read only,Hidden,Hidden</parameter>
+  <parameter name="autoInitializationFileName">$${FILENAME}_onchip_flash</parameter>
+  <parameter name="initFlashContent" value="false" />
+  <parameter name="initializationFileName">altera_onchip_flash.hex</parameter>
+  <parameter name="initializationFileNameForSim">altera_onchip_flash.dat</parameter>
+  <parameter name="useNonDefaultInitFile" value="false" />
+ </module>
  <module name="peak_1" kind="altera_avalon_pio" version="18.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -967,6 +1012,24 @@
    kind="avalon"
    version="18.1"
    start="cpu.data_master"
+   end="onchip_flash.csr">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x08002050" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
+   end="onchip_flash.data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x02000000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.data_master"
    end="cpu.debug_mem_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x08000800" />
@@ -1097,6 +1160,15 @@
    kind="avalon"
    version="18.1"
    start="cpu.instruction_master"
+   end="onchip_flash.data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x02000000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="cpu.instruction_master"
    end="cpu.debug_mem_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x08000800" />
@@ -1135,6 +1207,7 @@
  <connection kind="clock" version="18.1" start="clk.clk" end="peak_2.clk" />
  <connection kind="clock" version="18.1" start="clk.clk" end="peak_reset.clk" />
  <connection kind="clock" version="18.1" start="clk.clk" end="lidar_motor_en.clk" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="onchip_flash.clk" />
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -1147,6 +1220,11 @@
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="peak_1.irq">
   <parameter name="irqNumber" value="3" />
  </connection>
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk.clk_reset"
+   end="onchip_flash.nreset" />
  <connection
    kind="reset"
    version="18.1"

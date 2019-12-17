@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Tue Dec 10 22:02:14 MST 2019
+ * Generated: Mon Dec 16 20:43:30 MST 2019
  */
 
 /*
@@ -65,8 +65,12 @@
  *
  */
 
-#define RESET_REGION_BASE 0x4000000
+#define ONCHIP_FLASH_DATA_REGION_BASE 0x2000020
+#define ONCHIP_FLASH_DATA_REGION_SPAN 458720
+#define RESET_REGION_BASE 0x2000000
 #define RESET_REGION_SPAN 32
+#define SDRAM_BEFORE_EXCEPTION_REGION_BASE 0x4000000
+#define SDRAM_BEFORE_EXCEPTION_REGION_SPAN 32
 #define SDRAM_REGION_BASE 0x4000020
 #define SDRAM_REGION_SPAN 67108832
 
@@ -77,7 +81,7 @@
  */
 
 #define ALT_EXCEPTIONS_DEVICE SDRAM
-#define ALT_RESET_DEVICE SDRAM
+#define ALT_RESET_DEVICE ONCHIP_FLASH_DATA
 #define ALT_RODATA_DEVICE SDRAM
 #define ALT_RWDATA_DEVICE SDRAM
 #define ALT_TEXT_DEVICE SDRAM
@@ -89,13 +93,5 @@
  */
 
 #define ALT_ALLOW_CODE_AT_RESET
-
-
-/*
- * The alt_load() facility is called from crt0 to copy sections into RAM.
- *
- */
-
-#define ALT_LOAD_COPY_RWDATA
 
 #endif /* __LINKER_H_ */

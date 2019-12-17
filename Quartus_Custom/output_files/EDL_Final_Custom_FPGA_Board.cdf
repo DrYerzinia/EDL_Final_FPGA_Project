@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(10M50SAE144) Path("C:/Users/DrYerzinia/Documents/EDL_Final_FPGA_Project/Quartus_Custom/output_files/") File("EDL_Final_Custom_FPGA_Board.sof") MfrSpec(OpMask(1));
+		Device PartName(10M50SAE144) Path("C:/Users/DrYerzinia/Documents/EDL_Final_FPGA_Project/Quartus_Custom/output_files/") File("EDL_Final_Custom_FPGA_Board.pof") MfrSpec(OpMask(3) Child_OpMask(2 3 3));
 
 ChainEnd;
 

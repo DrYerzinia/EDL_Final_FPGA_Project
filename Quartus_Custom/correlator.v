@@ -6,7 +6,7 @@ module correlator(clk, reset, trigger, done, buffer_data_1, buffer_data_2, buffe
 
 	parameter OTHERS = 2;
 
-	parameter WINDOW_WIDTH = 180;
+	parameter WINDOW_WIDTH = 150;
 	parameter MAX_DEVIATION = 30;
 	
 	input						clk;

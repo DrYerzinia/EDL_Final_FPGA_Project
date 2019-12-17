@@ -16,7 +16,7 @@ module trigger_delay(clk, reset, trigger_in, trigger_out);
 	input					  trigger_in;
 	output reg			  trigger_out;
 
-	parameter TRIGGER_DELAY = 180;
+	parameter TRIGGER_DELAY = 150;
 
 	reg			triggered;
 	reg [7:0]	counter;

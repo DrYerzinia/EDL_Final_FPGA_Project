@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'EDL_Final'
  * SOPC Builder design path: ../../EDL_Final.sopcinfo
  *
- * Generated: Wed Dec 11 13:37:51 MST 2019
+ * Generated: Mon Dec 16 20:41:39 MST 2019
  */
 
 /*
@@ -61,6 +61,7 @@
 #include "altera_nios2_gen2_irq.h"
 #include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_uart.h"
+#include "altera_onchip_flash.h"
 #include "altera_up_avalon_video_dma_controller.h"
 
 /*
@@ -71,6 +72,7 @@ ALTERA_NIOS2_GEN2_IRQ_INSTANCE ( CPU, cpu);
 ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART, jtag_uart);
 ALTERA_AVALON_UART_INSTANCE ( BLE_UART, ble_uart);
 ALTERA_AVALON_UART_INSTANCE ( LIDAR_UART, lidar_uart);
+ALTERA_ONCHIP_FLASH_DATA_CSR_INSTANCE ( ONCHIP_FLASH, ONCHIP_FLASH_DATA, ONCHIP_FLASH_CSR, onchip_flash);
 ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER_INSTANCE ( VIDEO_DMA_CONTROLLER, video_dma_controller);
 
 /*
@@ -97,5 +99,6 @@ void alt_sys_init( void )
     ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART, jtag_uart);
     ALTERA_AVALON_UART_INIT ( BLE_UART, ble_uart);
     ALTERA_AVALON_UART_INIT ( LIDAR_UART, lidar_uart);
+    ALTERA_ONCHIP_FLASH_INIT ( ONCHIP_FLASH, onchip_flash);
     ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER_INIT ( VIDEO_DMA_CONTROLLER, video_dma_controller);
 }

@@ -326,9 +326,9 @@ static int32_t read_encoder_right(void){
  * Sets the motors forward/reverse and speed reference using a -255 to 255 pwm output for each motor
  *
  * @param speed_left The desired PWM control signal for the left motor
- * @param speed_left The desired PWM control signal for the right motor
+ * @param speed_right The desired PWM control signal for the right motor
  */
-static void set_motors(int16_t speed_left, int16_t speed_right){
+static void set_motors(int16_t speed_right, int16_t speed_left){
 
 	uint32_t motor_direction = 0;
 
@@ -1112,8 +1112,8 @@ void peak_detect(){
 
 		if(peak_detected){
 
-			int16_t offset_1 = (peak[0] & 0xFF) - MAX_DEVIATION;
-			int16_t offset_2 = ((peak[0] >> 8) & 0xFF) - MAX_DEVIATION;
+			int16_t offset_1 = ((peak[0] >> 8) & 0xFF) - MAX_DEVIATION;
+			int16_t offset_2 = (peak[0] & 0xFF) - MAX_DEVIATION;
 
 			char buffer[32];
 			int len = snprintf(buffer, 32, "\x81 0 %d %d", offset_1, offset_2);

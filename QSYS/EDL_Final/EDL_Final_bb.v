@@ -7,6 +7,7 @@ module EDL_Final (
 	encoder_left_export,
 	encoder_right_export,
 	led_external_connection_export,
+	lidar_motor_en_export,
 	lidar_uart_rxd,
 	lidar_uart_txd,
 	line_detect_export,
@@ -32,8 +33,7 @@ module EDL_Final (
 	video_dma_sink_startofpacket,
 	video_dma_sink_endofpacket,
 	video_dma_sink_valid,
-	video_dma_sink_ready,
-	lidar_motor_en_export);	
+	video_dma_sink_ready);	
 
 	input		ble_uart_rxd;
 	output		ble_uart_txd;
@@ -42,6 +42,7 @@ module EDL_Final (
 	input	[31:0]	encoder_left_export;
 	input	[31:0]	encoder_right_export;
 	output	[9:0]	led_external_connection_export;
+	output		lidar_motor_en_export;
 	input		lidar_uart_rxd;
 	output		lidar_uart_txd;
 	input	[3:0]	line_detect_export;
@@ -68,5 +69,4 @@ module EDL_Final (
 	input		video_dma_sink_endofpacket;
 	input		video_dma_sink_valid;
 	output		video_dma_sink_ready;
-	output		lidar_motor_en_export;
 endmodule
